@@ -1,0 +1,75 @@
+
+/* ##############################[[Main]]##################################### */
+/* 검색 버튼 */
+.search-btn {
+  font-size: 1.3rem;
+  color: black;
+  margin: 0 0.1em;
+  background-color: transparent;
+  border: none;
+}
+
+#search-container {
+  border: 3px solid #ead3b1;
+  margin-top: 2rem;
+  margin-right: 2rem;
+  padding-right: 0.8rem;
+}
+
+.me-2 {
+  border: none;
+}
+
+/* 장바구니, 쪽지, 로그인 버튼 */
+#nav-icon {
+  font-size: 1.5rem;
+  color: black;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+#nav-btn {
+  padding: 0;
+  margin: 1.5rem; /* 장바구니, 쪽지, 로그인 버튼 간격 조절 */
+}
+
+/* 장바구니, 쪽지, 로그인 버튼 div */
+.nav-btn-container {
+  margin-left: 3rem;
+  margin-top: 2rem;
+}
+
+.first-nav {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.second-nav {
+  border: 1px solid #e0e0e0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.2rem;
+}
+
+.nav-menu {
+  margin-right: 3rem;
+}
+
+/* 이벤트alert */
+#event-alert {
+  text-align: center;
+}
+
+/* *********** [[탭애니메이션]] ************* */
+.start {
+  opacity: 0;
+}
+.end {
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+/* **************************************** */
+
+/* ###################################################################### */
