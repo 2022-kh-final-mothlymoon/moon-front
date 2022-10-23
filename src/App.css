@@ -1,6 +1,13 @@
 
 /* ##############################[[Main]]##################################### */
 /* 검색 버튼 */
+
+body {
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden;
+}
+
 .search-btn {
   font-size: 1.3rem;
   color: black;
@@ -70,6 +77,45 @@
   opacity: 1;
   transition: opacity 0.5s;
 }
-/* **************************************** */
 
 /* ###################################################################### */
+
+
+
+
+/* ##############################[[Notice]]##################################### */
+
+.list-wrapper {
+  width: 1020px;
+  height: 100%;
+  margin-top: 10px;
+}
+
+table {
+  border-top: 2px solid #b29d82;
+  width: 1020px;
+  display: table;
+  border-collapse: separate;
+  text-indent: initial;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
+thead {
+  background: #fafaf8;
+}
+
+td, th {
+  height: 50px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+#td-title {
+  cursor: pointer;
+}
+
+
+
+
+
+/* ############################################################################# */

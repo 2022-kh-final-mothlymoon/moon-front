@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
+import { BEST, CARDIMG, CARDDIV } from './../../styles/MainStyle';
 
 const TabCards = (props) => {
 
@@ -9,12 +10,17 @@ const TabCards = (props) => {
     <>
       
       <div className="col-md-4">
-        <img src={result.img} width="80%" alt="img"/>
-        <h4 onClick={()=>{ Navigate('/store')}}>
+        <Link to="/">
+          <CARDDIV>
+            <BEST>best</BEST>
+            <CARDIMG src={result.img} alt="img"/>
+          </CARDDIV>
+        </Link>
+        <h5 onClick={()=>{ Navigate('/store')}}>
           { result.title }
-        </h4>
+        </h5>
         <p> { result.content }</p>
-        <p> { result.price }원</p>
+        <h5> { result.price }</h5>
       </div>
 
     </>

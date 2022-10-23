@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Footer from '../components/main_member/Footer';
+import Footer from '../components/Common/Footer';
 import SliderBanner from '../components/main_member/SliderBanner';
-import Header from '../components/main_member/Header';
+import Header from '../components/Common/Header';
 import EventAlert from '../components/main_member/EventAlert';
 import TabContent from '../components/main_member/TabContent';
-import { CONTAINER } from './../styles/MainStyle';
+import { BOX, CONTAINER_TAB } from './../styles/MainStyle';
 
 
 const Main = () => {
@@ -13,7 +13,7 @@ const Main = () => {
 
   /* navbar 위에 이벤트알림 Alert */
   useEffect(() => {
-    let event = setTimeout(() => { setAlert(false) }, 60000)
+    let event = setTimeout(() => { setAlert(false) }, 10000)
     return () => {
       clearTimeout(event)
     } /* 컴포넌트 mount 시 1회만 실행하고 싶으면 이렇게! */
@@ -21,25 +21,24 @@ const Main = () => {
 
   return (
     <>
+        {
+          alert === true ?
+          <>
+            <EventAlert />
+          </>
+          : null
+        }
 
-      {
-        alert == true ?
-        <>
-          <EventAlert />
-        </>
-        : null
-      }
+        <Header />
 
-      <Header />
+        <SliderBanner />
 
-      <SliderBanner />
+        <CONTAINER_TAB>
+          <TabContent />
+        </CONTAINER_TAB>
 
-      <CONTAINER>
-        <TabContent />
-      </CONTAINER>
-
-      <Footer />
-
+        <Footer />
+        
     </>
   );
 };

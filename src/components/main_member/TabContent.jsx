@@ -52,24 +52,9 @@ const TabContent = () => {
         <div className="container">
           <div className="row">
             {
-              // padset.map(function(data, i){
-              //   //console.log(padset[i].type);
-              //   if(padset[i].type === "padset")
-              //   return <TabCards padset={padset[i]} i={i} />
-              // })
-              padset.filter((data, i) => data[i].type === "padset")
-              .map(data[i] => {
-                return <TabCards padset={data[i]} key={i} />
-              })
-            }
-          </div>
-        </div>,
-
-        <div className="container">
-          <div className="row">
-            {
-              padset.filter((data, i) => padset[i].type === "popular")
-              .map((data, i) => {
+              padset.map(function(data, i){
+                //console.log(padset[i].type);
+                if(padset[i].type === "padset")
                 return <TabCards padset={padset[i]} key={i} />
               })
             }
@@ -79,8 +64,9 @@ const TabContent = () => {
         <div className="container">
           <div className="row">
             {
-              padset.filter((data, i) => padset[i].type === "new")
-              .map((data, i) => {
+              padset.map(function(data, i){
+                //console.log(padset[i].type);
+                if(padset[i].type === "popular")
                 return <TabCards padset={padset[i]} key={i} />
               })
             }
@@ -90,9 +76,22 @@ const TabContent = () => {
         <div className="container">
           <div className="row">
             {
-              padset.filter((data, i) => padset[i].type === "experience")
-              .map((data, i) => {
-                return <TabCards padset={padset[i]} key={i} i={i} />
+              padset.map(function(data, i){
+                //console.log(padset[i].type);
+                if(padset[i].type === "new")
+                return <TabCards padset={padset[i]} key={i} />
+              })
+            }
+          </div>
+        </div>,
+
+        <div className="container">
+          <div className="row">
+            {
+              padset.map(function(data, i){
+                //console.log(padset[i].type);
+                if(padset[i].type === "experience")
+                return <TabCards padset={padset[i]} key={i} />
               })
             }
           </div>

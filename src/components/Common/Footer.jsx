@@ -6,7 +6,7 @@ const Footer = () => {
     <>
       <Navbar
         className="navbar navbar-expand-sm justify-content-center"
-        /* fixed="bottom" */
+        fixed="bottom"
         bg="dark"
         style={{ color: "white" }}
       >
