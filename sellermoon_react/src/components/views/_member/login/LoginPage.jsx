@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = (props) => {
+  let navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -26,6 +28,8 @@ const LoginPage = (props) => {
         if (res.data.member_email === email) {
           console.log("로그인 성공");
           sessionStorage.setItem("user_id", email);
+          sessionStorage.setItem("user_name", res.data.member_name);
+          navigate("/monthlymoon/register");
         }
       })
       .catch();
