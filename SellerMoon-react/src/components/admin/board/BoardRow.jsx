@@ -1,23 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-// 한 건의 데이터 렌더
+// 한 건의 데이터 렌더 (전체조회 시)
 const BoardRow = (props) => {
+
   return (
     <tr>
-      <td>{ props.tb_community.BOARD_NO }</td>
-      <td>{ props.tb_community.BOARD_CATEGORY }</td>
+      <td>{ props.board.BOARD_NO }</td>
+      <td>{ props.board.BOARD_CATEGORY }</td>
       <td>
         <Link 
-          to={ "/boardDetail/" + props.tb_community.BOARD_NO }
+          to={ "/admin/board/boardDetail/" + props.board.BOARD_NO }
           className="btn btn-primary"
         >
-          { props.tb_community.BOARD_TITLE }
+          { props.board.BOARD_TITLE }
         </Link>
       </td>
-      <td>{ props.tb_community.MEMBER_NAME }</td>
-      <td>{ props.tb_community.BOARD_WRITTEN_DATE }</td>
-      <td>{ props.tb_community.BOARD_HIT }</td>
+      <td>{ props.board.MEMBER_NAME }</td>
+      <td>{ props.board.BOARD_WRITTEN_DATE }</td>
+      <td>{ props.board.BOARD_HIT }</td>
+      <td>{ props.board.BOARD_BLIND }</td>
     </tr>
   );
 }

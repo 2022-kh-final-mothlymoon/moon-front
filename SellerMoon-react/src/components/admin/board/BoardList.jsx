@@ -16,13 +16,15 @@ import BoardRow from './BoardRow';
 const BoardList = () => {
   const [boardList, setBoardList] = useState([]);
   useEffect(() => {
-    const boardDB = async() => {
-      console.log("boardDB 호출 성공");
+    const boardListDB = async() => {
+      console.log("boardListDB 호출 성공");
       const result = await jsonBoardList();
       console.log(result);
+      console.log(result.data);
+      console.log(result.data[1].MEMBER_NAME);
       setBoardList(result.data);
     }
-    boardDB();
+    boardListDB();
   }, []);
 
   // rendering
@@ -69,13 +71,14 @@ const BoardList = () => {
                 <th>작성자</th>
                 <th>작성일</th>
                 <th>조회수</th>
-              </tr>
+                <th>블라인드</th>
+              </tr> 
             </thead>
             <tbody>
               {
-                boardList.map((tb_community, i) => {
-                  <BoardRow key={i} tb_community={tb_community} /> // 한 건의 데이터를 불러오기
-                })
+                boardList.map((board, i) => (
+                  <BoardRow key={i} board={board} /> // 한 건의 데이터를 불러오기 (BoardRow가 한 건을 보여준다.)
+                ))
               }
             </tbody>
           </Table>
