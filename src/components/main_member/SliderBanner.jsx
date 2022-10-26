@@ -3,7 +3,7 @@ import "slick-carousel/slick/slick-theme.css";
 import React from "react";
 import Slider from "react-slick";
 import { Link} from 'react-router-dom';
-import { SLIDEIMG } from './../../styles/MainStyle';
+import { SLIDEIMG, SLIDER } from './../../styles/MainStyle';
 
 const SliderBanner = () => {
 
@@ -21,11 +21,11 @@ const SliderBanner = () => {
     };
 
     return (
-      <div>
+      <SLIDER>
         <Slider {...settings}>
           <div>
             <Link to="/subscription">
-              <SLIDEIMG src="https://res.cloudinary.com/drxxdsv01/image/upload/v1666423298/slide1_tsnm7t.png" alt="slider1" />
+              <SLIDEIMG src="https://res.cloudinary.com/drxxdsv01/image/upload/v1666800034/slide1_gv9ra5.png" alt="slider1" />
             </Link>
           </div>
           <div>
@@ -39,7 +39,7 @@ const SliderBanner = () => {
             </Link>
           </div>
         </Slider>
-      </div>
+      </SLIDER>
     );
   }
 

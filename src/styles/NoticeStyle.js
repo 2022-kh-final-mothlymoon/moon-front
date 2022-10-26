@@ -4,7 +4,7 @@ export const CONTENTS = styled.div `
   width: 1020px;
   height: 100%;
   margin-top: 50px;
-  margin-bottom: 50px;
+  margin-bottom: 150px;
 `
 
 export const CONT_SIDE = styled.div `
@@ -37,4 +37,27 @@ export const P_SIDE = styled.p `
   color: #000;
   word-break: keep-all;
   word-wrap: break-word;
+`
+
+export const BTN_SEARCH = styled.button `
+  border: 1px solid #b29d82;
+  background: #f7f7f5;
+  padding: 5px;
+`
+  
+
+export const FILEDOWN = styled.span `
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+  text-underline-position:under;
+`
+
+export const BROWN_BTN = styled.button `
+  width: 150px;
+  height: 42px;
+  color: #fafafa;
+  background-color: #5e514d;
+  border: none;
+  margin : 0px 15px;
 `

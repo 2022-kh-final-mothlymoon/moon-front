@@ -5,20 +5,26 @@ import "./App.css"
 import Notice from './pages/Notice';
 import axios from "axios"
 import NoticeDetail from './pages/NoticeDetail';
+import NoticeAdmin from './pages/NoticeAdmin';
+import NoticeUpAdmin from './pages/NoticeUpAdmin';
 
-function App() {
+function App({ pictureUpload }) {
+
+
   return (
     <>
       <Routes>
 
         <Route path="*" element={<h1>잘못된 경로입니다😕</h1>}/> {/* 404페이지 */}
 
-        <Route path="/" element={<Main />}/>
+        <Route path="/" element={<Main />} exact={true} />
         
-        <Route path="/notice" element={<Notice />} />
+        <Route path="/notice" element={<Notice />} exact={true} />
+        <Route path="/notice/detail/:notice_no" element={<NoticeDetail />} exact={true} />
 
-        <Route path="/noticedetail" element={<NoticeDetail />} />
-
+        <Route path="/admin/notice" element={<NoticeAdmin />} exact={true} />
+        <Route path="/admin/notice/update/:notice_no" element={<NoticeUpAdmin />} exact={true} />
+      
       </Routes>
     </>
   );

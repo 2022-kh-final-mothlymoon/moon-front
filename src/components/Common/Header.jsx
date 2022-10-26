@@ -17,18 +17,20 @@ const Header = () => {
         <Container>
           <Navbar.Brand>
             <Link to="/">
-              <img src="https://res.cloudinary.com/drxxdsv01/image/upload/v1666376791/logo6_tqrfva.png" alt="logo" />
+              <Button id="logo-icon">
+                <i className="fa-solid fa-cloud-moon"></i>
+              </Button>
+              <img src="https://res.cloudinary.com/drxxdsv01/image/upload/v1666798853/logo8_t4lbha.png" alt="logo" style={{marginTop:"1.9rem"}} />
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
             <Form className="d-flex" id="search-container">
-              <Form.Control
+              <input
+                className="search-input"
                 id="keyword"
-                type="search"
+                type="text"
                 placeholder="통합검색"
-                className="me-2"
-                aria-label="Search"
               />
               <Button id="nav-icon">
                 <i className="fa-solid fa-magnifying-glass"></i>

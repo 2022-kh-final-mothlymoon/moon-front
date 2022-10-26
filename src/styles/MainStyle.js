@@ -1,10 +1,17 @@
 import styled from "styled-components"
 
 export const CONTAINER_TAB = styled.div `
-  margin-top: 5rem;
-  margin-bottom: 5rem;
-  padding-left: 20rem;
-  padding-right: 20rem;
+  width: 1020px;
+  margin: auto;
+  padding-bottom: 5rem;
+`
+export const SLIDER = styled.div `
+  /* 슬라이더가로스크롤바 생기는 문제 */
+  overflow: hidden;
+  padding-bottom: 7rem; /* 패딩 안주면 dot 버튼 사라짐 */
+`
+export const SLIDEIMG = styled.img `
+  width: 100%;
 `
 
 export const CARDDIV = styled.div `
@@ -35,6 +42,8 @@ export const CARDIMG = styled.img `
   height: 70%;
 `
 
-export const SLIDEIMG = styled.img `
-  width: 100%;
+export const TABTITLE = styled.span `
+  color: rgb(51, 51, 51);
+  font-weight: 600;
+  font-size: 18px;
 `

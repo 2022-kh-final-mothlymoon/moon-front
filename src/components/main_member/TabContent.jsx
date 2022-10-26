@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Nav } from 'react-bootstrap';
 import TabCards from './TabCards';
 import data from '../../data.js'
+import { TABTITLE } from '../../styles/MainStyle';
 
 
 const TabContent = () => {
@@ -32,16 +33,24 @@ const TabContent = () => {
     
       <Nav fill variant="tabs" defaultActiveKey="link0">
         <Nav.Item>
-          <Nav.Link onClick={()=>{setTab(0)}} eventKey="link0">정기구독</Nav.Link>
+          <Nav.Link onClick={()=>{setTab(0)}} eventKey="link0">
+            <TABTITLE>정기구독</TABTITLE>
+          </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link onClick={()=>{setTab(1)}} eventKey="link1">인기상품</Nav.Link>
+          <Nav.Link onClick={()=>{setTab(1)}} eventKey="link1">
+            <TABTITLE>인기상품</TABTITLE>
+          </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link onClick={()=>{setTab(2)}} eventKey="link2">신제품</Nav.Link>
+          <Nav.Link onClick={()=>{setTab(2)}} eventKey="link2">
+            <TABTITLE>신제품</TABTITLE>
+          </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link onClick={()=>{setTab(3)}} eventKey="link3">체험팩</Nav.Link>
+          <Nav.Link onClick={()=>{setTab(3)}} eventKey="link3">
+            <TABTITLE>체험팩</TABTITLE>
+          </Nav.Link>
         </Nav.Item>
       </Nav>
 

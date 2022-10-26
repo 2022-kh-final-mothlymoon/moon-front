@@ -4,7 +4,7 @@ import SliderBanner from '../components/main_member/SliderBanner';
 import Header from '../components/Common/Header';
 import EventAlert from '../components/main_member/EventAlert';
 import TabContent from '../components/main_member/TabContent';
-import { BOX, CONTAINER_TAB } from './../styles/MainStyle';
+import { CONTAINER_TAB } from '../styles/MainStyle';
 
 
 const Main = () => {

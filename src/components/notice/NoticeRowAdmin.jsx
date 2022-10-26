@@ -1,15 +1,16 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const NoticeRow = (props) => {
+const NoticeRowAdmin = (props) => {
 
   let navigate = useNavigate();
 
   return (
     <>
       <tr>
+        <td> <input type="checkbox"/></td>
         <td>{props.notice.NOTICE_NO}</td>
-        <td onClick={()=>{ navigate('/notice/detail/'+props.notice.NOTICE_NO)}} id="list-title">
+        <td onClick={()=>{ navigate('/admin/notice/update/'+props.notice.NOTICE_NO)}} id="list-title">
           [{props.notice.NOTICE_CATEGORY}] &nbsp;
           {props.notice.NOTICE_TITLE}
         </td>
@@ -21,4 +22,4 @@ const NoticeRow = (props) => {
   );
 };
 
-export default NoticeRow;
+export default NoticeRowAdmin;

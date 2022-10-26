@@ -9,7 +9,7 @@ const TabCards = (props) => {
   return (
     <>
       
-      <div className="col-md-4">
+      <div className="col-lg-4">
         <Link to="/">
           <CARDDIV>
             <BEST>best</BEST>

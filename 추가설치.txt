@@ -3,3 +3,5 @@ npm install axios
 npm install react-slick --save
 
 npm install slick-carousel --save
+
+npm i react-daum-postcode
