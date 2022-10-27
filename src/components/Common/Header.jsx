@@ -5,10 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Header = () => {
 
-  /* 
-    useNavigate 라는 훅 -> 페이지 이동을 도와주는 함수를 담고 잇음.
-    보통 변수에 담아서 사용함 
-  */
   let navigate = useNavigate();
 
   return (

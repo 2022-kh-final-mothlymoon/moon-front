@@ -17,13 +17,11 @@ const TabContent = () => {
   // 따라서 cleanUp Function + setTimeout 사용하기!
   setTimeout(() => {
     setFade('end');
-    console.log("setTimeout")
   }, 100) // 0.1 초뒤에 실행
 
   // useEffect 실행 전에 실행됨
   return () => {
     setFade('');
-    console.log("return");
     }
   }, [tab])
 

@@ -5,3 +5,5 @@ npm install react-slick --save
 npm install slick-carousel --save
 
 npm i react-daum-postcode
+
+npm install sweetalert2

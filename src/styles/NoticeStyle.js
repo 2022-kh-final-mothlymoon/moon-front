@@ -23,7 +23,7 @@ export const UL_SIDE = styled.ul `
 export const LI_SIDE = styled.li `
   height: 38px;
   color: #666;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 30px;
   cursor: pointer;
 `
@@ -61,3 +61,4 @@ export const BROWN_BTN = styled.button `
   border: none;
   margin : 0px 15px;
 `
+

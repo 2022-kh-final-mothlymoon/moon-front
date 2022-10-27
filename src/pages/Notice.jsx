@@ -1,29 +1,72 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Common/Header';
 import Footer from '../components/Common/Footer';
-import { CONTENTS } from '../styles/NoticeStyle';
+import { BROWN_BTN, CONTENTS } from '../styles/NoticeStyle';
 import SidebarNotice from '../components/notice/SidebarNotice';
 import { noticelist } from './../service/dbLogic';
 import { Button, Form } from 'react-bootstrap';
 import NoticeRow from '../components/notice/NoticeRow';
+import Pagination from './../components/Common/Pagination';
 
 const Notice = () => {
 
   const [noticeList, setNoticeList] = useState([])
+  const [inputData, setInputData] = useState({keyword: ""})
 
-    // html 렌더링된 후 호출됨
+  const onChange = (e) => {
+    if(e.currentTarget == null) return;
+    // console.log("폼 내용 변경 발생 name : "+e.target.name);
+    // console.log("폼 내용 변경 발생 value : "+e.target.value);
+    e.preventDefault();
+    setInputData({
+      ...inputData,
+      [e.target.name]:e.target.value,
+    })
+  }
+
+  /**************** 페이지네이션 선언 ********************/
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * limit;
+  
+
+  /* **************************************************** */
+  /* noticelist 데이터 가져오기 */
     useEffect(() => {
-      console.log("useEffect 호출")
       const oracleDB = async () => {
-          console.log("oracleDB 호출")
           //const result = await jsonDeptList({ DEPTNO: 30 }) -> 스프링콘솔에 com.example.demo.dao.DeptDao  : pMap : {DEPTNO=30}
           const result = await noticelist() // pMap : {}
           console.log(result)
-          console.log(result.data[3])
+          //console.log(result.data[3])
           setNoticeList(result.data)
       }
       oracleDB()
       }, [])
+
+
+  /* ************************************************** */
+  /////////// 조건검색
+  const dataSearch = (e) => {
+    e.preventDefault()
+    console.log(inputData.keyword);
+    const gubun = document.querySelector("#gubun").value;
+    const keyword = inputData.keyword;
+    console.log(gubun+","+keyword);
+    const asyncDB = async() => {
+        const res = await noticelist({ gubun : gubun, keyword : keyword  })
+        if(res.data){
+            console.log(res.data);
+            setNoticeList(res.data);
+        }
+    }
+    asyncDB()
+  };
+  /* ************************************************** */
+
+  const refresh = () => {
+    window.location.reload();
+  }
+
 
   return (
     <>
@@ -40,7 +83,7 @@ const Notice = () => {
             <div className="list-wrapper">
 
               <h4>공지사항</h4>
-                <table>
+                <table style={{ width: "1020px" }}>
                   <colgroup>
                     <col style={{ width: "10%" }} />
                     <col style={{ width: "40%" }} />
@@ -61,27 +104,42 @@ const Notice = () => {
 
                   <tbody>
                     {
-                      noticeList.map((notice, i) => (
+                      noticeList.slice(offset, offset + limit).map((notice, i) => (
                         <NoticeRow key={i} notice={notice} />
                       ))
                     }
                   </tbody>
                 </table>
 
+
+                <Pagination
+                  total={noticeList.length}
+                  limit={limit}
+                  page={page}
+                  setPage={setPage}
+                />
+
+
     {/* ####################[[조건 검색]]############################## */}
               
-            <Form className="d-flex mx-auto" style={{ width:"50%", height:"45px"}}>
-              <select id="gubun" className="form-select" aria-label="분류선택" style={{ width: "40%", marginRight: "10px" }}>
-                <option defaultValue>분류선택</option>
-                <option value="deptno">번호</option>
-                <option value="dname">제목</option>
-                <option value="loc">작성자</option>
-              </select>
-              <input type="text" id="keyword" className="form-control" placeholder="검색어를 입력하세요" />
-              <Button variant="outline-secondary" id="btn_search" style={{ marginLeft: "10px", width:"100px"}}>
-                검색
-              </Button>
-            </Form>
+      <div className="d-flex mx-auto mt-4" style={{ width:"60%", height:"45px"}}>
+        <select id="gubun" name="gubun" className="form-select" aria-label="분류" style={{ width: "40%", marginRight: "10px" }}>
+          <option defaultValue>분류선택</option>
+          <option value="notice_no">번호</option>
+          <option value="notice_title">제목</option>
+          <option value="notice_category">카테고리</option>
+        </select>
+        <input type="text" id="keyword" name="keyword" className="form-control" 
+              placeholder="검색어를 입력하세요" onChange={onChange}/>
+        <BROWN_BTN style={{ marginLeft: "10px"}}
+                onClick={dataSearch} >
+          검색
+        </BROWN_BTN>
+        <BROWN_BTN  style={{ marginLeft: "15px", width: "200px" }}
+                onClick={refresh} >
+          전체목록
+        </BROWN_BTN>
+      </div>
 
     {/* ###################[[조건검색 끝]]####################### */}
 

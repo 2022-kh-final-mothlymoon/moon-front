@@ -17,8 +17,8 @@ const SidebarNotice = () => {
               공지사항
             </LI_SIDE>
 
-            <LI_SIDE onClick={()=>{ navigate('/notice')}}>
-              자주하는 질문
+            <LI_SIDE onClick={()=>{ navigate('/faq')}}>
+              자주묻는질문
             </LI_SIDE>
 
           </UL_SIDE>
