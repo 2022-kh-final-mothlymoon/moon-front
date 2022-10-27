@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { jsonBoardList } from '../../_service/dbLogic';
 import { Button, Table } from 'react-bootstrap';
-import BoardRow from './BoardRow';
+import { Link, useNavigate } from 'react-router-dom';
+import { jsonBoardList } from '../../_service/dbLogic';
+import MemberBoardRow from './MemberBoardRow';
 
-/*
-  [[[[[[[[[[ 전체 게시글 조회 ]]]]]]]]]]
-  
-  조건1. 관리자 페이지 내 게시판 관리 카테고리의 메인화면
-  조건2. 콤보박스로 전체게시글(default) / 자유게시판 / Q&A 선택하여 
-        해당 카테고리(board_category)와 일치하는 데이터 출력
-  조건3. 조건 검색창 
-  조건4. 제목을 클릭하면 게시글 번호(board_no)와 일치하는 게시글 상세 페이지로 이동 (BoardDetail.jsp)
-*/
-
-const BoardList = () => {
+// 홈페이지 게시판
+// 조건1. 회원일 경우에만 사용 가능
+// if(로그인 세션 유지 상테일 때) { 글쓰기 가능 }
+  // 게시글 전체 조회, 게시글 상세 조회, 게시글 작성, 게시글 수정, 게시글 삭제
+  // 카테고리 구분하기 (자유게시판 / Q&A)
+  // 게시글 상세 조회 내의 댓글 전체 조회, 댓글 작성
+const MemberBoardList = (props) => {
+  const navigate = useNavigate();
   const [boardList, setBoardList] = useState([]);
   useEffect(() => {
     const boardListDB = async() => {
@@ -27,14 +25,20 @@ const BoardList = () => {
     boardListDB();
   }, []);
 
-  // rendering
+  // 글쓰기 버튼
+  const insertBtn = () => {
+    console.log("글쓰기 버튼 클릭");
+    navigate("/member/board/boardInsert");
+  }
+
+  // RENDER
   return (
     <>
       <div className="container">
         <div>
           <h2>
-            게시판 관리 (Moon Story)&nbsp;<i className="fa-solid fa-angles-right"></i>&nbsp;
-            <small>전체 글 목록</small>
+            Moon Story &nbsp;<i className="fa-solid fa-angles-right"></i>&nbsp;
+            <small>전체 글</small>
           </h2>
           <hr />
         </div>
@@ -59,6 +63,11 @@ const BoardList = () => {
               검색
             </Button>
           </div>
+          <div className="col-3">
+            <Button variant="info" onClick={insertBtn}>
+              글쓰기
+            </Button>
+          </div>
         </div>
 
         <div>
@@ -71,13 +80,12 @@ const BoardList = () => {
                 <th>작성자</th>
                 <th>작성일</th>
                 <th>조회수</th>
-                <th>블라인드</th>
               </tr> 
             </thead>
             <tbody>
               {
                 boardList.map((board, i) => (
-                  <BoardRow key={i} board={board} /> // 한 건의 데이터를 불러오기 (BoardRow가 한 건을 보여준다.)
+                  <MemberBoardRow key={i} board={board} /> // 한 건의 데이터를 불러오기 (BoardRow가 한 건을 보여준다.)
                 ))
               }
             </tbody>
@@ -88,4 +96,4 @@ const BoardList = () => {
   );
 }
 
-export default BoardList;
+export default MemberBoardList;
