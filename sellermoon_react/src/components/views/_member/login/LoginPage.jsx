@@ -8,18 +8,20 @@ const LoginPage = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // 아이디(이메일) 담기
   const handleInputId = (e) => {
     setEmail(e.target.value);
     console.log(e.target.value);
   };
-
+  // 비밀번호 담기
   const handleInputPw = (e) => {
     setPassword(e.target.value);
     console.log(e.target.value);
   };
+  // 로그인
   const memLogin = () => {
     axios
-      .post("http://localhost:9005/monthlymoon/login", null, {
+      .post(process.env.REACT_APP_SPRING_IP + "monthlymoon/login", null, {
         params: { member_email: email, member_password: password },
       })
       .then((res) => {
@@ -34,9 +36,9 @@ const LoginPage = (props) => {
           res.data.member_password !== password
         ) {
           console.log("로그인 성공");
-          sessionStorage.setItem("user_id", email);
-          sessionStorage.setItem("user_name", res.data.member_name);
-          navigate("/monthlymoon/register");
+          sessionStorage.setItem("user_id", email); // 세션에 회원 이메일 저장 브라우저 닫기 전까지 유지
+          sessionStorage.setItem("user_name", res.data.member_name); // 세션에 회원 이름 저장
+          navigate("/register");
           // 로그인을 실패하면 스프링에서 입력한 값만 vo에 담아 보내기때문에
           // member_no의 값은 0이 출력됨 -> 로그인을 실패한 걸 알 수 있음
         } else if (res.data.member_no === 0) {
@@ -45,6 +47,16 @@ const LoginPage = (props) => {
       })
       .catch();
   };
+
+  // 이메일 찾기 버튼
+  const findEmail = () => {
+    navigate("/findemail");
+  };
+
+  const findPass = () => {
+    navigate("/findpass");
+  };
+
   return (
     <>
       <h1>로그인 페이지</h1>
@@ -60,7 +72,6 @@ const LoginPage = (props) => {
             onChange={handleInputId}
           />
         </Form.Group>
-
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
@@ -71,8 +82,16 @@ const LoginPage = (props) => {
             onChange={handleInputPw}
           />
         </Form.Group>
-        <Button variant="primary" onClick={memLogin}>
-          Submit
+        <Button variant="secondary" onClick={memLogin}>
+          로그인
+        </Button>
+        &nbsp;&nbsp;
+        <Button variant="warning" onClick={findEmail}>
+          아이디 찾기
+        </Button>
+        &nbsp;&nbsp;
+        <Button variant="warning" onClick={findPass}>
+          비밀번호 찾기
         </Button>
       </Form>
     </>

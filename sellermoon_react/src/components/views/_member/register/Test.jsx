@@ -1,27 +1,17 @@
 import React from "react";
-import DaumPostcodeEmbed from "react-daum-postcode";
+import { REDIRECT_URL, REST_API_KEY } from "../../../service/kakaologin";
 
 const Test = (props) => {
-  const handleComplete = (data) => {
-    let fullAddress = data.address;
-    let extraAddress = "";
-
-    if (data.addressType === "R") {
-      if (data.bname !== "") {
-        extraAddress += data.bname;
-      }
-      if (data.buildingName !== "") {
-        extraAddress +=
-          extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
-      }
-      fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
-    }
-    console.log(data);
-    console.log(data.zonecode);
-    console.log(fullAddress); // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URL}&response_type=code`;
+  const resCode = () => {
+    window.location.href = KAKAO_AUTH_URL;
   };
-
-  return <DaumPostcodeEmbed onComplete={handleComplete} {...props} />;
+  return (
+    <div>
+      <h1>인가코드 받기</h1>
+      <button onClick={resCode}>인가코드받기</button>
+    </div>
+  );
 };
 
 export default Test;

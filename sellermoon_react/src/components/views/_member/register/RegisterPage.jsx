@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import DaumPostcodeEmbed from "react-daum-postcode";
+import axios from "axios";
 
 const RegisterPage = (props) => {
   const registerM = () => {
     document.querySelector("#f_register").action =
-      "http://localhost:9005/monthlymoon/register";
+      process.env.REACT_APP_SPRING_IP + "monthlymoon/register";
     document.querySelector("#f_register").submit();
   };
-
+  const [email, setEmail] = useState("");
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -50,11 +51,34 @@ const RegisterPage = (props) => {
     setAddress(e.target.value);
   };
 
+  const eCheck = (e) => {
+    console.log(e.target.value);
+    setEmail(e.target.value);
+  };
+
+  const emailChk = (e) => {
+    console.log("이메일 중복체크");
+    axios
+      .post(process.env.REACT_APP_SPRING_IP + "monthlymoon/emailcheck", null, {
+        params: { member_email: email },
+      })
+      .then((result) => {
+        console.log(result);
+        if (result.data === 1) {
+          alert("중복된 이메일 입니다.");
+          return () => {};
+        } else {
+          alert("가입 가능한 이메일입니다.");
+        }
+      })
+      .catch((err) => {});
+  };
+
   return (
     <>
       <h1>회원가입 페이지</h1>
       <Button variant="dark" type="submit">
-        <Link to="/monthlymoon/login">로그인</Link>
+        <Link to="/login">로그인</Link>
       </Button>
       <hr />
       <Form id="f_register" method="post">
@@ -63,8 +87,11 @@ const RegisterPage = (props) => {
           <Form.Control
             type="email"
             name="member_email"
+            value={email}
+            onChange={eCheck}
             placeholder="Enter email"
           />
+          <Button onClick={emailChk}>이메일 중복검사</Button>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
