@@ -3,16 +3,13 @@ import { Button } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { boardDelete, jsonBoardList } from '../../_service/dbLogic';
 
-// 게시글 상세조회
-// if(로그인 세션 유지 상태일 때) { 상세 조회 가능.. . } ==> authLogin import
-// if(member_no == member_no) { 게시글 수정, 게시글 삭제 }
-// 해당하는 글 번호의 댓글 전체 조회 (댓글 갯수 확인하기)
-// 댓글 입력 폼
+/* 
+  <<<<< 회원 게시판 상세 조회 >>>>>
+*/
 const BoardDetail = () => {
-  // 경로 이동 함수 선언
-  const navigate = useNavigate(0);
+  const navigate = useNavigate(); // 페이지 이동 시 필요한 객체 선언
   const { board_no } = useParams();
-  // oracle 테이블 tb_community의 컬럼 초기화
+  // 데이터 초기화
   const [ boardVO, setBoardVO] = useState({
     BOARD_NO: 0,
     BOARD_CATEGORY: "",
@@ -25,48 +22,67 @@ const BoardDetail = () => {
     BOARD_DISLIKE: 0,
   });
 
+  // 데이터 가져오기
   useEffect(() => {
-    // oracle 경유
     const boardDetailDB = async() => {
-      console.log("boardDetailDB 호출 성공")
-      const res = await jsonBoardList({ board_no: board_no });
-      console.log(res.data);
+      console.log("[회원] : boardDetailDB 호출 성공")
+            // spring - jsonBoardList 데이터 읽기
+      const result = await jsonBoardList({ board_no: board_no });
+      console.log(result);
+      // console.log(result.data);
       // console.log(res.data[0].BOARD_TITLE);
-      setBoardVO(res.data[0]); // 데이터 초기화
+      setBoardVO(result.data[0]); // 한 건을 받아올 때는 [] 배열 사용
     };
     boardDetailDB();
   }, [board_no]);
 
-  // Btn 목록으로 
+  // 목록으로 버튼
   const listBtn_BoardList = () => {
     console.log("목록으로 버튼 클릭")
     navigate("/member/board/boardList");
   };
 
-  // Btn 삭제
+  // 삭제 버튼
   const delBtn = async() => {
     console.log("삭제할 글 번호 ===> " + boardVO.BOARD_NO);
+    // 삭제 시, 확인 comfirm alert
     // comfirm 창 확인하기
-    const res = await boardDelete({ board_no: board_no});
-    setBoardVO(res.data[0]);
+    if(window.confirm("삭제하시겠습니까?")) {
+      const result = await boardDelete({ board_no: board_no});
+      setBoardVO(result.data[0]);
+      navigate("/member/board/boardList");
+      alert("삭제되었습니다.");
+    } else {
+      alert("취소되었습니다.");
+    }
   };
 
-  /********* RENDER **********/
+  // ********** RENDER **********
   return (
     <>
       <div className='container'>
-        <h2>
-          게시판 관리 (Moon Story)&nbsp;<i className="fa-solid fa-angles-right"></i>&nbsp;
-          <small>상세 조회</small>
-        </h2>
-        <hr />
+        {/******************** 게시판 안내 시작 ********************/}
+        <div>
+          <h2>
+            Moon Story
+          </h2>
+          <hr />
+        </div>
+        {/******************** 게시판 안내 종료 ********************/}
 
+
+
+        {/******************** 목록으로 버튼 및 삭제 버튼 시작 ********************/}
         <div>
           <Button variant="primary" onClick={listBtn_BoardList}>목록으로</Button>
           {/* 로그인한 회원과 작성자 번호가 일치하면 삭제 가능 */}
           <Button variant="danger" onClick={delBtn}>삭제</Button>
         </div>
+        {/******************** 목록으로 버튼 및 삭제 버튼 종료 ********************/}
 
+
+
+        {/******************** 선택한 글 상세 보기 시작 ********************/}
         <div className="container">
           <div className="form-group">
             <label>글번호</label>
@@ -105,6 +121,8 @@ const BoardDetail = () => {
             <p>{ boardVO.BOARD_DISLIKE }</p>
           </div>
         </div>
+        {/******************** 선택한 글 상세 보기 종료 ********************/}
+      
       </div>
     </>
   );

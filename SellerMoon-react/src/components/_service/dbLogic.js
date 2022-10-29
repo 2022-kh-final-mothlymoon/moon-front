@@ -43,17 +43,17 @@ export const boardDelete = (params) => {
 // <<<<<<<<<< 관리자 DB 시작 >>>>>>>>>>
 
 // 게시글 수정 (블라인드 처리)
-export const boardUpdate = (params) => {
+export const boardUpdateAdmin = (params) => {
   return new Promise((resolve, reject) => {
     try {
-      const bBlind = axios({
-        method: "get",
-        url: process.env.REACT_APP_SPRING_IP + "admin/board/boardUpdate",
+      const bUpdateAdmin = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "admin/board/boardDetail",
         params: params
       })
-      resolve(bBlind);
+      resolve(bUpdateAdmin);
     } catch (error) {
-        reject("error =====> " + error);
+      reject("error =====> " + error);
     }
   })
 }
@@ -64,5 +64,36 @@ export const boardUpdate = (params) => {
 
 // <<<<<<<<<< 회원 DB 시작 >>>>>>>>>>
 
+// 게시글 입력
+export const boardInsertMember = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const bInsertMember = axios({
+        method: "get",
+        url: process.env.REACT_APP_SPRING_IP + "member/board/boardInsert",
+        params: params
+      })
+      resolve(bInsertMember);
+    } catch (error) {
+      reject("error =====>" + error);
+    }
+  })
+}
+
+// 게시글 수정
+export const boardUpdateMember = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const bUpdateMember = axios({
+        method: "get",
+        url: process.env.REACT_APP_SPRING_IP + "member/board/boardUpdate",
+        params: params
+      })
+      resolve(bUpdateMember);
+    } catch (error) {
+      reject("error =====> " + error);
+    }
+  })
+}
 
 // <<<<<<<<<< 회원 DB 끝 >>>>>>>>>>

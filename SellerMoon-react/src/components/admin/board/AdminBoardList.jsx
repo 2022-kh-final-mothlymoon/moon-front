@@ -4,41 +4,47 @@ import { Button, Table } from 'react-bootstrap';
 import BoardRow from './AdminBoardRow';
 
 /*
-  [[[[[[[[[[ 전체 게시글 조회 ]]]]]]]]]]
-  
-  조건1. 관리자 페이지 내 게시판 관리 카테고리의 메인화면
-  조건2. 콤보박스로 전체게시글(default) / 자유게시판 / Q&A 선택하여 
-        해당 카테고리(board_category)와 일치하는 데이터 출력
-  조건3. 조건 검색창 
-  조건4. 제목을 클릭하면 게시글 번호(board_no)와 일치하는 게시글 상세 페이지로 이동 (BoardDetail.jsp)
+  <<<<< 관리자 게시판 전체 조회 >>>>>
 */
-
 const AdminBoardList = () => {
   const [boardList, setBoardList] = useState([]);
+  // 데이터 가져오기
   useEffect(() => {
     const boardListDB = async() => {
-      console.log("boardListDB 호출 성공");
+      console.log("[관리자] boardListDB 호출 성공");
+      // spring - jsonBoardList 데이터 읽기
       const result = await jsonBoardList();
       console.log(result);
-      console.log(result.data);
-      console.log(result.data[1].MEMBER_NAME);
+      // console.log(result.data);
+      // console.log(result.data[1].MEMBER_NAME);
       setBoardList(result.data);
     }
     boardListDB();
   }, []);
 
-  // RENDER
+  // ********** RENDER **********
   return (
     <>
       <div className="container">
+        {/******************** 게사판 안내 시작 ********************/}
         <div>
           <h2>
             게시판 관리 (Moon Story)&nbsp;<i className="fa-solid fa-angles-right"></i>&nbsp;
-            <small>전체 글 목록</small>
           </h2>
+
+          {/******************** 카테고리 시작  ********************/}
+          <div>
+            카테고리 나눠야할 부분 입니당
+          </div>
+          {/******************** 카테고리 종료  ********************/}
+
           <hr />
         </div>
+        {/******************** 게사판 안내 종료 ********************/}
 
+
+
+        {/******************** 조건 검색 시작  ********************/}
         <div className="row">
           <div className="col-3">
             <select aria-label="분류선택">
@@ -60,29 +66,34 @@ const AdminBoardList = () => {
             </Button>
           </div>
         </div>
+         {/******************** 조건 검색 종료  ********************/}
 
-        <div>
-          <Table>
-            <thead>
-              <tr>
-                <th>글번호</th>
-                <th>카테고리</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일</th>
-                <th>조회수</th>
-                <th>블라인드</th>
-              </tr> 
-            </thead>
-            <tbody>
-              {
-                boardList.map((board, i) => (
-                  <BoardRow key={i} board={board} /> // 한 건의 데이터를 불러오기 (BoardRow가 한 건을 보여준다.)
-                ))
-              }
-            </tbody>
-          </Table>
-        </div>
+
+
+        {/******************** 게시글 리스트 테이블 시작  ********************/}
+        <Table>
+          <thead>
+            <tr>
+              <th>글번호</th>
+              <th>카테고리</th>
+              <th>제목</th>
+              <th>작성자</th>
+              <th>작성일</th>
+              <th>조회수</th>
+              <th>블라인드</th>
+            </tr> 
+          </thead>
+          <tbody>
+            {
+              boardList.map((board, i) => (
+                // 한 건의 데이터를 불러오기 (BoardRow가 한 건을 보여준다.)
+                <BoardRow key={i} board={board} /> 
+              ))
+            }
+          </tbody>
+        </Table>
+        {/******************** 게시글 리스트 테이블 종료 ********************/}
+
       </div>
     </>
   );

@@ -1,19 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-// 한 건의 데이터 렌더 (전체조회 시)
-// 제목 클릭 시 해당 글 상세보기로 이동
+/* 
+  <<<<< 회원 게시판 Row (BoardList에 보여질 리스트 한 건) >>>>>
+*/
 const BoardRow = (props) => {
+  const blindYN = (event) => {
+    if(props.board.BOARD_BLIND == "Y") {
+      console.log("해당 게시글은 관리자에 의해 숨김 처리 되었습니다.");
+      alert("해당 게시글은 관리자에 의해 숨김 처리 되었습니다.")
+      event.preventDefault(); // 페이지는 넘어가지 않지만 url에 글번호를 입력하면 넘어가게 된다.
+    }
+  };
 
-  // RENDER
+  
+  // ********** RENDER **********
   return (
+    // AdminBaordList의 Table >> tbody 안의 반복되는 tr
     <tr>
       <td>{ props.board.BOARD_NO }</td>
       <td>{ props.board.BOARD_CATEGORY }</td>
       <td>
         <Link 
           to={ "/member/board/boardDetail/" + props.board.BOARD_NO }
-          className="btn btn-primary"
+          onClick={ blindYN }
         >
           { props.board.BOARD_TITLE }
         </Link>

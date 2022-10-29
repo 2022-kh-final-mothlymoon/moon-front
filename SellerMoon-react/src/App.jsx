@@ -5,7 +5,7 @@ import AdminBoardDetail from "./components/admin/board/AdminBoardDetail";
 import AdminBoardList from "./components/admin/board/AdminBoardList";
 import MemberBoardList from "./components/member/board/MemberBoardList";
 import MemberBoardDetail from "./components/member/board/MemberBoardDetail";
-import MemberBoardInsert from "./components/member/board/MemberBoardInsert";
+import MemberBoardForm from "./components/member/board/MemberBoardForm";
 
 // 화면 구성 router 추가하기 (http://localhost:3000/ + )
 const App = () => {
@@ -36,9 +36,9 @@ const App = () => {
           element={<MemberBoardDetail />}
         />
         <Route
-          path="/member/board/boardInsert"
+          path="/member/board/boardForm"
           exact={true}
-          element={<MemberBoardInsert />}
+          element={<MemberBoardForm />}
         />
       </Routes>
     </>

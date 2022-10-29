@@ -1,24 +1,15 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Form, Table } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import { boardBlind, boardDelete, jsonBoardList } from '../../_service/dbLogic';
+import { boardDelete, jsonBoardList } from '../../_service/dbLogic';
 
-/*
-  [[[[[[[[[[ 전체 게시글 상세 조회 ]]]]]]]]]]
-  
-  조건1. 게시글 전체 조회(BoardList.jsx)에서 선택한 값 모든 컬럼 조회 가능
-  조건2. 관리자는 게시글 삭제 가능
-    조건2-1. 게시글 삭제 조건 :  신고 10회 이상일 때 삭제 가능
-    조건2-2. 관리자가 해당 글을 삭제하면 '관리자에 의해 삭제된 게시글입니다.' 해당 td에 출력
-    조건2-3. 삭제된 게시글 보관 가능 (협의할 것)
+/* 
+  <<<<< 관리자 게시판 상세 조회 >>>>>
 */
-
-const AdminBoardDetail = () => {
-  // 경로 이동 합수 선언 
-  const navigate = useNavigate();
+const AdminBoardDetail = (props) => {
+  const navigate = useNavigate(); // 페이지 이동 시 필요한 객체 선언
   const { board_no } = useParams();
-    // oracle 테이블 tb_community의 컬럼 초기화
+  // 데이터 초기화
   const [ boardVO, setBoardVO] = useState({
     BOARD_NO: 0,
     BOARD_CATEGORY: "",
@@ -33,31 +24,33 @@ const AdminBoardDetail = () => {
     BOARD_REPORT_COUNT: 0,
   });
 
-  // oracle에서 값 가져오기
+  // 데이터 가져오기
   useEffect(() => {
-    // oracle 경유
     const boardDetailDB = async() => {
-      console.log("boardDetailDB 호출 성공")
-      const res = await jsonBoardList({ board_no: board_no });
-      console.log(res.data);
+      console.log("[관리자] : boardDetailDB 호출 성공")
+      // spring - jsonBoardList 데이터 읽기
+      const result = await jsonBoardList({ board_no: board_no });
+      console.log(result);
+      // console.log(result.data);
       // console.log(res.data[0].BOARD_TITLE);
-      setBoardVO(res.data[0]); // 데이터 초기화
+      setBoardVO(result.data[0]); // 한 건을 받아올 때는 [] 배열 사용
     };
     boardDetailDB();
   }, [board_no]);
   
-  // Btn 목록으로 
-  const listBtn_BoardList = () => {
+  // 목록으로 버튼
+  const listBtn = () => {
     console.log("목록으로 버튼 클릭")
     navigate("/admin/board/boardList");
   };
 
-  // Btn 삭제
+  // 삭제 버튼
   const delBtn = async() => {
     console.log("삭제할 글 번호 ===> " + boardVO.BOARD_NO);
+    // 삭제 시, 확인 comfirm alert
     if(window.confirm("삭제하시겠습니까?")) {
-      const res = await boardDelete({ board_no: board_no});
-      setBoardVO(res.data[0]);
+      const result = await boardDelete({ board_no: board_no });
+      setBoardVO(result.data[0]);
       navigate("/admin/board/boardList");
       alert("삭제되었습니다.");
     } else {
@@ -65,32 +58,50 @@ const AdminBoardDetail = () => {
     }
   };
 
-  // 블라인드 YN 설정된 내용 확인하기 (default N)
+  // 블라인드 상태 변경 확인하기
   const blindYn = (event) => {
-    console.log("블라인드 상태 변경 ===> " + event.target.value);
+    console.log("변경된 블라인드 상태는? ===> " + event.target.value);
   }
   
-  // 블라인드 상태 변경된 내용 저장하기
-  const blindSubmitBtn = () => {
-    // 바뀐 셀렉트 박스의 value 값을 DB에 전달해야함
-    document.querySelector("#f_boardBlindYn").submit(); // 업데이트 할 때 submit이 적용되는건지 모르겠음...
+  // 블라인드 저장 버튼
+  const blindSubmitBtn = async(event) => {
+    if(window.confirm("블라인드 상태를 변경하시겠습니까?")) {
+      document.querySelector("#board_no").value = boardVO.BOARD_NO;
+      document.querySelector("#f_blind").action = "http://localhost:9005/admin/board/boardUpdate";
+      document.querySelector("#f_blind").submit();
+      alert("블라인드 상태가 변경되었습니다.");
+      // navigate("/admin/board/boardList");
+      event.preventDefault();
+    } else {
+      alert("취소되었습니다.");
+    }
   } 
 
-  /********* RENDER **********/
+  // ********** RENDER **********
   return (
     <>
-      <div className='container'>
-        <h2>
-          게시판 관리 (Moon Story)&nbsp;<i className="fa-solid fa-angles-right"></i>&nbsp;
-          <small>상세 조회</small>
-        </h2>
-        <hr />
-
+      <div className="container">
+        {/******************** 게시판 안내 시작 ********************/}
         <div>
-          <Button variant="primary" onClick={listBtn_BoardList}>목록으로</Button>
+          <h2>
+            게시판 관리 (Moon Story)
+          </h2>
+          <hr />
+        </div>
+        {/******************** 게시판 안내 종료 ********************/}
+
+
+
+        {/******************** 목록으로 버튼 및 삭제 버튼 시작 ********************/}
+        <div>
+          <Button variant="primary" onClick={listBtn}>목록으로</Button>
           <Button variant="danger" onClick={delBtn}>삭제</Button>
         </div>
+        {/******************** 목록으로 버튼 및 삭제 버튼 종료 ********************/}
 
+
+
+        {/******************** 선택한 글 상세 보기 시작 ********************/}
         <div className="container">
           <div className="form-group">
             <label>글번호</label>
@@ -132,19 +143,30 @@ const AdminBoardDetail = () => {
             <label>신고수</label>
             <p>{ boardVO.BOARD_REPORT_COUNT }</p>
           </div>
-          <Form id="f_boardBlindYn" method="get">
+
+          {/******************** 블라인드 처리 폼 시작 ********************/}
+          <Form id="f_blind" method="get">
             <div className="form-group">
+
+              <input type="hidden" name="board_no" id="board_no" />
+
               <label>블라인드</label>
-              <select id="blindVal" onChange={blindYn} size="sm">
-                <option value="N" default>{ boardVO.BOARD_BLIND }</option>
+              <Form.Select id="board_blind" name="board_blind" onChange={blindYn} size="sm">
+                <option value="">현재 블라인드 상태 : { boardVO.BOARD_BLIND }</option>
                 <option value="Y">Y</option>
-              </select>
-              <Button variant="primary" onClick={blindSubmitBtn}>
-                변경
-              </Button>
+                <option value="N">N</option>
+              </Form.Select>
             </div>
           </Form>
+          {/******************** 블라인드 처리 폼 종료 ********************/}
+          
+          <Button type="submit" variant="primary" onClick={blindSubmitBtn}>
+            변경
+          </Button>
+
         </div>
+        {/******************** 선택한 글 상세 보기 종료 ********************/}
+
       </div>
     </>
   );
