@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Footer from '../Common/Footer';
-import Header from '../Common/Header';
-import { CONTENTS } from '../../styles/NoticeStyle';
-import SidebarMypage from '../Common/SidebarMypage';
-import Pagination from '../Common/Pagination';
-import { pointlist } from '../../service/dbLogic';
-import NavbarMypage from './../Common/NavbarMypage';
-import { propTypes } from 'react-bootstrap/esm/Image';
+import Header from './Header';
+import { CONTENTS } from './../../../styles/NoticeStyle';
+import SidebarMypage from './SidebarMypage';
+import NavbarMypage from './NavbarMypage';
+import Footer from './Footer';
+
 
 const MypageMain = () => {
 

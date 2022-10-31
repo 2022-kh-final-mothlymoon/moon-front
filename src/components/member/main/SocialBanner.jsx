@@ -1,7 +1,6 @@
 import React from 'react';
-import { BANNER_FIRST, BANNER_IMG, BANNER_P2, BANNER_SECOND } from '../../styles/MainStyle';
-import { BANNER_P } from './../../styles/MainStyle';
 import { Row, Col } from 'react-bootstrap';
+import { BANNER_FIRST, BANNER_P, BANNER_P2, BANNER_IMG, BANNER_SECOND } from '../../../styles/MainStyle';
 
 const SocialBanner = () => {
   return (

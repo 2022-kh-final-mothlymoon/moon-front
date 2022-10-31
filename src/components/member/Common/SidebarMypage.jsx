@@ -1,6 +1,6 @@
 import React from 'react';
-import { CONT_SIDE, LI_SIDE, P_SIDE, UL_SIDE } from '../../styles/NoticeStyle';
 import { useNavigate } from 'react-router-dom';
+import { CONT_SIDE, P_SIDE, UL_SIDE, LI_SIDE } from './../../../styles/NoticeStyle';
 
 const SidebarMypage = () => {
 

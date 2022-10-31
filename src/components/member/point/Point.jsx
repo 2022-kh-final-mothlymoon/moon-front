@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Footer from './../components/Common/Footer';
-import Header from './../components/Common/Header';
-import { CONTENTS } from './../styles/NoticeStyle';
-import SidebarMypage from './../components/Common/SidebarMypage';
-import Pagination from './../components/Common/Pagination';
-import { pointlist } from './../service/dbLogic';
 import PointRow from './PointRow';
-import NavbarMypage from './../components/Common/NavbarMypage';
-import { POINT_BOX, POINT_CON2, POINT_P } from '../styles/MypageStyle';
-import { POINT_LI, POINT_CON1 } from './../styles/MypageStyle';
 import PointTotal from './PointTotal';
+import Header from './../Common/Header';
+import Footer from './../Common/Footer';
+import { CONTENTS } from './../../../styles/NoticeStyle';
+import SidebarMypage from './../Common/SidebarMypage';
+import Pagination from './../Common/Pagination';
+import NavbarMypage from './../Common/NavbarMypage';
+import { POINT_P, POINT_LI } from '../../../styles/MypageStyle';
 
 const Point = ({ pointList }) => {
 

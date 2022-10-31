@@ -1,12 +1,12 @@
 import React from 'react';
 import { Button, Form, Modal, Container, Row, Col } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
-import { noticelist } from '../../service/dbLogic';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from "axios"
+import { noticelist } from './../../../service/dbLogic';
+import Pagination from './../../member/Common/Pagination';
 import NoticeRowAdmin from './NoticeRowAdmin';
-import { BROWN_BTN } from '../../styles/NoticeStyle';
-import Pagination from './../Common/Pagination';
+import { BROWN_BTN } from '../../../styles/NoticeStyle';
 
 
 

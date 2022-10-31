@@ -1,12 +1,12 @@
 import React from 'react';
-import { BROWN_BTN, CONTENTS, FILEDOWN } from '../../styles/NoticeStyle';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { noticelist } from '../../service/dbLogic';
-import { Button } from 'react-bootstrap';
-import SidebarNotice from './SidebarNotice';
+import { noticelist } from './../../../service/dbLogic';
 import Header from './../Common/Header';
+import SidebarNotice from './SidebarNotice';
 import Footer from './../Common/Footer';
+import { CONTENTS, FILEDOWN, BROWN_BTN } from './../../../styles/NoticeStyle';
+
 
 const NoticeDetail = () => {
 

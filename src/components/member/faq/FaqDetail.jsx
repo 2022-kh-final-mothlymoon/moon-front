@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { BROWN_BTN } from '../../styles/NoticeStyle';
-import Footer from './../Common/Footer';
-import SidebarNotice from './../notice/SidebarNotice';
-import { CONTENTS } from './../../styles/NoticeStyle';
-import Header from './../Common/Header';
-import { faqlist } from '../../service/dbLogic';
 import { useParams, useNavigate } from 'react-router-dom';
+import { faqlist } from '../../../service/dbLogic';
+import Header from './../Common/Header';
+import { CONTENTS, BROWN_BTN } from './../../../styles/NoticeStyle';
+import SidebarNotice from './../notice/SidebarNotice';
+import Footer from './../Common/Footer';
+
 
 const FaqDetail = () => {
 

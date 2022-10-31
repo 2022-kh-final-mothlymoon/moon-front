@@ -2,18 +2,17 @@ import { Route, Routes } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css"
 import axios from "axios"
-import Main from './components/main_member/Main';
-import Notice from './components/notice/Notice';
-import NoticeDetail from './components/notice/NoticeDetail';
-import NoticeAdmin from './components/notice/NoticeAdmin';
-import NoticeUpAdmin from './components/notice/NoticeUpAdmin';
-import Faq from './components/faq/Faq';
-import FaqDetail from './components/faq/FaqDetail';
-import FaqAdmin from "./components/faq/FaqAdmin";
-import FaqUpAdmin from './components/faq/FaqUpAdmin';
-import Point from './point/Point';
-import MypageMain from './components/mypage/MypageMain';
 import { useEffect, useState } from "react";
+import Main from './components/member/main/Main';
+import Notice from './components/member/notice/Notice';
+import NoticeDetail from './components/member/notice/NoticeDetail';
+import NoticeAdmin from './components/manager/notice/NoticeAdmin';
+import NoticeUpAdmin from './components/manager/notice/NoticeUpAdmin';
+import Faq from './components/member/faq/Faq';
+import FaqDetail from './components/member/faq/FaqDetail';
+import FaqAdmin from './components/manager/faq/FaqAdmin';
+import FaqUpAdmin from './components/manager/faq/FaqUpAdmin';
+import Point from './components/member/point/Point';
 import { pointlist } from './service/dbLogic';
 
 

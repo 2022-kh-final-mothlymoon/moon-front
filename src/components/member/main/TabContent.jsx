@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Nav } from 'react-bootstrap';
+import data from './../../../data';
+import { TABTITLE } from './../../../styles/MainStyle';
 import TabCards from './TabCards';
-import data from '../../data.js'
-import { TABTITLE } from '../../styles/MainStyle';
 
 
 const TabContent = () => {

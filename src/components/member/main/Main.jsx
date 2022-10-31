@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import EventAlert from './EventAlert';
 import Header from './../Common/Header';
-import { CONTAINER_TAB } from './../../styles/MainStyle';
-import TabContent from './TabContent';
 import SliderBanner from './SliderBanner';
-import Footer from './../Common/Footer';
+import { CONTAINER_TAB } from './../../../styles/MainStyle';
+import TabContent from './TabContent';
 import SocialBanner from './SocialBanner';
+import Footer from './../Common/Footer';
 
 
 const Main = () => {

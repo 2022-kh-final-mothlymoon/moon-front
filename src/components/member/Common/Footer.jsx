@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navbar, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import KakaoMap from '../main_member/KakaoMap';
+import KakaoMap from './../main/KakaoMap';
 
 const Footer = () => {
 

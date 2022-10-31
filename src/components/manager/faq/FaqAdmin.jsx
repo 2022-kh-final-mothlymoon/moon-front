@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { faqlist } from '../../service/dbLogic';
 import { useNavigate } from 'react-router-dom';
 import { Row, Col, Button, Modal, Container, Form, Nav, Dropdown } from 'react-bootstrap';
-import { BROWN_BTN } from '../../styles/NoticeStyle';
 import axios from "axios"
-import Pagination from './../Common/Pagination';
+import { faqlist } from '../../../service/dbLogic';
+import { TABTITLE } from './../../../styles/MainStyle';
 import FaqRowAdmin from './FaqRowAdmin';
-import { TABTITLE } from './../../styles/MainStyle';
+import Pagination from './../../member/Common/Pagination';
+import { BROWN_BTN } from '../../../styles/NoticeStyle';
+
+
 
 const FaqAdmin = () => {
   let navigate = useNavigate();

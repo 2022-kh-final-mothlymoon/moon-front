@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../Common/Header';
-import Footer from '../Common/Footer';
-import { CONTENTS } from '../../styles/NoticeStyle';
-import SidebarNotice from '../notice/SidebarNotice';
-import { faqlist } from '../../service/dbLogic';
 import { Nav } from 'react-bootstrap';
-import { TABTITLE } from './../../styles/MainStyle';
-import Pagination from './../Common/Pagination';
+import { faqlist } from '../../../service/dbLogic';
+import Header from './../Common/Header';
+import { CONTENTS } from './../../../styles/NoticeStyle';
+import SidebarNotice from './../notice/SidebarNotice';
+import { TABTITLE } from './../../../styles/MainStyle';
 import FaqRow from './FaqRow';
+import Pagination from './../Common/Pagination';
+import Footer from './../Common/Footer';
 
 const Faq = () => {
 

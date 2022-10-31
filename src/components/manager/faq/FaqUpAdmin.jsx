@@ -1,44 +1,37 @@
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { BROWN_BTN, FILEDOWN } from '../../styles/NoticeStyle';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from "axios"
-import Swal from 'sweetalert2'
-import { noticelist } from './../../service/dbLogic';
+import { BROWN_BTN } from '../../../styles/NoticeStyle';
+import { faqlist } from '../../../service/dbLogic';
 
-const NoticeUpAdmin = () => {
 
+
+const FaqUpAdmin = () => {
   let navigate = useNavigate();
 
-  const {notice_no} = useParams();
+  const {faq_no} = useParams();
 
-  const fileDown = () => {
-    window.location.href = process.env.REACT_APP_SPRING_IP+"board/downLoad.jsp?notice_file="+noticeVO.NOTICE_FILE
-  }
-
-  const [ noticeVO, setNoticeVO ] = useState({
-    notice_no: 0,
-    notice_title: "", 
-    notice_content: "", 
-    notice_hit: 0,
-    notice_category: "", 
-    notice_regdate: "",
-    filename: "", 
-    fileurl: "",
-		notice_writer: "",
+  const [ faqVO, setFaqVO ] = useState({
+    faq_no: 0,
+    admin_id: "",
+    faq_category: "", 
+    faq_title: "", 
+    faq_content: "", 
+    faq_write_date: "",
+    faq_view_count: 0,
   })
 
   useEffect(() => {
     // 오라클 경유
     const asyncDB = async() => {
-      const res = await noticelist({notice_no:notice_no})
+      const res = await faqlist({faq_no : faq_no})
       //console.log(res);
       console.log(res.data);
       console.log(res.data[0]);
-      setNoticeVO(res.data[0])/////////////////////////// 데이터 초기화
+      setFaqVO(res.data[0])/////////////////////////// 데이터 초기화
     }
     asyncDB();
-  }, [notice_no]) 
+  }, [faq_no]) 
 
 
 
@@ -49,34 +42,34 @@ const NoticeUpAdmin = () => {
     // console.log("폼 내용 변경 발생 name : "+e.target.name);
     // console.log("폼 내용 변경 발생 value : "+e.target.value);
     e.preventDefault();
-    /* notice 배열 복제하고 n_no속성만 n_no로 덮어쓰기 */
-    setNoticeVO({
-      ...noticeVO,
-      notice_no: notice_no,
+    /* faq배열 복제하고 n_no속성만 n_no로 덮어쓰기 */
+    setFaqVO({
+      ...faqVO,
+      faq_no: faq_no,
       [e.target.name]: e.target.value,
     })
   }
 
   /* ************************************************** */
   ////////////// 글수정 //////////////////
-  const noticeUpdate = (e) => {
-    console.log(e.target.notice_no.value);
+  const faqUpdate = (e) => {
+    console.log(e.target.faq_no.value);
     e.preventDefault()
     let list = {
         // json 형태로 spring에 값을 넘김
-        notice_no: e.target.notice_no.value,
-        notice_title: e.target.notice_title.value,
-        notice_category: e.target.notice_category.value,
-        notice_content: e.target.notice_content.value,
+        faq_no: e.target.faq_no.value,
+        faq_title: e.target.faq_title.value,
+        faq_category: e.target.faq_category.value,
+        faq_content: e.target.faq_content.value,
     }
-    console.log("noticeUpdate => "+ JSON.stringify(list));
+    console.log("faqUpdate => "+ JSON.stringify(list));
 
     axios
-    .post(process.env.REACT_APP_SPRING_IP +"notice/noticeupdate", list)
+    .post(process.env.REACT_APP_SPRING_IP +"faq/faqupdate", list)
     .then((response) => {
       console.log(response);
       console.log(response.data);
-      window.location.replace("/admin/notice")
+      window.location.replace("/admin/faq")
       alert("수정되었습니다!")
     })
     .catch((error) => {
@@ -94,13 +87,13 @@ const NoticeUpAdmin = () => {
     <>
       
       <div className="container">
-        <h4>공지사항 수정</h4>
+        <h4>FAQ 수정</h4>
         
       {/* ##########################[[Form 전송 update]]########################### */}
       {/* encType="multipart/form-data" */}
-        <form id="f_board" onSubmit={noticeUpdate} >
-            <input  id="notice_no" name="notice_no" type="hidden" 
-                    defaultValue={noticeVO.NOTICE_NO} onChange={onChange} />
+        <form id="f_board" onSubmit={faqUpdate} >
+            <input  id="faq_no" name="faq_no" type="hidden" 
+                    defaultValue={faqVO.FAQ_NO} onChange={onChange} />
             <table>
               <colgroup>
                 <col style={{ width: "20%" }} />
@@ -113,40 +106,34 @@ const NoticeUpAdmin = () => {
                 <tr>
                   <th>제목</th>
                   <td colSpan={4} id="td-title">
-                    <input  id="notice_title" name="notice_title" 
+                    <input  id="faq_title" name="faq_title" 
                             type="text" style={{ width: "500px" }}
-                            defaultValue={noticeVO.NOTICE_TITLE} onChange={onChange} />
+                            defaultValue={faqVO.FAQ_TITLE} onChange={onChange} />
                     </td>
                 </tr>
                 <tr>
                   <th>작성자</th>
-                  <td colSpan={4}>{noticeVO.ADMIN_ID}</td>
+                  <td colSpan={4}>{faqVO.ADMIN_ID}</td>
                 </tr>
                 <tr>
                   <th>카테고리</th>
-                  <td>
-                    <input  id="notice_category" name="notice_category"
-                            type="text" onChange={onChange}
-                            defaultValue={noticeVO.NOTICE_CATEGORY} /> 
-                  </td>
-                  <th>첨부파일</th>
-                  <td>
-                    <FILEDOWN onClick={fileDown}>
-                      {noticeVO.NOTICE_FILE}
-                    </FILEDOWN>
+                  <td colSpan={4}>
+                    <input  id="faq_category" name="faq_category"
+                            type="text" onChange={onChange} 
+                            defaultValue={faqVO.FAQ_CATEGORY} /> 
                   </td>
                 </tr>
                 <tr>
                   <th>작성일</th>
-                  <td>{noticeVO.NOTICE_REGDATE}</td>
+                  <td>{faqVO.FAQ_WRITE_DATE}</td>
                   <th>조회수</th>
-                  <td colSpan={2}>{noticeVO.NOTICE_HIT}</td>
+                  <td colSpan={2}>{faqVO.FAQ_VIEW_COUNT}</td>
                 </tr>
                 <tr>
                   <td colSpan={5} id="td-content">
-                    <textarea id="notice_content" name="notice_content"
+                    <textarea id="faq_content" name="faq_content"
                               cols="175" rows="15" onChange={onChange}
-                              defaultValue={noticeVO.NOTICE_CONTENT} /> 
+                              defaultValue={faqVO.FAQ_CONTENT} /> 
                   </td>
                 </tr>
                 
@@ -165,9 +152,9 @@ const NoticeUpAdmin = () => {
       {/* ##########################[[Form 전송 update]]########################### */}
         
       </div>
-          
+
     </>
   );
 };
 
-export default NoticeUpAdmin;
+export default FaqUpAdmin;

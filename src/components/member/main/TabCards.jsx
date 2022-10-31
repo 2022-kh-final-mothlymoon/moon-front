@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate, Link } from 'react-router-dom';
-import { BEST, CARDIMG, CARDDIV } from './../../styles/MainStyle';
+import { CARDDIV, BEST, CARDIMG } from '../../../styles/MainStyle';
 
 const TabCards = (props) => {
 

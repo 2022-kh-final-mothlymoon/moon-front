@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { pointlist } from '../../service/dbLogic';
-import { MYLI1, MYLI2, MYSPAN, MYUL, MYP } from './../../styles/MypageStyle';
+import { MYUL, MYLI1, MYLI2, MYSPAN, MYP } from './../../../styles/MypageStyle';
 
 const NavbarMypage = ({ pointList }) => {
 
