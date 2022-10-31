@@ -9,7 +9,7 @@ export const CONTENTS = styled.div `
 
 export const CONT_SIDE = styled.div `
   float: left;
-  width: 141px;
+  width: 170px;
   margin-right: 49px;
 `
 
@@ -37,6 +37,7 @@ export const P_SIDE = styled.p `
   color: #000;
   word-break: keep-all;
   word-wrap: break-word;
+  cursor: pointer;
 `
 
 export const BTN_SEARCH = styled.button `

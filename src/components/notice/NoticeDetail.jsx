@@ -1,12 +1,12 @@
 import React from 'react';
-import Header from '../components/Common/Header';
-import { BROWN_BTN, CONTENTS, FILEDOWN } from './../styles/NoticeStyle';
-import SidebarNotice from './../components/notice/SidebarNotice';
+import { BROWN_BTN, CONTENTS, FILEDOWN } from '../../styles/NoticeStyle';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { noticelist } from './../service/dbLogic';
-import Footer from './../components/Common/Footer';
+import { noticelist } from '../../service/dbLogic';
 import { Button } from 'react-bootstrap';
+import SidebarNotice from './SidebarNotice';
+import Header from './../Common/Header';
+import Footer from './../Common/Footer';
 
 const NoticeDetail = () => {
 
@@ -31,7 +31,7 @@ const NoticeDetail = () => {
   useEffect(() => {
     // 오라클 경유
     const asyncDB = async() => {
-      const res = await noticelist({notice_no:notice_no})
+      const res = await noticelist({notice_no : notice_no}) /* notice_no = useParam */
       //console.log(res);
       console.log(res.data);
       console.log(res.data[0]);
@@ -83,7 +83,7 @@ const NoticeDetail = () => {
                   </tr>
                   <tr>
                     <th>작성일</th>
-                    <td>내용</td>
+                    <td>{noticeVO.NOTICE_REGDATE}</td>
                     <th>조회수</th>
                     <td colSpan={2}>{noticeVO.NOTICE_HIT}</td>
                   </tr>

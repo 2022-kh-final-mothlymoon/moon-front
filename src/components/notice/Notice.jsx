@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../components/Common/Header';
-import Footer from '../components/Common/Footer';
-import { BROWN_BTN, CONTENTS } from '../styles/NoticeStyle';
-import SidebarNotice from '../components/notice/SidebarNotice';
-import { noticelist } from './../service/dbLogic';
+import { BROWN_BTN, CONTENTS } from '../../styles/NoticeStyle';
+import { noticelist } from '../../service/dbLogic';
 import { Button, Form } from 'react-bootstrap';
-import NoticeRow from '../components/notice/NoticeRow';
-import Pagination from './../components/Common/Pagination';
+import Header from './../Common/Header';
+import SidebarNotice from './SidebarNotice';
+import NoticeRow from './NoticeRow';
+import Pagination from './../Common/Pagination';
+import Footer from './../Common/Footer';
 
 const Notice = () => {
 
@@ -82,7 +82,7 @@ const Notice = () => {
           <div className="col-9">
             <div className="list-wrapper">
 
-              <h4>공지사항</h4>
+              <p style={{fontSize:"1.4rem", fontWeight:"600"}}>공지사항</p>
                 <table style={{ width: "1020px" }}>
                   <colgroup>
                     <col style={{ width: "10%" }} />

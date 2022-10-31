@@ -50,7 +50,7 @@ const Header = () => {
                 </span>
               </button>
               <button className="btn position-relative"
-                      onClick={()=>{ navigate('/login') }}> {/* 로그인,회원가입 이동 */}
+                      onClick={()=>{ navigate('/mypage/point') }}> {/* Mypage,로그인,회원가입 이동 */}
                 <i className="fa-solid fa-user" id="nav-icon"></i> 
               </button>
 
@@ -88,7 +88,7 @@ const Header = () => {
 
               <NavDropdown title="Customer" id="basic-nav-dropdown" className="nav-menu">
                 <NavDropdown.Item onClick={()=>{ navigate('/notice')}}>공지사항</NavDropdown.Item>
-                <NavDropdown.Item onClick={()=>{ navigate('/')}}>FAQ</NavDropdown.Item>
+                <NavDropdown.Item onClick={()=>{ navigate('/faq')}}>FAQ</NavDropdown.Item>
               </NavDropdown>
 
             </Nav>

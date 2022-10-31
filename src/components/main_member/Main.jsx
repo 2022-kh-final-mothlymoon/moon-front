@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Footer from '../components/Common/Footer';
-import SliderBanner from '../components/main_member/SliderBanner';
-import Header from '../components/Common/Header';
-import EventAlert from '../components/main_member/EventAlert';
-import TabContent from '../components/main_member/TabContent';
-import { CONTAINER_TAB } from '../styles/MainStyle';
+import EventAlert from './EventAlert';
+import Header from './../Common/Header';
+import { CONTAINER_TAB } from './../../styles/MainStyle';
+import TabContent from './TabContent';
+import SliderBanner from './SliderBanner';
+import Footer from './../Common/Footer';
+import SocialBanner from './SocialBanner';
 
 
 const Main = () => {
@@ -36,6 +37,8 @@ const Main = () => {
         <CONTAINER_TAB>
           <TabContent />
         </CONTAINER_TAB>
+
+        <SocialBanner />
 
         <Footer />
         

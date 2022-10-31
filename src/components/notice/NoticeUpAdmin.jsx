@@ -1,10 +1,10 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { noticelist } from '../service/dbLogic';
-import { BROWN_BTN, FILEDOWN } from './../styles/NoticeStyle';
+import { BROWN_BTN, FILEDOWN } from '../../styles/NoticeStyle';
 import axios from "axios"
 import Swal from 'sweetalert2'
+import { noticelist } from './../../service/dbLogic';
 
 const NoticeUpAdmin = () => {
 
@@ -60,6 +60,7 @@ const NoticeUpAdmin = () => {
   /* ************************************************** */
   ////////////// 글수정 //////////////////
   const noticeUpdate = (e) => {
+    console.log(e.target.notice_no.value);
     e.preventDefault()
     let list = {
         // json 형태로 spring에 값을 넘김
@@ -84,6 +85,9 @@ const NoticeUpAdmin = () => {
   }
   /* ************************************************** */
 
+  const backtoPage = () => {
+    navigate(-1)
+  }
 
 
   return (
@@ -91,11 +95,7 @@ const NoticeUpAdmin = () => {
       
       <div className="container">
         <h4>공지사항 수정</h4>
-        <div className="d-flex justify-content-end">  
-          <BROWN_BTN onClick={() => navigate(-1)}>
-            전체목록
-          </BROWN_BTN>
-        </div>
+        
       {/* ##########################[[Form 전송 update]]########################### */}
       {/* encType="multipart/form-data" */}
         <form id="f_board" onSubmit={noticeUpdate} >
@@ -156,6 +156,9 @@ const NoticeUpAdmin = () => {
             <div className="d-flex justify-content-end" style={{ marginBottom:"20px" }}>
               <BROWN_BTN type="submit">
                 저장
+              </BROWN_BTN>
+              <BROWN_BTN type="button" onClick={backtoPage}>
+                전체목록
               </BROWN_BTN>
             </div>
         </form>

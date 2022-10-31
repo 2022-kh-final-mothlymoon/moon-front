@@ -1,13 +1,14 @@
 import React from 'react';
 import { Button, Form, Modal, Container, Row, Col } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
-import { noticelist } from './../service/dbLogic';
-import NoticeRowAdmin from '../components/notice/NoticeRowAdmin';
+import { noticelist } from '../../service/dbLogic';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from "axios"
-import Swal from 'sweetalert2'
-import { BROWN_BTN } from '../styles/NoticeStyle';
-import Pagination from './../components/Common/Pagination';
+import NoticeRowAdmin from './NoticeRowAdmin';
+import { BROWN_BTN } from '../../styles/NoticeStyle';
+import Pagination from './../Common/Pagination';
+
+
 
 const NoticeAdmin = () => {
 
@@ -105,10 +106,52 @@ const NoticeAdmin = () => {
     asyncDB()
   };
   /* ************************************************** */
-
+  // 새로고침
   const refresh = () => {
     window.location.reload();
   }
+
+  /* ************************************************** */
+/* 오름차 내림차 정렬 관련 */
+const [sortBtn, setSortBtn] = useState(0); // 0일때와 1일때 버튼명 변경
+const [title, setTitle] = useState("제목 ▼") // 버튼명 저장
+const [hitCount, setHitCount] = useState("조회수 ▼") // 버튼명 저장
+
+const sortTitle = () => {
+    let sorting1 = [...noticeList]
+    if(sortBtn === 0) {
+      setTitle("제목 ▲");
+        setNoticeList(
+          sorting1.sort((a, b) => 
+          a.NOTICE_TITLE.toLowerCase() < b.NOTICE_TITLE.toLowerCase() ? -1 : 1)
+        )
+      setSortBtn(1); /* 버튼 상태를 1로 - 토글 */
+    } else if (sortBtn === 1) {
+      setTitle("제목 ▼");
+        //setFaqList(sorting.sort((a,b) => a.FAQ_NO < b.FAQ_NO ? -1 : 1))
+        setNoticeList(sorting1.sort((a,b) => a.NOTICE_TITLE.toLowerCase() > b.NOTICE_TITLE.toLowerCase() ? -1 : 1))
+      setSortBtn(0); /* 버튼 상태를 0으로 - 토글 */
+    } 
+  }
+
+const sortCount = () => {
+  let sorting2 = [...noticeList]
+  if(sortBtn === 0) {
+    setHitCount("조회수 ▲");
+    setNoticeList(
+        sorting2.sort((a, b) => 
+        a.NOTICE_HIT < b.NOTICE_HIT ? -1 : 1)
+      )
+    setSortBtn(1); /* 버튼 상태를 1로 - 토글 */
+  } else if (sortBtn === 1) {
+    setHitCount("조회수 ▼");
+      //setFaqList(sorting.sort((a,b) => a.FAQ_NO < b.FAQ_NO ? -1 : 1))
+      setNoticeList(
+        sorting2.sort((a,b) => a.NOTICE_HIT > b.NOTICE_HIT ? -1 : 1)
+        )
+    setSortBtn(0); /* 버튼 상태를 0으로 - 토글 */
+  } 
+}
 
 
 
@@ -123,13 +166,13 @@ const NoticeAdmin = () => {
           <Col xs={12} md={6}>
             {/* ####################[[조건 검색]]############################## */}
             <div className="d-flex justify-content-baseline" style={{ width:"90%", height:"45px"}}>
-              <select id="gubun" className="form-select" aria-label="분류" style={{ width: "40%", marginRight: "10px" }}>
+              <select id="gubun" name="gubun" className="form-select" aria-label="분류" style={{ width: "40%", marginRight: "10px" }}>
                 <option defaultValue>분류선택</option>
                 <option value="notice_no">번호</option>
                 <option value="notice_title">제목</option>
                 <option value="notice_category">카테고리</option>
               </select>
-              <input type="text" id="keyword" className="form-control" placeholder="검색어를 입력하세요" />
+              <input type="text" id="keyword" name="keyword" className="form-control" placeholder="검색어를 입력하세요" />
               <Button variant="outline-secondary" id="btn_search" style={{ marginLeft: "10px", width:"100px"}}
                       onClick={dataSearch}>
                 검색
@@ -178,11 +221,11 @@ const NoticeAdmin = () => {
               <tr>
                 <th>번호</th>
                 <th>카테고리</th>
-                <th>제목</th>
+                <th onClick={sortTitle} style={{cursor:"pointer"}}>{title}</th>
                 <th>작성자</th>
                 <th>작성일</th>
-                <th>조회수</th>
-                <th>조회수</th>
+                <th onClick={sortCount} style={{cursor:"pointer"}}>{hitCount}</th>
+                <th>수정 / 삭제</th>
               </tr>
             </thead>
 
@@ -224,13 +267,13 @@ const NoticeAdmin = () => {
                 <Form.Group className="mb-4 mt-3">
                   <Form.Label className="m_label">글제목</Form.Label>
                   <Form.Control
-                      type='text' name='notice_title' onChange={onChange}  />
+                      type='text' name='notice_title' size="lg" onChange={onChange}  />
                 </Form.Group>
                 
                 <Form.Group className="mb-4">
                   <Form.Label className="m_label">카테고리</Form.Label>
                   <Form.Control
-                      type='text' name='notice_category' onChange={onChange}  />
+                      type='text' name='notice_category' size="lg" onChange={onChange}  />
                   <Form.Text className="text-muted">
                     &nbsp;안내사항 / 이벤트 / 긴급안내 / 기쁜소식 / 출시소식
                   </Form.Text>
@@ -238,7 +281,7 @@ const NoticeAdmin = () => {
                 
                 <Form.Group className="mb-3">
                   <Form.Control
-                    className="form-control"
+                    className="form-control" size="lg"
                     type="file"
                     id="notice_file"
                     name="notice_file"

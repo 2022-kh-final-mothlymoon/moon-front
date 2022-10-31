@@ -55,7 +55,7 @@ const Button = styled.button`
   }
 
   &[disabled] {
-    background: #978c87;
+    background: #c5875d;
     cursor: revert;
     transform: revert;
   }

@@ -38,12 +38,45 @@ export const BEST = styled.span `
 `
 
 export const CARDIMG = styled.img `
-  width: 70%;
-  height: 70%;
+  max-width: 80%;
+  max-height: 80%;
 `
 
 export const TABTITLE = styled.span `
   color: rgb(51, 51, 51);
   font-weight: 600;
   font-size: 18px;
+`
+
+
+
+export const BANNER_FIRST = styled.div `
+  width: 100%;
+  background-color: #F8EEDC;
+
+`
+
+export const BANNER_SECOND = styled.div `
+  width: 100%;
+  background-color: #F6E7D7;
+`
+
+export const BANNER_IMG = styled.img `
+  width: 100%;
+  max-width: 400px;
+  margin-top: 50px;
+`
+
+export const BANNER_P = styled.p `
+  margin-top: 30px;
+  font-size: 22px;
+  line-height: 1.3;
+  font-weight: 700;
+  color: #5e514d;
+`
+
+export const BANNER_P2 = styled.p `
+font-size: 16px;
+line-height: 1.5;
+font-weight: 400;
 `

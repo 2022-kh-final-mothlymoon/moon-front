@@ -7,3 +7,9 @@ npm install slick-carousel --save
 npm i react-daum-postcode
 
 npm install sweetalert2
+
+npm i redux
+
+npm i react-redux
+
+npm install @reduxjs/toolkit react-redux

@@ -10,17 +10,24 @@ const TabCards = (props) => {
     <>
       
       <div className="col-lg-4">
-        <Link to="/">
-          <CARDDIV>
-            <BEST>best</BEST>
-            <CARDIMG src={result.img} alt="img"/>
-          </CARDDIV>
-        </Link>
-        <h5 onClick={()=>{ Navigate('/store')}}>
-          { result.title }
-        </h5>
-        <p> { result.content }</p>
-        <h5> { result.price }</h5>
+          <Link to="/">
+            <CARDDIV>
+              <BEST>best</BEST>
+              <CARDIMG src={result.img} alt="img"/>
+            </CARDDIV>
+          </Link>
+
+        <div style={{padding:"0px 10px"}}>
+          <p onClick={()=>{ Navigate('/store')}}
+              style={{ fontWeight:"700", fontSize:"21px" }}>
+            { result.title }
+          </p>
+
+          <p style={{marginBottom:"5px", padding:"0"}}> { result.content }</p>
+
+          <p style={{ fontWeight:"500", fontSize:"19px" }}> { result.price }</p>
+
+        </div>
       </div>
 
     </>

@@ -43,7 +43,7 @@ let data = [
   {
     id : 5,
     type : "popular",
-    img : "https://res.cloudinary.com/drxxdsv01/image/upload/v1666444117/A00000016062101ko_ieqega.jpg",
+    img : "https://res.cloudinary.com/drxxdsv01/image/upload/v1667124019/A00000016062101ko_wq0ump.jpg",
     title : "좋은느낌 유기농순면 대형",
     content : "내추럴코어 맥시슬림 14개입",
     price : "7,800원"
