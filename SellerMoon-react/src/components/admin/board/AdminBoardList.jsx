@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { jsonBoardList } from '../../_service/dbLogic';
 import { Button, Table } from 'react-bootstrap';
-import BoardRow from './AdminBoardRow';
+import AdminBoardRow from './AdminBoardRow';
 
 /*
   <<<<< 관리자 게시판 전체 조회 >>>>>
 */
 const AdminBoardList = () => {
   const [boardList, setBoardList] = useState([]);
-  // 데이터 가져오기
+
+  // [ R ] 데이터 가져오기 -------------------------------------- 완
   useEffect(() => {
     const boardListDB = async() => {
       console.log("[관리자] boardListDB 호출 성공");
@@ -87,7 +88,7 @@ const AdminBoardList = () => {
             {
               boardList.map((board, i) => (
                 // 한 건의 데이터를 불러오기 (BoardRow가 한 건을 보여준다.)
-                <BoardRow key={i} board={board} /> 
+                <AdminBoardRow key={i} board={board} /> 
               ))
             }
           </tbody>

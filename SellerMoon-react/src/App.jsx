@@ -1,4 +1,4 @@
-import React, { useState } from "react"; 
+import React from "react"; 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, Routes } from "react-router-dom";
 import AdminBoardDetail from "./components/admin/board/AdminBoardDetail";
@@ -6,6 +6,7 @@ import AdminBoardList from "./components/admin/board/AdminBoardList";
 import MemberBoardList from "./components/member/board/MemberBoardList";
 import MemberBoardDetail from "./components/member/board/MemberBoardDetail";
 import MemberBoardForm from "./components/member/board/MemberBoardForm";
+import MemberBoardEditForm from "./components/member/board/MemberBoardEditForm";
 
 // 화면 구성 router 추가하기 (http://localhost:3000/ + )
 const App = () => {
@@ -39,6 +40,11 @@ const App = () => {
           path="/member/board/boardForm"
           exact={true}
           element={<MemberBoardForm />}
+        />
+        <Route
+          path="/member/board/boardEditForm/:board_no"
+          exact={true}
+          element={<MemberBoardEditForm />}
         />
       </Routes>
     </>

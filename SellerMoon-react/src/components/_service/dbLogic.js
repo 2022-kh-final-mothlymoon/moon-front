@@ -20,7 +20,7 @@ export const jsonBoardList = (params) => {
   })
 };
 
-// 게시글 삭제
+// 게시글 삭제 ----------------------------------- 이걸 사용하면 axios 에러가 뜸..
 export const boardDelete = (params) => {
   return new Promise((resolve, reject) => {
     try {

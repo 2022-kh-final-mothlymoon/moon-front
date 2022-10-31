@@ -24,13 +24,13 @@ const AdminBoardDetail = (props) => {
     BOARD_REPORT_COUNT: 0,
   });
 
-  // 데이터 가져오기
+  // [R] 데이터 가져오기 --------------------------------------- 완
   useEffect(() => {
     const boardDetailDB = async() => {
       console.log("[관리자] : boardDetailDB 호출 성공")
       // spring - jsonBoardList 데이터 읽기
       const result = await jsonBoardList({ board_no: board_no });
-      console.log(result);
+      // console.log(result);
       // console.log(result.data);
       // console.log(res.data[0].BOARD_TITLE);
       setBoardVO(result.data[0]); // 한 건을 받아올 때는 [] 배열 사용
@@ -44,18 +44,24 @@ const AdminBoardDetail = (props) => {
     navigate("/admin/board/boardList");
   };
 
-  // 삭제 버튼
-  const delBtn = async() => {
+  // [D] 삭제 버튼 ---------------------------------------- 매핑오류 수정
+  const delBtn = async(props) => {
     console.log("삭제할 글 번호 ===> " + boardVO.BOARD_NO);
     // 삭제 시, 확인 comfirm alert
     if(window.confirm("삭제하시겠습니까?")) {
-      const result = await boardDelete({ board_no: board_no });
-      setBoardVO(result.data[0]);
-      navigate("/admin/board/boardList");
+      window.location.href 
+      = "http://localhost:9005/admin/board/boardDelete?board_no=" + boardVO.BOARD_NO;
       alert("삭제되었습니다.");
     } else {
       alert("취소되었습니다.");
     }
+
+    /*
+      const result = await boardDelete({ board_no: board_no});
+      setBoardVO(result.data[0]);
+      console.log("result.data ===> " + result.data);
+      navigate("/member/board/boardList");
+    */
   };
 
   // 블라인드 상태 변경 확인하기
@@ -63,15 +69,17 @@ const AdminBoardDetail = (props) => {
     console.log("변경된 블라인드 상태는? ===> " + event.target.value);
   }
   
-  // 블라인드 저장 버튼
-  const blindSubmitBtn = async(event) => {
+  // [U] 블라인드 저장 버튼 ------------------------------------------- 완
+  const blindSubmitBtn = async(props) => {
     if(window.confirm("블라인드 상태를 변경하시겠습니까?")) {
+      // // axios
+      // const result = await boardUpdateAdmin({ board_no: board_no });
+      // setBoardVO(result.data);
+
       document.querySelector("#board_no").value = boardVO.BOARD_NO;
       document.querySelector("#f_blind").action = "http://localhost:9005/admin/board/boardUpdate";
       document.querySelector("#f_blind").submit();
       alert("블라인드 상태가 변경되었습니다.");
-      // navigate("/admin/board/boardList");
-      event.preventDefault();
     } else {
       alert("취소되었습니다.");
     }

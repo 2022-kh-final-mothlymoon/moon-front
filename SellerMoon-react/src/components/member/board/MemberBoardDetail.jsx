@@ -37,24 +37,36 @@ const BoardDetail = () => {
   }, [board_no]);
 
   // 목록으로 버튼
-  const listBtn_BoardList = () => {
+  const listBtn = () => {
     console.log("목록으로 버튼 클릭")
     navigate("/member/board/boardList");
   };
 
-  // 삭제 버튼
+  // 수정 폼 이동 버튼
+  const editBtn = () => {
+    console.log("수정할 글 번호 ===> " + boardVO.BOARD_NO);
+    // 수정 버튼 누르면 해당 게시글의 모든 정보를 가지고 와야함.. 
+    navigate("/member/board/boardEditForm/" + boardVO.BOARD_NO);
+  };
+
+  // [D] 삭제 버튼 ------------------------------------------ 수정중 (매핑오류)
   const delBtn = async() => {
     console.log("삭제할 글 번호 ===> " + boardVO.BOARD_NO);
     // 삭제 시, 확인 comfirm alert
-    // comfirm 창 확인하기
     if(window.confirm("삭제하시겠습니까?")) {
-      const result = await boardDelete({ board_no: board_no});
-      setBoardVO(result.data[0]);
-      navigate("/member/board/boardList");
+      window.location.href 
+      = "http://localhost:9005/member/board/boardDelete?board_no=" + boardVO.BOARD_NO;
       alert("삭제되었습니다.");
     } else {
       alert("취소되었습니다.");
     }
+
+    // dbLogic에서 url 받아오기 ------------------------------------> 매핑오류 
+      // const result = await boardDelete({ board_no: board_no});
+      // setBoardVO(result.data[0]);
+      // console.log("result.data ===> " + result.data);
+      // navigate("/member/board/boardList");
+    
   };
 
   // ********** RENDER **********
@@ -74,8 +86,9 @@ const BoardDetail = () => {
 
         {/******************** 목록으로 버튼 및 삭제 버튼 시작 ********************/}
         <div>
-          <Button variant="primary" onClick={listBtn_BoardList}>목록으로</Button>
-          {/* 로그인한 회원과 작성자 번호가 일치하면 삭제 가능 */}
+          <Button variant="primary" onClick={listBtn}>목록으로</Button>
+          {/* 로그인한 회원과 작성자 번호가 일치하면 삭제 / 업데이트 가능 */}
+          <Button variant="success" onClick={editBtn}>수정</Button>
           <Button variant="danger" onClick={delBtn}>삭제</Button>
         </div>
         {/******************** 목록으로 버튼 및 삭제 버튼 종료 ********************/}
@@ -102,7 +115,7 @@ const BoardDetail = () => {
           </div>
           <div className="form-group">
             <label>작성자</label>
-            <p>{ boardVO.BOARD_NO }</p>
+            <p>{ boardVO.MEMBER_NAME }</p>
           </div>
           <div className="form-group">
             <label>작성일</label>
