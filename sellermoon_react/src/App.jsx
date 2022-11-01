@@ -81,7 +81,7 @@ function App() {
             !isLogin ? (
               <FindEmail isLogin={isLogin} logout={logout} />
             ) : (
-              <Navigate to="/login" />
+              <Navigate to="/" />
             )
           }
         />
@@ -92,7 +92,7 @@ function App() {
             !isLogin ? (
               <FindPass isLogin={isLogin} logout={logout} />
             ) : (
-              <Navigate to="/login" />
+              <Navigate to="/" />
             )
           }
         />
