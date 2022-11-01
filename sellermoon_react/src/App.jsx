@@ -78,7 +78,7 @@ function App() {
           path="/findemail"
           exact={true}
           element={
-            isLogin ? (
+            !isLogin ? (
               <FindEmail isLogin={isLogin} logout={logout} />
             ) : (
               <Navigate to="/login" />
@@ -89,7 +89,7 @@ function App() {
           path="/findpass"
           exact={true}
           element={
-            isLogin ? (
+            !isLogin ? (
               <FindPass isLogin={isLogin} logout={logout} />
             ) : (
               <Navigate to="/login" />
