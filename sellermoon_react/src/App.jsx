@@ -19,9 +19,12 @@ import FaqUpAdmin from "./components/manager/faq/FaqUpAdmin";
 import AdminLogin from "./components/manager/login/AdminLogin";
 import { useState } from "react";
 import { useEffect } from "react";
+import MemAdmin from "./components/manager/member/MemAdmin";
+import MemAdminDetail from "./components/manager/member/MemAdminDetail";
 
 function App() {
   let [no, setNo] = useState(0); // 회원 번호 담기 props로 넘겨주기 위함
+  let [adminId, setAdminId] = useState(""); // 관리자 id담기 props로 넘겨주기 위함
   const [isLogin, setIsLogin] = useState(false); // 로그인 상태 관리
   const [isAdmin, setIsAdmin] = useState(false); // 관리자 권한 관리
   useEffect(() => {
@@ -155,7 +158,13 @@ function App() {
         {/* 관리자 페이지 영역 */}
         <Route
           path="/admin/login"
-          element={<AdminLogin isLogin={isLogin} isAdmin={isAdmin} />}
+          element={
+            !isAdmin ? (
+              <AdminLogin isLogin={isLogin} isAdmin={isAdmin} />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
           exact={true}
         />
         <Route
@@ -175,7 +184,24 @@ function App() {
         />
         <Route
           path="/admin/faq/update/:faq_no"
-          element={<FaqUpAdmin isLogin={isLogin} isAdmin={isAdmin} />}
+          element={<FaqUpAdmin isLogin={isLogin} isManage={isAdmin} />}
+          exact={true}
+        />
+        <Route
+          path="/admin/member"
+          element={
+            isAdmin &&
+            (isAdmin ? (
+              <MemAdmin isLogin={isLogin} isAdmin={isAdmin} />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
+          }
+          exact={true}
+        />
+        <Route
+          path="/admin/member/:member_no"
+          element={<MemAdminDetail isLogin={isLogin} isAdmin={isAdmin} />}
           exact={true}
         />
       </Routes>

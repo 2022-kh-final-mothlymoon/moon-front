@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { loginMember } from "../../../service/dbLogic";
+import Header from "../Common/Header";
+import Footer from "../Common/Footer";
 
 const LoginPage = ({ no, isLogin }) => {
   let navigate = useNavigate();
@@ -61,6 +63,7 @@ const LoginPage = ({ no, isLogin }) => {
 
   return (
     <>
+      <Header />
       <h1>로그인 페이지</h1>
       <hr />
       <Form>
@@ -97,6 +100,7 @@ const LoginPage = ({ no, isLogin }) => {
         </Button>
       </Form>
       <Link to="/register">회원가입하기</Link>
+      <Footer />
     </>
   );
 };

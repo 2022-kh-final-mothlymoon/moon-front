@@ -8,7 +8,7 @@ import Pagination from "./../../member/Common/Pagination";
 import NoticeRowAdmin from "./NoticeRowAdmin";
 import { BROWN_BTN } from "../../../styles/NoticeStyle";
 
-const NoticeAdmin = ({ isLogin, isAdmin }) => {
+const NoticeAdmin = ({ isLogin, isManage }) => {
   let navigate = useNavigate();
 
   const [noticeList, setNoticeList] = useState([]);

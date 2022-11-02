@@ -30,6 +30,7 @@ const AdminLogin = ({ isLogin, isAdmin }) => {
       if (res.data.admin_id === id && res.data.admin_pw !== password) {
         console.log("로그인 성공");
         sessionStorage.setItem("admin", id);
+        sessionStorage.setItem("level", 5);
         navigate("/");
         window.location.reload();
       } else if (res.data.member_no === 0) {
