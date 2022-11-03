@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { loginMember } from "../../../service/dbLogic";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
+import { KAKAO_AUTH_URL } from "../../../service/kakaologin";
 
 const LoginPage = ({ no, isLogin }) => {
   let navigate = useNavigate();
@@ -99,6 +100,10 @@ const LoginPage = ({ no, isLogin }) => {
           비밀번호 찾기
         </Button>
       </Form>
+      <br />
+      <div className="KaKaoBtn">
+        <a href={KAKAO_AUTH_URL}>카카오로 시작하기</a>
+      </div>
       <Link to="/register">회원가입하기</Link>
       <Footer />
     </>

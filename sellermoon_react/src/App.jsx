@@ -21,6 +21,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import MemAdmin from "./components/manager/member/MemAdmin";
 import MemAdminDetail from "./components/manager/member/MemAdminDetail";
+import KakaoLogin from "./components/member/login/KakaoLogin";
 
 function App() {
   let [no, setNo] = useState(0); // 회원 번호 담기 props로 넘겨주기 위함
@@ -35,7 +36,10 @@ function App() {
   }, [no]);
 
   useEffect(() => {
-    if (sessionStorage.getItem("user_no") !== null) {
+    if (
+      (sessionStorage.getItem("user_no") ||
+        sessionStorage.getItem("kakao_token")) !== null
+    ) {
       console.log("isLogin ===> ", isLogin);
       setIsLogin(true);
     } else if (sessionStorage.getItem("admin") !== null) {
@@ -65,6 +69,11 @@ function App() {
           element={
             <Main isAdmin={isAdmin} isLogin={isLogin} logout={logout} no={no} />
           }
+        />
+        <Route
+          path="/kakaologin"
+          exact={true}
+          element={!isLogin ? <KakaoLogin /> : <Navigate to="/" />}
         />
         <Route
           path="/login"
