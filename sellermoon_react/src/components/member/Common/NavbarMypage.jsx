@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { MYUL, MYLI1, MYLI2, MYSPAN, MYP } from './../../../styles/MypageStyle';
 
-const NavbarMypage = ({ pointList }) => {
+const NavbarMypage = (props) => {
 
+  let result = props.point;
 
   return (
     <>
@@ -28,7 +29,7 @@ const NavbarMypage = ({ pointList }) => {
             적립금 
             <i className="fa-solid fa-angle-right"></i>
           </MYSPAN>
-          <MYP> {pointList[0].POINT_SUM}  P</MYP>
+          <MYP>{result.POINT_SUM.toLocaleString()} P</MYP>
         </MYLI2>
       </MYUL>
     </>

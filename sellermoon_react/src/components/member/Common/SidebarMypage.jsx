@@ -1,17 +1,24 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CONT_SIDE, P_SIDE, UL_SIDE, LI_SIDE } from './../../../styles/NoticeStyle';
+import { CONT_SIDE, P_SIDE, UL_SIDE, LI_SIDE, LI_NAME } from './../../../styles/NoticeStyle';
 
 const SidebarMypage = () => {
 
   let navigate = useNavigate();
+
+  const userName = sessionStorage.getItem("user_name");
 
   return (
     <>
       <div className="col-3">
         <CONT_SIDE>
           <P_SIDE onClick={()=>{ navigate('/mypage')}}>My Page</P_SIDE>
+
           <UL_SIDE>
+
+            <LI_NAME onClick={()=>{ navigate('/')}}>
+              {userName}님의 월간;문
+            </LI_NAME>
 
             <LI_SIDE onClick={()=>{ navigate('/')}}>
               MyMoonStory
@@ -41,12 +48,12 @@ const SidebarMypage = () => {
               적립금
             </LI_SIDE>
 
-            <LI_SIDE onClick={()=>{ navigate('/')}}>
+            <LI_SIDE onClick={()=>{ navigate('/mypage/friends')}}>
               친구초대
             </LI_SIDE>
 
-            <LI_SIDE onClick={()=>{ navigate('/')}}>
-              문의내역
+            <LI_SIDE onClick={()=>{ navigate('/chat/login')}}>
+              1:1 문의
             </LI_SIDE>
 
           </UL_SIDE>

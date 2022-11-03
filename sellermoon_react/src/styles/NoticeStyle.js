@@ -20,6 +20,15 @@ export const UL_SIDE = styled.ul `
   list-style: none;
 `
 
+export const LI_NAME = styled.li `
+  height: 38px;
+  color: #5e514d;
+  font-size: 18px;
+  line-height: 30px;
+  cursor: pointer;
+  font-weight: 700;
+`
+
 export const LI_SIDE = styled.li `
   height: 38px;
   color: #666;
@@ -29,7 +38,7 @@ export const LI_SIDE = styled.li `
 `
 export const P_SIDE = styled.p `
   display: block;
-  margin-bottom: 38px;
+  margin: 38px 0px;
   font-size: 32px;
   line-height: 40px;
   letter-spacing: -1.3px;
@@ -61,5 +70,6 @@ export const BROWN_BTN = styled.button `
   background-color: #5e514d;
   border: none;
   margin : 0px 15px;
+  font-weight : 600;
 `
 

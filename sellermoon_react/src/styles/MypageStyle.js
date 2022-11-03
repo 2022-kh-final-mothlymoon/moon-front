@@ -69,5 +69,59 @@ export const POINT_LI = styled.li `
   color: #303033;
 `
 
+export const FRIEND_IMG = styled.img `
+  width: 60%;
+  text-align: center;
+  /* max-width: 400px; */
+  margin: 20px 0 60px 0;
+  padding: 0;
+`
+
+export const FRIEND_P = styled.p`
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 5px;
+`
+
+export const FRIEND_CODE = styled.input`
+  display: block;
+  /* margin: 4px 0 20px 0; */
+  margin: 0 auto;
+  text-align: center;
+  padding: 0 50px;
+  font-size: 45px;
+  font-weight: 700;
+  height: 42px;
+  line-height: 42px;
+  border: none;
+  outline: none;
+`
+
+export const FRIEND_BTN = styled.button`
+  width: 100%;
+  max-width: 360px;
+  margin-top: 50px;
+  font-size: 27px;
+  line-height: 26px;
+  padding: 35px 20px;
+  background-color: #35c5f0;
+  border-color: #35c5f0;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color .1s,background-color .1s,border-color .1s;
+  border-radius: 4px;
+`
+export const FRIEND_ALERT = styled.div`
+  width: 100%;
+  max-width: 360px;
+  margin-top: 10px;
+  font-size: 20px;
+  line-height: 26px;
+  padding: 20px 10px;
+  background-color: black;
+  color: #fff;
+  font-weight: 500;
+`
 
 /* ***** */

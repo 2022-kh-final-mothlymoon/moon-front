@@ -139,19 +139,20 @@ export const faqlist = (params) => {
 
 export const pointlist = (params) => {
   return new Promise((resolve, reject) => {
-    try {
+    try{
       const response = axios({
-        method: "get",
-        url: process.env.REACT_APP_SPRING_IP + "point/pointlist",
-        params: params,
-      });
+        method : "get",
+        url : process.env.REACT_APP_SPRING_IP + "point/pointlist",
+        params : params,
+      })
 
-      resolve(response);
-    } catch (error) {
-      reject(error);
+      resolve(response)
+        
+    }catch(error) {
+      reject(error)
     }
-  });
-};
+  })
+}
 
 export const memberList = (params) => {
   return new Promise((resolve, reject) => {

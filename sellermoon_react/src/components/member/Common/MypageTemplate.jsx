@@ -6,7 +6,7 @@ import NavbarMypage from './NavbarMypage';
 import Footer from './Footer';
 
 
-const MypageMain = () => {
+const MypageMain = ({pointList}) => {
 
 
 
@@ -22,10 +22,19 @@ const MypageMain = () => {
           <div className="col-9">
             <div className="list-wrapper">
 
-              <NavbarMypage />
+              {
+                pointList.map((point, i) => (
+                  <NavbarMypage key={i} point={point} />
+                ))
+              }
 
-              <h3>MypageMain</h3>
+              <h3>내용</h3>
               
+
+
+
+
+
             </div> {/* end of list-wrapper */}
           </div> {/* end of col */}
 

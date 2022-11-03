@@ -1,3 +1,4 @@
+import "./App.css"
 import { Navigate, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Main from "./components/member/main/Main";
@@ -17,12 +18,18 @@ import FaqDetail from "./components/member/faq/FaqDetail";
 import FaqAdmin from "./components/manager/faq/FaqAdmin";
 import FaqUpAdmin from "./components/manager/faq/FaqUpAdmin";
 import AdminLogin from "./components/manager/login/AdminLogin";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import MemAdmin from "./components/manager/member/MemAdmin";
 import MemAdminDetail from "./components/manager/member/MemAdminDetail";
+import { pointlist } from './service/dbLogic';
+import Point from './components/member/point/Point';
+import Friends from './components/member/point/Friends';
+import ChatLogin from './components/member/chat/ChatLogin';
+import ChatMessage from './components/member/chat/ChatMessage';
+import PointAdmin from './components/manager/point/PointAdmin';
 
-function App() {
+
+function App({ authLogic }) {
   let [no, setNo] = useState(0); // 회원 번호 담기 props로 넘겨주기 위함
   let [adminId, setAdminId] = useState(""); // 관리자 id담기 props로 넘겨주기 위함
   const [isLogin, setIsLogin] = useState(false); // 로그인 상태 관리
@@ -56,6 +63,25 @@ function App() {
     alert("로그아웃되었습니다.");
     window.location.reload();
   };
+
+  
+  /* **************************************************** */
+  //pointList 데이터 가져오기 */
+
+  const [pointList, setPointList] = useState([])
+
+    useEffect(() => {
+      const oracleDB = async () => {
+        const result = await pointlist({member_no : no}) 
+        //console.log(result)
+        //console.log(result.data)
+        setPointList(result.data)
+      }
+    oracleDB()
+    }, [no])
+/* **************************************************** */
+
+
   return (
     <>
       <Routes>
@@ -155,7 +181,16 @@ function App() {
           element={<FaqDetail isLogin={isLogin} />}
           exact={true}
         />
-        {/* 관리자 페이지 영역 */}
+        
+        <Route path="/mypage/point" element={<Point pointList={pointList} isLogin={isLogin}  no={no} />} exact={true} />
+
+        <Route path="/mypage/friends" element={<Friends pointList={pointList} isLogin={isLogin} no={no} />} exact={true} />
+        
+        <Route path="/chat/login" element={<ChatLogin authLogic={authLogic} />} exact={true} />
+        <Route path="/chat/chatroom/:userId" element={<ChatMessage authLogic={authLogic} />} exact={true} />
+
+
+        {/*************************  관리자 페이지 영역 *********************************************/}
         <Route
           path="/admin/login"
           element={
@@ -204,6 +239,13 @@ function App() {
           element={<MemAdminDetail isLogin={isLogin} isAdmin={isAdmin} />}
           exact={true}
         />
+
+      <Route path="/admin/point" element={<PointAdmin pointList={pointList} />} exact={true} />
+      
+      
+      
+
+
       </Routes>
     </>
   );

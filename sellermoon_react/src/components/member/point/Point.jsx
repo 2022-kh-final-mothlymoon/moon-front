@@ -3,21 +3,24 @@ import PointRow from './PointRow';
 import PointTotal from './PointTotal';
 import Header from './../Common/Header';
 import Footer from './../Common/Footer';
-import { CONTENTS } from './../../../styles/NoticeStyle';
 import SidebarMypage from './../Common/SidebarMypage';
 import Pagination from './../Common/Pagination';
 import NavbarMypage from './../Common/NavbarMypage';
+import { CONTENTS } from '../../../styles/NoticeStyle';
 import { POINT_P, POINT_LI } from '../../../styles/MypageStyle';
+import { pointlist } from '../../../service/dbLogic';
 
-const Point = ({ pointList }) => {
+const Point = ({ pointList, no, isLogin }) => {
 
 
 /**************** 페이지네이션 선언 ********************/
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
+
 /* ************************************************** */
 
+  
   return (
     <>
       <Header />
@@ -31,8 +34,11 @@ const Point = ({ pointList }) => {
           <div className="col-9">
             <div className="list-wrapper">
 
-              <NavbarMypage pointList={pointList} />
-
+              {
+                pointList.map((point, i) => (
+                  <NavbarMypage key={i} point={point} />
+                ))
+              }
 
               <p style={{fontSize:"1.4rem", fontWeight:"600"}}>적립금 현황</p>
                 <table style={{ width: "1020px", marginBottom:"90px" }}>
@@ -49,7 +55,11 @@ const Point = ({ pointList }) => {
                   </thead>
 
                   <tbody>
-                    <PointTotal pointList={pointList} />
+                    {
+                      pointList.map((point, i) => (
+                        <PointTotal key={i} point={point} />
+                      ))
+                    }
                   </tbody>
                 </table>
 
@@ -88,7 +98,7 @@ const Point = ({ pointList }) => {
                 />
 
                 <POINT_P>적립금 사용기준 및 사용기한</POINT_P>
-                <ul style={{ marginTop: "10px" }}>
+                <ul style={{ marginTop: "10px", marginBottom: "100px" }}>
                   <POINT_LI>
                     적립금은 구매금액 제한 없이 현금처럼 사용하실 수 있습니다.
                   </POINT_LI>  
