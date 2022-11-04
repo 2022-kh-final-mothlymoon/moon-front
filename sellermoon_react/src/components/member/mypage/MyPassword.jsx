@@ -30,6 +30,7 @@ const MyPassword = ({ no }) => {
         if (res.data === 1) {
           alert("수정되었습니다. 다시 로그인해주세요");
           sessionStorage.clear();
+          window.location.reload();
           navigate("/login");
         } else {
           alert("수정에 실패했습니다.");

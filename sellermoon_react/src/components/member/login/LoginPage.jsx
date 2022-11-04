@@ -5,21 +5,64 @@ import { loginMember } from "../../../service/dbLogic";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 import { KAKAO_AUTH_URL } from "../../../service/kakaologin";
+import NaverLogin from "./NaverLogin";
+import KakaoIMG from "../../../images/kakao_login_large_narrow.png";
+import {
+  BORDERDIV,
+  LDIV,
+  LDIV2,
+  LDIV3,
+  LINPUT,
+  LOGINBTN,
+  LOGINDIV,
+  REGISTERLINK,
+  SOCIALBTN,
+  SOCIALDIV,
+  VALIDDIV,
+} from "../../../styles/LoginStyle";
 
 const LoginPage = ({ no, isLogin }) => {
   let navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // 오류 메시지 담기
+  const [emailMessage, setEmailMessage] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
+  // 유효성 검사
+  const [isEmail, setIsEmail] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
 
   // 아이디(이메일) 담기
   const handleInputId = (e) => {
-    setEmail(e.target.value);
-    console.log(e.target.value);
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    const emailCurrent = e.target.value;
+    console.log(emailCurrent);
+    setEmail(emailCurrent);
+    if (!emailCurrent || !emailRegex.test(emailCurrent)) {
+      setIsEmail(false);
+      setEmailMessage("이메일 형식이 아닙니다.");
+    } else {
+      setIsEmail(true);
+      setEmailMessage("올바른 이메일 형식입니다.");
+    }
   };
   // 비밀번호 담기
   const handleInputPw = (e) => {
-    setPassword(e.target.value);
-    console.log(e.target.value);
+    const passwordRegex =
+      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,25}$/;
+    const passwordCurrent = e.target.value;
+    setPassword(passwordCurrent);
+    console.log(passwordCurrent);
+    if (!passwordCurrent || !passwordRegex.test(passwordCurrent)) {
+      setIsPassword(false);
+      setPasswordMessage(
+        "숫자+영문자+특수문자 조합으로 6자리 이상 입력해주세요."
+      );
+    } else {
+      setIsPassword(true);
+      setPasswordMessage("안전한 비밀번호 입니다.");
+    }
   };
   // 로그인
   const memLogin = (e) => {
@@ -53,58 +96,65 @@ const LoginPage = ({ no, isLogin }) => {
     });
   };
 
-  // 이메일 찾기 버튼
-  const findEmail = () => {
-    navigate("/findemail");
-  };
-  // 비밀번호 찾기 버튼
-  const findPass = () => {
-    navigate("/findpass");
-  };
-
   return (
     <>
       <Header />
-      <h1>로그인 페이지</h1>
-      <hr />
-      <Form>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            name="member_email"
-            value={email}
-            onChange={handleInputId}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            name="member_password"
-            value={password}
-            onChange={handleInputPw}
-          />
-        </Form.Group>
-        <Button variant="secondary" onClick={memLogin}>
-          로그인
-        </Button>
-        &nbsp;&nbsp;
-        <Button variant="warning" onClick={findEmail}>
-          아이디 찾기
-        </Button>
-        &nbsp;&nbsp;
-        <Button variant="warning" onClick={findPass}>
-          비밀번호 찾기
-        </Button>
-      </Form>
-      <br />
-      <div className="KaKaoBtn">
-        <a href={KAKAO_AUTH_URL}>카카오로 시작하기</a>
-      </div>
-      <Link to="/register">회원가입하기</Link>
+      <LDIV>
+        <h1>로그인</h1>
+        <hr />
+        <LDIV3>
+          <LDIV2>
+            <LINPUT
+              type="email"
+              placeholder="아이디(이메일)"
+              name="member_email"
+              value={email}
+              onChange={handleInputId}
+            />
+            {email.length > 0 && (
+              <VALIDDIV className={`message ${isEmail ? "success" : "error"}`}>
+                {emailMessage}
+              </VALIDDIV>
+            )}
+          </LDIV2>
+          <LDIV2>
+            <LINPUT
+              type="password"
+              placeholder="비밀번호"
+              name="member_password"
+              value={password}
+              onChange={handleInputPw}
+            />
+            {password.length > 0 && (
+              <VALIDDIV
+                className={`message ${isPassword ? "success" : "error"}`}
+              >
+                {passwordMessage}
+              </VALIDDIV>
+            )}
+          </LDIV2>
+          <LOGINDIV>
+            <LOGINBTN onClick={memLogin} disabled={!(isEmail && isPassword)}>
+              로그인
+            </LOGINBTN>
+            <Link
+              to="/findidpass"
+              style={{ textDecoration: "none", color: "gray" }}
+            >
+              아이디 | 비밀번호 찾기
+            </Link>
+          </LOGINDIV>
+          <BORDERDIV>SNS 계정으로 간편 로그인</BORDERDIV>
+          <SOCIALDIV>
+            <a href={KAKAO_AUTH_URL}>
+              <SOCIALBTN src={KakaoIMG} alt="이미지" />
+            </a>
+            <NaverLogin />
+          </SOCIALDIV>
+          <br />
+          <REGISTERLINK to="/register">이메일로 회원가입</REGISTERLINK>
+        </LDIV3>
+      </LDIV>
       <Footer />
     </>
   );

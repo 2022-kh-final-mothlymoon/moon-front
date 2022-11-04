@@ -3,8 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Main from "./components/member/main/Main";
 import LoginPage from "./components/member/login/LoginPage";
 import RegisterPage from "./components/member/register/RegisterPage";
-import FindEmail from "./components/member/login/FindEmail";
-import FindPass from "./components/member/login/FindPass";
+import FindIdPass from "./components/member/login/FindIdPass";
 import MyAccount from "./components/member/mypage/MyAccount";
 import MyAccountM from "./components/member/mypage/MyAccountM";
 import MyDelAccount from "./components/member/mypage/MyDelAccount";
@@ -22,6 +21,7 @@ import { useEffect } from "react";
 import MemAdmin from "./components/manager/member/MemAdmin";
 import MemAdminDetail from "./components/manager/member/MemAdminDetail";
 import KakaoLogin from "./components/member/login/KakaoLogin";
+import NaverLogin from "./components/member/login/NaverLogin";
 
 function App() {
   let [no, setNo] = useState(0); // 회원 번호 담기 props로 넘겨주기 위함
@@ -57,6 +57,7 @@ function App() {
   // 로그아웃
   const logout = () => {
     sessionStorage.clear();
+    window.localStorage.removeItem("com.naver.nid.access_token");
     alert("로그아웃되었습니다.");
     window.location.reload();
   };
@@ -76,6 +77,11 @@ function App() {
           element={!isLogin ? <KakaoLogin /> : <Navigate to="/" />}
         />
         <Route
+          path="/naverlogin"
+          exact={true}
+          element={!isLogin ? <NaverLogin /> : <Navigate to="/" />}
+        />
+        <Route
           path="/login"
           exact={true}
           element={
@@ -87,22 +93,11 @@ function App() {
           }
         />
         <Route
-          path="/findemail"
+          path="/findidpass"
           exact={true}
           element={
             !isLogin ? (
-              <FindEmail isLogin={isLogin} logout={logout} />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        <Route
-          path="/findpass"
-          exact={true}
-          element={
-            !isLogin ? (
-              <FindPass isLogin={isLogin} logout={logout} />
+              <FindIdPass isLogin={isLogin} logout={logout} />
             ) : (
               <Navigate to="/" />
             )
