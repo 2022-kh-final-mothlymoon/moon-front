@@ -169,3 +169,57 @@ export const memberList = (params) => {
     }
   });
 };
+
+/* 마이페이지 정기구독 기본정보 */
+export const subslist = (params) => {
+  return new Promise((resolve, reject) => {
+    try{
+      const response = axios({
+        method : "get",
+        url : process.env.REACT_APP_SPRING_IP + "subs/subslist",
+        params : params,
+      })
+
+      resolve(response)
+        
+    }catch(error) {
+      reject(error)
+    }
+  })
+}
+
+/* 마이페이지 정기구독 배송정보 */
+export const subsdeliver = (params) => {
+  return new Promise((resolve, reject) => {
+    try{
+      const response = axios({
+        method : "get",
+        url : process.env.REACT_APP_SPRING_IP + "subs/subsdeliver",
+        params : params,
+      })
+
+      resolve(response)
+        
+    }catch(error) {
+      reject(error)
+    }
+  })
+}
+
+/* 마이페이지 정기구독 결제정보 */
+export const subspurchase = (params) => {
+  return new Promise((resolve, reject) => {
+    try{
+      const response = axios({
+        method : "get",
+        url : process.env.REACT_APP_SPRING_IP + "subs/subspurchase",
+        params : params,
+      })
+
+      resolve(response)
+        
+    }catch(error) {
+      reject(error)
+    }
+  })
+}

@@ -24,7 +24,7 @@ const SidebarMypage = () => {
               MyMoonStory
             </LI_SIDE>
 
-            <LI_SIDE onClick={()=>{ navigate('/')}}>
+            <LI_SIDE onClick={()=>{ navigate('/mypage/subscription')}}>
               정기구독
             </LI_SIDE>
 

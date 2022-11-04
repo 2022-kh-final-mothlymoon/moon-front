@@ -10,9 +10,9 @@ const PointRow = (props) => {
     <>
       <tr>
         <td>{result.POINT_DATE}</td>
-          <td id="list-title">
-            {result.POINT_TYPE}
-          </td>
+        <td id="list-title">
+          {result.POINT_TYPE}
+        </td>
         <td>{result.POINT_USED_SAVED.toLocaleString()}</td>
       </tr>
     </>

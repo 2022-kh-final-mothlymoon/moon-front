@@ -54,23 +54,19 @@ const ChatMessage = ({ authLogic }) => {
   });
 
   const setClock = () => {
-    const dateInfo = new Date()
-    const hour = modifyNumber(dateInfo.getHours());
-    const min = modifyNumber(dateInfo.getMinutes());
-    const sec = modifyNumber(dateInfo.getSeconds());
-    if (hour <= 12 && hour >= 6) {
-      const curtime = hour+":"+min+":"+sec+"AM";
-      return curtime;
-    } else if (hour >= 12 && hour <= 24) {
-      const curtime = hour+":"+min+":"+sec+"PM";
-      return curtime;
-    }
+    const date = new Date()
+    const hour = ('0' + date.getHours()).slice(-2);
+    const min = ('0' + date.getMinutes()).slice(-2);
+    const sec = ('0' + date.getSeconds()).slice(-2);
+
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+
+    const curtime = year + '-' + month + '-' + day+" "+hour+":"+min
+    return curtime;
   }
 
-  const modifyNumber = (time) => {
-    if (parseInt(time) < 10) return "0" + time;
-    else return time;
-  };
 
   useEffect(() => {
     console.log(database);
@@ -114,7 +110,7 @@ const ChatMessage = ({ authLogic }) => {
       userName: userName,
       userPhoto: userPhoto,
       curtime: setClock(),
-      m_no: Date.now(),
+      m_no: setClock(),
       [e.target.name]: e.target.value
     })
   }
@@ -144,7 +140,7 @@ const ChatMessage = ({ authLogic }) => {
                   ?
                     <>
                       <MSG_LI_MINE key={key}>
-                        <MSG_TIME2>{messages[key].curtime}</MSG_TIME2>
+                        <MSG_TIME2>{messages[key].dateStr}&nbsp;{messages[key].curtime}</MSG_TIME2>
                         <MSG_COL>
                           <MSG_MINE>{messages[key].msg}</MSG_MINE>
                         </MSG_COL>
@@ -158,7 +154,7 @@ const ChatMessage = ({ authLogic }) => {
                           <MSG_NAME>{messages[key].userName}</MSG_NAME>
                           <MSG_FRIEND>{messages[key].msg}</MSG_FRIEND>
                         </MSG_COL>
-                        <MSG_TIME1>{messages[key].curtime}</MSG_TIME1>
+                        <MSG_TIME1>{messages[key].dateStr}&nbsp;{messages[key].curtime}</MSG_TIME1>
                       </MSG_LI_FRIEND>
                     </>
                 ))
@@ -175,7 +171,7 @@ const ChatMessage = ({ authLogic }) => {
             <SEND_CONTAINER>
               <SEND_INPUT
                 className="search-input"
-                type="text"s
+                type="text"
                 ref={msgRef}
                 name="msg"
                 placeholder="메세지를 입력하세요"

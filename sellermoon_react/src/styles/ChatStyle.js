@@ -148,9 +148,9 @@ export const MSG_LI_FRIEND = styled.li`
 
 export const MSG_FRIEND = styled.div`
   background: #eee;
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 1.2rem;
+  padding: 12px 20px;
+  border-radius: 18px;
+  font-size: 1.1rem;
 `
 
 /************** 나의 말풍선 오른쪽 *************/
@@ -164,10 +164,10 @@ export const MSG_LI_MINE = styled.li`
 
 export const MSG_MINE = styled.div`
   background: #ead3b1;
-  padding: 10px;
+  padding: 12px 20px;
   margin-right: 20px;
-  border-radius: 10px;
-  font-size: 1.2rem;
+  border-radius: 18px;
+  font-size: 1.1rem;
 `
 /* ********************************************** */
 
@@ -188,19 +188,18 @@ position: relative;
 
 export const MSG_TIME1 = styled.span`
 align-self: flex-end;
-flex-basis: 3.75rem;
+/* flex-basis: 3.75rem; */
 flex-shrink: 0;
 color: rgb(88, 88, 88);
 font-size: 0.8rem;
-margin-left: 4px;
+margin-left: 7px;
 `
 export const MSG_TIME2 = styled.span`
 align-self: flex-end;
-flex-basis: 3.75rem;
 flex-shrink: 0;
 color: rgb(88, 88, 88);
 font-size: 0.8rem;
-margin-right: 4px;
+margin-right: 7px;
 `
 
 export const MSG_NAME = styled.span`

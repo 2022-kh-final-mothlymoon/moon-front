@@ -27,6 +27,7 @@ import Friends from './components/member/point/Friends';
 import ChatLogin from './components/member/chat/ChatLogin';
 import ChatMessage from './components/member/chat/ChatMessage';
 import PointAdmin from './components/manager/point/PointAdmin';
+import Subscription from './components/member/subscription/Subscription';
 
 
 function App({ authLogic }) {
@@ -188,6 +189,9 @@ function App({ authLogic }) {
         
         <Route path="/chat/login" element={<ChatLogin authLogic={authLogic} />} exact={true} />
         <Route path="/chat/chatroom/:userId" element={<ChatMessage authLogic={authLogic} />} exact={true} />
+        
+        <Route path="/mypage/subscription" element={<Subscription pointList={pointList} isLogin={isLogin} no={no} />} exact={true} />
+        
 
 
         {/*************************  관리자 페이지 영역 *********************************************/}
