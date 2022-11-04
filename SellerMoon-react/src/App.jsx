@@ -7,6 +7,7 @@ import MemberBoardList from "./components/member/board/MemberBoardList";
 import MemberBoardDetail from "./components/member/board/MemberBoardDetail";
 import MemberBoardForm from "./components/member/board/MemberBoardForm";
 import MemberBoardEditForm from "./components/member/board/MemberBoardEditForm";
+import pictureUpload from "./service/pictureUpload";
 
 // 화면 구성 router 추가하기 (http://localhost:3000/ + )
 const App = () => {
@@ -39,12 +40,12 @@ const App = () => {
         <Route
           path="/member/board/boardForm"
           exact={true}
-          element={<MemberBoardForm />}
+          element={<MemberBoardForm pictureUpload={pictureUpload} /> }
         />
         <Route
           path="/member/board/boardEditForm/:board_no"
           exact={true}
-          element={<MemberBoardEditForm />}
+          element={<MemberBoardEditForm  />}
         />
       </Routes>
     </>

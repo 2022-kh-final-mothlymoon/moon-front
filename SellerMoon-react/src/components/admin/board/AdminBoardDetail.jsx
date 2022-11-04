@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Card, Form } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import { boardDelete, jsonBoardList } from '../../_service/dbLogic';
+import { jsonBoardList } from '../../../service/dbLogic';
+import AdminReplyList from '../reply/AdminReplyList';
+import AdminReplyRow from '../reply/AdminReplyRow';
 
 /* 
   <<<<< 관리자 게시판 상세 조회 >>>>>
 */
 const AdminBoardDetail = (props) => {
-  const navigate = useNavigate(); // 페이지 이동 시 필요한 객체 선언
+  // 페이지 이동 시 필요한 객체 선언
+  const navigate = useNavigate(); 
+  
+  // 데이터 초기화 -----------------------------------------------------
   const { board_no } = useParams();
-  // 데이터 초기화
   const [ boardVO, setBoardVO] = useState({
     BOARD_NO: 0,
     BOARD_CATEGORY: "",
@@ -22,6 +26,8 @@ const AdminBoardDetail = (props) => {
     BOARD_DISLIKE: 0,
     BOARD_BLIND: "",
     BOARD_REPORT_COUNT: 0,
+    FILENAME: "",
+    FILEURL: "",
   });
 
   // [R] 데이터 가져오기 --------------------------------------- 완
@@ -38,44 +44,10 @@ const AdminBoardDetail = (props) => {
     boardDetailDB();
   }, [board_no]);
   
-  // 목록으로 버튼
-  const listBtn = () => {
-    console.log("목록으로 버튼 클릭")
-    navigate("/admin/board/boardList");
-  };
-
-  // [D] 삭제 버튼 ---------------------------------------- 매핑오류 수정
-  const delBtn = async(props) => {
-    console.log("삭제할 글 번호 ===> " + boardVO.BOARD_NO);
-    // 삭제 시, 확인 comfirm alert
-    if(window.confirm("삭제하시겠습니까?")) {
-      window.location.href 
-      = "http://localhost:9005/admin/board/boardDelete?board_no=" + boardVO.BOARD_NO;
-      alert("삭제되었습니다.");
-    } else {
-      alert("취소되었습니다.");
-    }
-
-    /*
-      const result = await boardDelete({ board_no: board_no});
-      setBoardVO(result.data[0]);
-      console.log("result.data ===> " + result.data);
-      navigate("/member/board/boardList");
-    */
-  };
-
-  // 블라인드 상태 변경 확인하기
-  const blindYn = (event) => {
-    console.log("변경된 블라인드 상태는? ===> " + event.target.value);
-  }
   
   // [U] 블라인드 저장 버튼 ------------------------------------------- 완
   const blindSubmitBtn = async(props) => {
     if(window.confirm("블라인드 상태를 변경하시겠습니까?")) {
-      // // axios
-      // const result = await boardUpdateAdmin({ board_no: board_no });
-      // setBoardVO(result.data);
-
       document.querySelector("#board_no").value = boardVO.BOARD_NO;
       document.querySelector("#f_blind").action = "http://localhost:9005/admin/board/boardUpdate";
       document.querySelector("#f_blind").submit();
@@ -83,12 +55,37 @@ const AdminBoardDetail = (props) => {
     } else {
       alert("취소되었습니다.");
     }
-  } 
-
-  // ********** RENDER **********
+  };
+  
+  // [D] 삭제 버튼 ---------------------------------------- 매핑오류 수정
+  const delBtn = async(props) => {
+    console.log("삭제할 글 번호 ===> " + boardVO.BOARD_NO);
+    if(window.confirm("삭제하시겠습니까?")) {
+      window.location.href 
+      = "http://localhost:9005/admin/board/boardDelete?board_no=" + boardVO.BOARD_NO;
+      alert("삭제되었습니다.");
+    } else {
+      alert("취소되었습니다.");
+    }
+  };
+  
+  // 목록으로 버튼
+  const listBtn = () => {
+    console.log("목록으로 버튼 클릭")
+    navigate("/admin/board/boardList");
+  };
+  
+  // 블라인드 상태 변경 확인하기
+  const blindYn = (event) => {
+    console.log("변경된 블라인드 상태는? ===> " + event.target.value);
+  }
+  
+  
+  // ******************** RENDER ********************
   return (
     <>
       <div className="container">
+
         {/******************** 게시판 안내 시작 ********************/}
         <div>
           <h2>
@@ -126,6 +123,11 @@ const AdminBoardDetail = (props) => {
           <div className="form-group">
             <label>내용</label>
             <p>{ boardVO.BOARD_CONTENT }</p>
+            <Card.Img 
+              variant="top" 
+              style={{ width: '250px' }} 
+              src={`${ boardVO.FILEURL }`} 
+            />
           </div>
           <div className="form-group">
             <label>작성자</label>
@@ -155,9 +157,7 @@ const AdminBoardDetail = (props) => {
           {/******************** 블라인드 처리 폼 시작 ********************/}
           <Form id="f_blind" method="get">
             <div className="form-group">
-
               <input type="hidden" name="board_no" id="board_no" />
-
               <label>블라인드</label>
               <Form.Select id="board_blind" name="board_blind" onChange={blindYn} size="sm">
                 <option value="">현재 블라인드 상태 : { boardVO.BOARD_BLIND }</option>
@@ -174,6 +174,13 @@ const AdminBoardDetail = (props) => {
 
         </div>
         {/******************** 선택한 글 상세 보기 종료 ********************/}
+
+
+        {/******************** 댓글 시작 ********************/}
+        <div>
+          (((((((((((((( 댓글 시작 위치 ))))))))))))))
+          <AdminReplyList />
+        </div>
 
       </div>
     </>

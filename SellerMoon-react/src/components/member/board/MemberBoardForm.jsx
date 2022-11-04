@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import pictureUpload from '../../../service/pictureUpload';
 
 /* 
   <<<<< 회원 게시판 글 작성 >>>>>
-
-  회원이 로그인 했을 때 글 등록 시점에서 member_name이 저장..
+    - 수정할 것 : 사진 기능(cloudinary)
 */
 const MemberBoardForm = (props) => {
+  console.log("memberBoardForm 호출 성공");
+
   const navigate = useNavigate();
 
-  // [C] 글 전송 버튼 ---------------------------------------- 부적합한 열유형.. 수정중
+  // cloudinary 사진 추가 기능
+  const [file, setFile] = useState({ fileName: null, fileURL: null }); // 이미지 업로드
+
+  // [C] 글 전송 버튼 ----------------------------------------
   const boardSubmitBtn = (event) => {
     if(window.confirm("글을 등록하시겠습니까?")) {
       // 폼 전송이 일어나는 곳
@@ -34,21 +39,59 @@ const MemberBoardForm = (props) => {
     }
   }
 
+  // 이미지 업로드 (cloudinary) --------------------------- 잘 안됩니다.. 
+  const imgChange = async (event) => {
+    console.log("imgChange 호출");
+    console.log(event.target.files[0]);
+    const upload = await pictureUpload.upload(event.target.files[0]);
+    setFile({
+      fileName: upload.public_id + "." + upload.format,
+      fileURL: upload.url,
+    })
+    const uploadIMG = document.getElementById("img");
+    const holder = document.getElementById("uploadImg");
+    const file = uploadIMG.files[0];
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      const img = new Image();
+      img.src = event.target.result;
+      // if (img.width > 150) {
+      //   //넣으려는 사진 크기에 맞춰 width값을 제한하면 된다.
+      // }
+      img.width = 150;
+      holder.innerHTML = "";
+      holder.appendChild(img);
+    }
+    reader.readAsDataURL(file);
+    return false;
+  };
+
+  // ******************** RENDER ********************
   return (
     <>
       <div className='container'>
 
+        {/******************** 게시판 안내 시작 ********************/}
+        <div>
+          <h2>
+            Moon Story (커뮤니티) <small>글 작성하기</small>
+          </h2>
+          <hr />
+        </div>
+        {/******************** 게시판 안내 종료 ********************/}
+
         {/********************  글 작성폼 시작 ********************/}
         <Form id="f_board" method="get">
 
-          {/* <input type="hidden" name="filename" id="filename" />
-          <input type="hidden" name="fileurl" id="fileurl" /> */}
+          {/* cloudinary 사진 업로드 */}
+          <input type="hidden" name="filename" id="filename" />
+          <input type="hidden" name="fileurl" id="fileurl" />
 
           {/* 카테고리 선택 select 박스 시작*/}
           <Form.Group className="mb-3">
             <Form.Select id="board_category" name="board_category">
               <option>카테고리를 선택해주세요.</option>
-              <option value="freeTalk">자유게시판</option>
+              <option value="자유게시판">자유게시판</option>
               <option value="Q&A">Q&A</option>
             </Form.Select>
           </Form.Group>
@@ -66,12 +109,15 @@ const MemberBoardForm = (props) => {
           <Form.Group className="mb-3" controlId="formBasicBoard_content">
             <Form.Label>내용</Form.Label>
             <Form.Control 
-              type="text" 
+              type="text"
+              as="textarea"
+              rows={10}
               name="board_content" 
               placeholder="내용을 입력해주세요." 
             />
           </Form.Group>
-          {/* 회원번호는 임시.. 로그인-세션과 결합 */}
+
+          {/* 회원번호는 임시.. 로그인-세션과 결합 후 지울 것.. */}
           <Form.Group className="mb-3" controlId="formBasicMember_no">
             <Form.Label>회원번호</Form.Label>
             <Form.Control 
@@ -83,25 +129,25 @@ const MemberBoardForm = (props) => {
           {/* 글 입력 폼 종료 */}
 
           {/* 부서 이미지 등록 첨부파일 */}
-          {/* <Form.Group className="mb-3">
+          <Form.Group className="mb-3">
             <Form.Label>이미지 등록</Form.Label>
             <input
               className="form-control"
               type="file"
               id="img"
               name="img"
-              // onClick={imgChange}
+              onClick={imgChange}
             />
-          </Form.Group> */}
+          </Form.Group>
 
           {/* 부서 등록 이미지 미리보기 */}
-          {/* <div id="uploadImg">
+          <div id="uploadImg">
             <img
               className="thumbNail"
               src="https://via.placeholder.com/300X300"
               alt="미리보기"
             />
-          </div> */}
+          </div>
         </Form>
         {/********************  글 작성폼 종료 ********************/}
       
@@ -111,6 +157,7 @@ const MemberBoardForm = (props) => {
         <Button variant="primary" onClick={boardSubmitBtn}>
           등록
         </Button>
+        
       </div>
 
     </>

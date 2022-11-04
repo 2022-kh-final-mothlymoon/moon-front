@@ -6,13 +6,13 @@ import { Link } from 'react-router-dom';
 */
 const AdminBoardRow = (props) => {
   const blindYN = () => {
-    if(props.board.BOARD_BLIND == "Y") {
+    if(props.board.BOARD_BLIND === "Y") {
       console.log("해당 게시글은 관리자에 의해 숨김 처리 되었습니다.");
       alert("해당 게시글은 관리자에 의해 숨김 처리 되었습니다.")
     }
   };
 
-  // ********** RENDER **********
+  // ******************** RENDER ********************
   return (
         // MemberBaordList의 Table >> tbody 안의 반복되는 tr
     <tr>

@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
-import { boardDelete, jsonBoardList } from '../../_service/dbLogic';
+import { jsonBoardList } from '../../../service/dbLogic';
 
 /* 
   <<<<< 회원 게시판 상세 조회 >>>>>
+    - 추가할 것 : (해당 글 번호 상세 페이지 진입 시) 조회수 증가, 좋아요/싫어요
 */
-const BoardDetail = () => {
-  const navigate = useNavigate(); // 페이지 이동 시 필요한 객체 선언
+const MemberBoardDetail = () => {
+  // 페이지 이동 시 필요한 객체 선언
+  const navigate = useNavigate(); 
+  
+  // 데이터 초기화 -----------------------------------------------------
   const { board_no } = useParams();
-  // 데이터 초기화
-  const [ boardVO, setBoardVO] = useState({
+  const [ boardVO, setBoardVO ] = useState({
     BOARD_NO: 0,
     BOARD_CATEGORY: "",
     BOARD_TITLE: "",
@@ -20,13 +23,15 @@ const BoardDetail = () => {
     BOARD_HIT: 0,
     BOARD_LIKE: 0,
     BOARD_DISLIKE: 0,
+    FILENAME: "",
+    FILENAME: "",
   });
 
-  // 데이터 가져오기
+  // [R] 데이터 가져오기 -----------------------------------------------
   useEffect(() => {
     const boardDetailDB = async() => {
       console.log("[회원] : boardDetailDB 호출 성공")
-            // spring - jsonBoardList 데이터 읽기
+      // spring - jsonBoardList 데이터 읽기
       const result = await jsonBoardList({ board_no: board_no });
       console.log(result);
       // console.log(result.data);
@@ -35,6 +40,39 @@ const BoardDetail = () => {
     };
     boardDetailDB();
   }, [board_no]);
+
+  // [D] 삭제 버튼 -----------------------------------------------------
+  const delBtn = async() => {
+    console.log("삭제할 글 번호 ===> " + boardVO.BOARD_NO);
+    if(window.confirm("삭제하시겠습니까?")) {
+      window.location.href 
+      = "http://localhost:9005/member/board/boardDelete?board_no=" + boardVO.BOARD_NO;
+      alert("삭제되었습니다.");
+    } else {
+      alert("취소되었습니다.");
+    }
+  };
+
+  // [C] 좋아요 버튼 -> 
+  // const likeBtn = () => {
+  //   if() { // 좋아요 클릭 +1
+
+  //   } else if () { // re좋아요 클릭 -1
+
+  //   } else if () { // if 싫어요가 눌러져있는 상태에서 좋아요를 클릭한다면? 싫어요 -1 좋아요 +1
+
+  //   }
+  // };
+
+  // 싫어요 버튼 -> db 저장
+  // const dislikeBtn = () => {
+  //   // 싫어요 클릭 +1
+
+  //   // re싫어요 클릭 -1
+
+  //   // if 좋아요가 눌러져있는 상태에서 싫어요를 클릭한다면?
+  //   // 좋아요 -1 후 싫어요 +1
+  // }
 
   // 목록으로 버튼
   const listBtn = () => {
@@ -49,34 +87,16 @@ const BoardDetail = () => {
     navigate("/member/board/boardEditForm/" + boardVO.BOARD_NO);
   };
 
-  // [D] 삭제 버튼 ------------------------------------------ 수정중 (매핑오류)
-  const delBtn = async() => {
-    console.log("삭제할 글 번호 ===> " + boardVO.BOARD_NO);
-    // 삭제 시, 확인 comfirm alert
-    if(window.confirm("삭제하시겠습니까?")) {
-      window.location.href 
-      = "http://localhost:9005/member/board/boardDelete?board_no=" + boardVO.BOARD_NO;
-      alert("삭제되었습니다.");
-    } else {
-      alert("취소되었습니다.");
-    }
 
-    // dbLogic에서 url 받아오기 ------------------------------------> 매핑오류 
-      // const result = await boardDelete({ board_no: board_no});
-      // setBoardVO(result.data[0]);
-      // console.log("result.data ===> " + result.data);
-      // navigate("/member/board/boardList");
-    
-  };
-
-  // ********** RENDER **********
+  // ******************** RENDER ********************
   return (
     <>
       <div className='container'>
+
         {/******************** 게시판 안내 시작 ********************/}
         <div>
           <h2>
-            Moon Story
+            Moon Story (커뮤니티)
           </h2>
           <hr />
         </div>
@@ -112,6 +132,11 @@ const BoardDetail = () => {
           <div className="form-group">
             <label>내용</label>
             <p>{ boardVO.BOARD_CONTENT }</p>
+            <Card.Img 
+              variant="top" 
+              style={{ width: '250px' }} 
+              src={`${ boardVO.FILEURL }`} 
+            />
           </div>
           <div className="form-group">
             <label>작성자</label>
@@ -125,14 +150,22 @@ const BoardDetail = () => {
             <label>조회수</label>
             <p>{ boardVO.BOARD_HIT }</p>
           </div>
-          <div className="form-group">
-            <label>좋아요</label>
-            <p>{ boardVO.BOARD_LIKE }</p>
+
+          {/* 좋아요/싫어요 버튼 시작 */}
+          <div>
+            <div className="form-group">
+              <label>좋아요</label>
+              {/* <Button onClick={}>👍🏻</Button> */}
+              <p>{ boardVO.BOARD_LIKE }</p>
+            </div>
+            <div className="form-group">
+              <label>싫어요</label>
+              {/* <Button onClick={}>👎🏻</Button> */}
+              <p>{ boardVO.BOARD_DISLIKE }</p>
+            </div>
           </div>
-          <div className="form-group">
-            <label>싫어요</label>
-            <p>{ boardVO.BOARD_DISLIKE }</p>
-          </div>
+          {/* 좋아요/싫어요 버튼 종료 */}
+
         </div>
         {/******************** 선택한 글 상세 보기 종료 ********************/}
       
@@ -141,4 +174,4 @@ const BoardDetail = () => {
   );
 }
 
-export default BoardDetail;
+export default MemberBoardDetail;
