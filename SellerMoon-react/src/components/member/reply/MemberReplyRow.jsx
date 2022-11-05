@@ -3,10 +3,17 @@ import { Button } from "react-bootstrap";
 
 /*
   <<<<< 회원 댓글 Row >>>>>
-    - 추가할 것 :  좋아요/싫어요, 신고
+    - 추가할 것 : 좋아요/싫어요, 신고, 댓글 수정
+    - 수정할 것 : 댓글 수정, 삭제  
 */
 const MemberReplyRow = (props) => {
   console.log("memberReplyRow 호출 성공");
+  
+  // [U] 수정 버튼 -----------------------------------------------------
+  const editBtn = async() => {
+    console.log("댓글 수정 버튼 클릭");
+    console.log("수정할 댓글 번호 ===> " + props.reply.REPLY_NO);
+  }
 
   // [D] 삭제 버튼 -----------------------------------------------------
   const delBtn = async() => {
@@ -23,13 +30,25 @@ const MemberReplyRow = (props) => {
   // ******************** RENDER ********************
   return (
     <>
-      <tr>
-        <td>{ props.reply.MEMBER_NAME }</td>
-        <td>{ props.reply.REPLY_DATE }</td>
-        <td>{ props.reply.REPLY_CONTENT }</td>
-      </tr>
+      <table>
+        <thead>
+          <tr>
+            <td>{ props.reply.REPLY_CONTENT }</td>
+          </tr>
+        </thead> 
+        <tbody>
+          <tr>
+            <td>{ props.reply.MEMBER_NAME }</td>
+            <td>{ props.reply.REPLY_DATE }</td>
+          </tr>
+        </tbody>
+      </table>
+
       <Button variant="danger" onClick={delBtn}>
         삭제
+      </Button>
+      <Button variant="primary" onClick={editBtn}>
+        수정
       </Button>
     </>
   );

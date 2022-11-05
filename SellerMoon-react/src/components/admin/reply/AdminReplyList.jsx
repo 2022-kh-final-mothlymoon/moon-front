@@ -30,16 +30,14 @@ const AdminReplyList = () => {
   return (
     <>
       <div className='container'>
-        <p>------------이게 보이나요?</p>
         <small>댓글 (n)</small>
         {
-          replyList.map((reply, i) => {
-            console.log(reply);
+          replyList.map((reply, i) => (
             <AdminReplyRow
               key={i}
               reply={reply}
             />
-          })
+          ))
         }
       </div>
     </>

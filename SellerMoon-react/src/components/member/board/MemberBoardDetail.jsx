@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { jsonBoardList } from '../../../service/dbLogic';
+import MemberReplyForm from '../reply/MemberReplyForm';
+import MemberReplyList from '../reply/MemberReplyList';
 
 /* 
   <<<<< 회원 게시판 상세 조회 >>>>>
@@ -93,25 +95,23 @@ const MemberBoardDetail = () => {
     <>
       <div className='container'>
 
-        {/******************** 게시판 안내 시작 ********************/}
+
+
         <div>
           <h2>
             Moon Story (커뮤니티)
           </h2>
           <hr />
         </div>
-        {/******************** 게시판 안내 종료 ********************/}
 
 
 
-        {/******************** 목록으로 버튼 및 삭제 버튼 시작 ********************/}
         <div>
           <Button variant="primary" onClick={listBtn}>목록으로</Button>
           {/* 로그인한 회원과 작성자 번호가 일치하면 삭제 / 업데이트 가능 */}
           <Button variant="success" onClick={editBtn}>수정</Button>
           <Button variant="danger" onClick={delBtn}>삭제</Button>
         </div>
-        {/******************** 목록으로 버튼 및 삭제 버튼 종료 ********************/}
 
 
 
@@ -169,6 +169,15 @@ const MemberBoardDetail = () => {
         </div>
         {/******************** 선택한 글 상세 보기 종료 ********************/}
       
+
+        <div>
+          <MemberReplyList />
+        </div>
+
+
+        <div>
+          <MemberReplyForm />
+        </div>
       </div>
     </>
   );

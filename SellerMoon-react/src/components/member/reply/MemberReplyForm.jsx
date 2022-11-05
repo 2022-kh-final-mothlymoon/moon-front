@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
 /*
@@ -30,12 +30,13 @@ const MemberReplyForm = (props) => {
     <>
       <div className='container'>
 
-        {/* 댓글 내용 입력 폼 시작 */}
-        댓글 입력 창입니다.
+        <hr />
+
         <Form id="f_reply" method="get">
 
           {/* 입력하지 않아도 들어가야할 내용..!! */}
-          <input type="hidden" name="board_no" id="board_no" />
+          {/* <input type="hidden" name="board_no" id="board_no" /> */}
+          <input type="hidden" name="reply_no" id="reply_no" />
           <input type="hidden" name="reply_date" id="reply_date" />
 
           <Form.Group className="mb-3" controlId="formBasicReply_content">
@@ -57,7 +58,6 @@ const MemberReplyForm = (props) => {
           </Form.Group>
 
         </Form>
-        {/* 댓글 내용 입력 폼 시작 */}
 
         <Button variant="primary" onClick={replySubmitBtn}>
           등록
