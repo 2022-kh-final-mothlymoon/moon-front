@@ -1,0 +1,7 @@
+npm install react-bootstrap bootstrap
+npm install react-router-dom@6
+npm install styled-components
+npm i @fortawesome/fontawesome-free
+npm install firebase
+npm i -S @fortawesome/fontawesome-svg-core @fortawesome/react-fontawesome
+npm install react-datepicker --save
