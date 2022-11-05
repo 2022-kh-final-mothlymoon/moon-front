@@ -21,6 +21,7 @@ const MyDelAccount = ({ no }) => {
         console.log(res.data);
         if (res.data === 1) {
           alert("탈퇴되었습니다.");
+          window.localStorage.removeItem("user_no");
           window.localStorage.removeItem("com.naver.nid.access_token");
           sessionStorage.clear();
           navigate("/");

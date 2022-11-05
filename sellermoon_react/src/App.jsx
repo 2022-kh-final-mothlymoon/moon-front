@@ -29,16 +29,20 @@ function App() {
   const [isLogin, setIsLogin] = useState(false); // 로그인 상태 관리
   const [isAdmin, setIsAdmin] = useState(false); // 관리자 권한 관리
   useEffect(() => {
-    if (sessionStorage.getItem("user_no") !== null) {
+    if (
+      sessionStorage.getItem("user_no") !== null ||
+      localStorage.getItem("user_no")
+    ) {
       // session에 담긴 값이 null이 아닐때
       setNo(sessionStorage.getItem("user_no")); // user_no(회원번호) 가져옴
+      setNo(localStorage.getItem("user_no"));
     }
   }, [no]);
 
   useEffect(() => {
     if (
-      (sessionStorage.getItem("user_no") ||
-        sessionStorage.getItem("kakao_token")) !== null
+      (sessionStorage.getItem("user_no") || localStorage.getItem("user_no")) !==
+      null
     ) {
       console.log("isLogin ===> ", isLogin);
       setIsLogin(true);
@@ -57,6 +61,7 @@ function App() {
   // 로그아웃
   const logout = () => {
     sessionStorage.clear();
+    window.localStorage.removeItem("user_no");
     window.localStorage.removeItem("com.naver.nid.access_token");
     alert("로그아웃되었습니다.");
     window.location.reload();

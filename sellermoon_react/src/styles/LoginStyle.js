@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 /* 전체를 감싸는 div */
 export const LDIV = styled.div`
-  width: 50%;
+  width: 45%;
   margin: 2rem auto;
   padding: 2.5rem;
   border: 0px;
@@ -14,13 +14,17 @@ export const LDIV = styled.div`
 /* text,input 요소들을 감싸는 div */
 export const LDIV2 = styled.div`
   width: 100%;
-  margin: 1.5rem auto;
+  margin: 1rem auto;
 `;
 
 export const LDIV3 = styled.div`
   width: 100%
   margin: 0 auto;
   text-align: center;
+`;
+
+export const LDIV4 = styled.div`
+  margin-top: 3rem;
 `;
 
 /* input 스타일 */
@@ -34,6 +38,15 @@ export const LINPUT = styled.input`
   border-bottom: 0.1rem solid gray;
   background: transparent;
   outline: none;
+`;
+
+export const CHKDIV = styled.div`
+  width: 40%;
+  margin-left: 5rem;
+`;
+
+export const CHKINPUT = styled.input`
+  margin-right: 0.5rem;
 `;
 
 export const VALIDDIV = styled.div`
@@ -63,20 +76,20 @@ export const LOGINDIV = styled.div`
 `;
 
 export const BORDERDIV = styled.div`
-  border-top: 0.1rem solid gray;
+  border-top: 0.1px solid gray;
   border-right: none;
   border-left: none;
   border-bottom: none;
   color: gray;
   width: 50%;
   margin: 3rem auto 0;
-  padding: 0.3em;
+  padding: 0.1em;
 `;
 
 export const SOCIALBTN = styled.img`
-  width: 40%;
+  width: 42%;
   height: 56px;
-  margin: 0.8rem;
+  margin: 0.5rem;
   cursor: pointer;
 `;
 

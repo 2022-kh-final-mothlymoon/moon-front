@@ -145,7 +145,7 @@ const RegisterPage = (props) => {
         <RDIV3>
           <form id="f_register" method="post">
             <RDIV2>
-              <RTEXTDIV>이메일 (아이디)</RTEXTDIV>
+              <RTEXTDIV>이메일(아이디)</RTEXTDIV>
               <RZINPUT
                 type="email"
                 name="member_email"

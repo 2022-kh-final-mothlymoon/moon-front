@@ -9,9 +9,13 @@ import NaverLogin from "./NaverLogin";
 import KakaoIMG from "../../../images/kakao_login_large_narrow.png";
 import {
   BORDERDIV,
+  CHKDIV,
+  CHKINPUT,
+  CHKLABEL,
   LDIV,
   LDIV2,
   LDIV3,
+  LDIV4,
   LINPUT,
   LOGINBTN,
   LOGINDIV,
@@ -27,10 +31,19 @@ const LoginPage = ({ no, isLogin }) => {
   const [password, setPassword] = useState("");
   // 오류 메시지 담기
   const [emailMessage, setEmailMessage] = useState("");
-  const [passwordMessage, setPasswordMessage] = useState("");
   // 유효성 검사
   const [isEmail, setIsEmail] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
+
+  const [isCheck, setIsCheck] = useState(false);
+  const isChecked = (e) => {
+    if (e.target.checked) {
+      setIsCheck(true);
+      console.log("setIsCheck =====> ", isCheck);
+    } else {
+      console.log("setIsCheck =====> ", isCheck);
+    }
+  };
 
   // 아이디(이메일) 담기
   const handleInputId = (e) => {
@@ -49,19 +62,13 @@ const LoginPage = ({ no, isLogin }) => {
   };
   // 비밀번호 담기
   const handleInputPw = (e) => {
-    const passwordRegex =
-      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,25}$/;
     const passwordCurrent = e.target.value;
     setPassword(passwordCurrent);
     console.log(passwordCurrent);
-    if (!passwordCurrent || !passwordRegex.test(passwordCurrent)) {
+    if (!passwordCurrent) {
       setIsPassword(false);
-      setPasswordMessage(
-        "숫자+영문자+특수문자 조합으로 6자리 이상 입력해주세요."
-      );
     } else {
       setIsPassword(true);
-      setPasswordMessage("안전한 비밀번호 입니다.");
     }
   };
   // 로그인
@@ -90,6 +97,9 @@ const LoginPage = ({ no, isLogin }) => {
         window.location.reload();
         // 로그인을 실패하면 스프링에서 입력한 값만 vo에 담아 보내기때문에
         // member_no의 값은 0이 출력됨 -> 로그인을 실패한 걸 알 수 있음
+        if (isCheck === true) {
+          localStorage.setItem("user_no", res.data.member_no);
+        }
       } else if (res.data.member_no === 0) {
         alert("이메일 또는 비밀번호를 확인하세요");
       }
@@ -103,46 +113,48 @@ const LoginPage = ({ no, isLogin }) => {
         <h1>로그인</h1>
         <hr />
         <LDIV3>
-          <LDIV2>
-            <LINPUT
-              type="email"
-              placeholder="아이디(이메일)"
-              name="member_email"
-              value={email}
-              onChange={handleInputId}
+          <LDIV4>
+            <LDIV2>
+              <LINPUT
+                type="email"
+                placeholder="아이디(이메일)"
+                name="member_email"
+                value={email}
+                onChange={handleInputId}
+              />
+              {email.length > 0 && (
+                <VALIDDIV
+                  className={`message ${isEmail ? "success" : "error"}`}
+                >
+                  {emailMessage}
+                </VALIDDIV>
+              )}
+            </LDIV2>
+            <LDIV2>
+              <LINPUT
+                type="password"
+                placeholder="비밀번호"
+                name="member_password"
+                value={password}
+                onChange={handleInputPw}
+              />
+            </LDIV2>
+          </LDIV4>
+          <CHKDIV>
+            <CHKINPUT
+              type="checkbox"
+              value={isCheck}
+              onChange={isChecked}
+              id="autologin"
+              name="autologin"
             />
-            {email.length > 0 && (
-              <VALIDDIV className={`message ${isEmail ? "success" : "error"}`}>
-                {emailMessage}
-              </VALIDDIV>
-            )}
-          </LDIV2>
-          <LDIV2>
-            <LINPUT
-              type="password"
-              placeholder="비밀번호"
-              name="member_password"
-              value={password}
-              onChange={handleInputPw}
-            />
-            {password.length > 0 && (
-              <VALIDDIV
-                className={`message ${isPassword ? "success" : "error"}`}
-              >
-                {passwordMessage}
-              </VALIDDIV>
-            )}
-          </LDIV2>
+            <label htmlFor="autologin">자동로그인</label>
+          </CHKDIV>
           <LOGINDIV>
             <LOGINBTN onClick={memLogin} disabled={!(isEmail && isPassword)}>
               로그인
             </LOGINBTN>
-            <Link
-              to="/findidpass"
-              style={{ textDecoration: "none", color: "gray" }}
-            >
-              아이디 | 비밀번호 찾기
-            </Link>
+            <REGISTERLINK to="/findidpass">아이디 | 비밀번호 찾기</REGISTERLINK>
           </LOGINDIV>
           <BORDERDIV>SNS 계정으로 간편 로그인</BORDERDIV>
           <SOCIALDIV>
