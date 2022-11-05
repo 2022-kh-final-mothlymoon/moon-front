@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 /*
   <<<<< 회원 댓글 작성 폼 >>>>>
@@ -9,11 +9,15 @@ import { useNavigate } from 'react-router-dom';
 const MemberReplyForm = (props) => {
   console.log("memberReplyForm 호출 성공");
 
+  // 현재 글 번호 
+  const { board_no } = useParams();
+  console.log("현재 글 번호 : " +  board_no); // 이현 회원번호랑 댓글내용 작성하는 부분 어디야?
+  
   const navigate = useNavigate();
 
   // [C] 댓글 전송 버튼 ----------------------------------------
   const replySubmitBtn = (event) => {
-    if(window.confirm("글을 등록하시겠습니까?")) {
+    if(window.confirm("댓글을 등록하시겠습니까?")) {
       // 폼 전송이 일어나는 곳
       document.querySelector("#f_reply").action = "http://localhost:9005/member/board/replyInsert";
       document.querySelector("#f_reply").submit();
@@ -34,12 +38,9 @@ const MemberReplyForm = (props) => {
 
         <Form id="f_reply" method="get">
 
-          {/* 입력하지 않아도 들어가야할 내용..!! */}
-          {/* <input type="hidden" name="board_no" id="board_no" /> */}
-          <input type="hidden" name="reply_no" id="reply_no" />
-          <input type="hidden" name="reply_date" id="reply_date" />
+          <input type="hidden" name="board_no" id="board_no" value={ board_no } />
 
-          <Form.Group className="mb-3" controlId="formBasicReply_content">
+          <Form.Group className="mb-3" controlId="formBawsicReply_content">
             <Form.Control
               type="text" 
               name="reply_content" 
@@ -47,7 +48,8 @@ const MemberReplyForm = (props) => {
             />
           </Form.Group>
 
-          {/* 회원번호는 임시.. 로그인-세션과 결합 후 지울 것.. */}
+
+          {/* 회원번호는 임시.. 로그인-세션과 결합 후 지울 것.. */} 
           <Form.Group className="mb-3" controlId="formBasicMember_no">
             <Form.Label>회원번호</Form.Label>
             <Form.Control 
