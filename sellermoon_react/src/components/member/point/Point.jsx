@@ -3,21 +3,44 @@ import PointRow from './PointRow';
 import PointTotal from './PointTotal';
 import Header from './../Common/Header';
 import Footer from './../Common/Footer';
-import { CONTENTS } from './../../../styles/NoticeStyle';
 import SidebarMypage from './../Common/SidebarMypage';
 import Pagination from './../Common/Pagination';
 import NavbarMypage from './../Common/NavbarMypage';
+import { CONTENTS } from '../../../styles/NoticeStyle';
 import { POINT_P, POINT_LI } from '../../../styles/MypageStyle';
+import { pointlist } from '../../../service/dbLogic';
 
-const Point = ({ pointList }) => {
+const Point = ({ myPoint, no, isLogin }) => {
 
 
 /**************** 페이지네이션 선언 ********************/
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
+
 /* ************************************************** */
 
+  //포인트 리스트 가져오기 */
+
+  const [pointList, setPointList] = useState([])
+
+  useEffect(() => {
+    const pointList = async () => {
+        await pointlist({member_no: no}).then((res) => {
+          if (res.data === null) {
+            return 0;
+          } else {
+            //console.log(res);
+            console.log(res.data);
+            setPointList(res.data);
+          }
+        })
+    }
+    pointList()
+    }, [no])
+/* **************************************************** */
+
+  
   return (
     <>
       <Header />
@@ -31,8 +54,7 @@ const Point = ({ pointList }) => {
           <div className="col-9">
             <div className="list-wrapper">
 
-              <NavbarMypage pointList={pointList} />
-
+              <NavbarMypage myPoint={myPoint} />
 
               <p style={{fontSize:"1.4rem", fontWeight:"600"}}>적립금 현황</p>
                 <table style={{ width: "1020px", marginBottom:"90px" }}>
@@ -49,7 +71,7 @@ const Point = ({ pointList }) => {
                   </thead>
 
                   <tbody>
-                    <PointTotal pointList={pointList} />
+                    <PointTotal myPoint={myPoint} />
                   </tbody>
                 </table>
 
@@ -72,9 +94,11 @@ const Point = ({ pointList }) => {
 
                   <tbody>
                     {
+                      pointList.length > 0 ?
                       pointList.slice(offset, offset + limit).map((point, i) => (
                         <PointRow key={i} point={point} />
                       ))
+                      : <tr><td>내역이 없습니다.</td></tr>
                     }
                   </tbody>
                 </table>
@@ -88,7 +112,7 @@ const Point = ({ pointList }) => {
                 />
 
                 <POINT_P>적립금 사용기준 및 사용기한</POINT_P>
-                <ul style={{ marginTop: "10px" }}>
+                <ul style={{ marginTop: "10px", marginBottom: "100px" }}>
                   <POINT_LI>
                     적립금은 구매금액 제한 없이 현금처럼 사용하실 수 있습니다.
                   </POINT_LI>  

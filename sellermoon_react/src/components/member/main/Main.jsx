@@ -28,7 +28,7 @@ const Main = ({ isLogin, logout, no, isAdmin }) => {
         </>
       ) : null}
 
-      <Header isLogin={isLogin} logout={logout} no={no} isAdmin={isAdmin} />
+      <Header isLogin={isLogin} logout={logout} />
 
       <SliderBanner />
 

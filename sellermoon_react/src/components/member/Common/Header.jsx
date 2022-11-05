@@ -85,7 +85,7 @@ const Header = ({ isLogin, logout, no, isAdmin }) => {
                 className="btn position-relative"
                 onClick={() => {
                   isLogin === true
-                    ? navigate("/mypage/profile")
+                    ? navigate("/mypage/subscription")
                     : navigate("/login");
                 }}
               >

@@ -9,14 +9,6 @@ const Footer = () => {
 
   return (
     <>
-      {/* <Navbar
-        className="navbar navbar-expand-sm justify-content-center"
-        fixed="bottom"
-        bg="dark"
-        style={{ color: "white" }}
-      >
-        Monthly-Moon &copy; 2022
-      </Navbar> */}
       <footer>
         <div className="foot-container">
           <Row>
@@ -24,7 +16,7 @@ const Footer = () => {
               <div className="foot-row1">
                 <div style={{ display:"block" }}>
                   <span className="foot-span">고객센터</span>
-                  <div className="foot-btnbox">
+                  <div className="foot-btnbox" onClick={()=>{ navigate('/chat/login') }}>
                     1:1 채팅
                   </div>
                   <div className="foot-btnbox" onClick={()=>{ navigate('/faq') }}>

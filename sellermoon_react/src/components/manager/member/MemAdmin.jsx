@@ -28,10 +28,7 @@ const MemAdmin = ({ isLogin, isAdmin }) => {
     const keyword = document.querySelector("#keyword").value;
     console.log(gubun + "," + keyword);
     const asyncDB = async () => {
-      const res = await memberList({
-        gubun: gubun,
-        keyword: keyword,
-      });
+      const res = await memberList({ gubun: gubun, keyword: keyword });
       if (res.data) {
         console.log(res.data);
         setMembers(res.data);
@@ -81,13 +78,22 @@ const MemAdmin = ({ isLogin, isAdmin }) => {
             {/* ###################[[조건검색 끝]]####################### */}
           </Col>
           <table>
+            <colgroup>
+              <col style={{ width: "7%" }} />
+              <col style={{ width: "10%" }} />
+              <col style={{ width: "30%" }} />
+              <col style={{ width: "10%" }} />
+              <col style={{ width: "15%" }} />
+              <col style={{ width: "10%" }} />
+              <col style={{ width: "18%" }} />
+            </colgroup>
+
             <thead>
               <tr>
                 <th>회원번호</th>
                 <th>이름</th>
                 <th>이메일</th>
                 <th>가입일</th>
-                <th>회원등급</th>
                 <th>구독여부</th>
               </tr>
             </thead>

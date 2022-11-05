@@ -36,7 +36,8 @@ const Notice = () => {
       const oracleDB = async () => {
           //const result = await jsonDeptList({ DEPTNO: 30 }) -> 스프링콘솔에 com.example.demo.dao.DeptDao  : pMap : {DEPTNO=30}
           const result = await noticelist() // pMap : {}
-          console.log(result)
+          //console.log(result)
+          //console.log(result.data)
           //console.log(result.data[3])
           setNoticeList(result.data)
       }

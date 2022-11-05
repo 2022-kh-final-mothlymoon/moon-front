@@ -17,9 +17,7 @@ const MemAdminRow = ({ isLogin, isAdmin, member }) => {
         <td>{member.MEMBER_NAME}</td>
         <td>{member.MEMBER_EMAIL}</td>
         <td>{member.MEMBER_DATE}</td>
-        <td>{member.MEMBER_LEVEL}</td>
         <td>{member.SUB}</td>
-        <input type="checkbox" />
       </tr>
     </>
   );

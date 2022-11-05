@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Main from "./components/member/main/Main";
 import LoginPage from "./components/member/login/LoginPage";
@@ -16,14 +17,45 @@ import FaqDetail from "./components/member/faq/FaqDetail";
 import FaqAdmin from "./components/manager/faq/FaqAdmin";
 import FaqUpAdmin from "./components/manager/faq/FaqUpAdmin";
 import AdminLogin from "./components/manager/login/AdminLogin";
+import AMain from "./components/manager/pages/AMain";
+import Statics from "./components/manager/statics/Statics";
+import Customer from "./components/manager/member/Member";
+import Amd from "./components/manager/amd/Amd";
+import Order from "./components/manager/order/Order";
+import Board from "./components/manager/board/Board";
+import Store from "./components/manager/store/Store";
+import Cart from "./components/member/cart/Cart";
+import Products from "./components/member/product/Products";
+import ProductDetail from "./components/member/product/ProductDetail";
 import { useState } from "react";
 import { useEffect } from "react";
 import MemAdmin from "./components/manager/member/MemAdmin";
 import MemAdminDetail from "./components/manager/member/MemAdminDetail";
 import KakaoLogin from "./components/member/login/KakaoLogin";
 import NaverLogin from "./components/member/login/NaverLogin";
+import Point from "./components/member/point/Point";
+import Friends from "./components/member/point/Friends";
+import ChatLogin from "./components/member/chat/ChatLogin";
+import ChatMessage from "./components/member/chat/ChatMessage";
+import PointAdmin from "./components/manager/point/PointAdmin";
+import Subscription from "./components/member/subscription/Subscription";
+import { mypoint } from "./service/dbLogic";
+import AdminBoardDetail from "./components/manager/board/AdminBoardDetail";
+import AdminBoardList from "./components/manager/board/AdminBoardList";
+import MemberBoardList from "./components/member/board/MemberBoardList";
+import MemberBoardDetail from "./components/member/board/MemberBoardDetail";
+import MemberBoardForm from "./components/member/board/MemberBoardForm";
+import MemberBoardEditForm from "./components/member/board/MemberBoardEditForm";
+import pictureUpload from "./service/pictureUpload";
+import SPayment from "./components/member/Payment/SPayment";
+import StoreModify from "./components/manager/store/StoreModify";
+import StoreDetail from "./components/manager/store/StoreDetail";
+import AmdDetail from "./components/manager/amd/AmdDetail";
+import AmdModify from "./components/manager/amd/AmdModify";
+import Payment from "./components/member/Payment/Payment";
+import PaymentResult from "./components/member/PaymentResult/PaymentResult";
 
-function App() {
+function App({ authLogic }) {
   let [no, setNo] = useState(0); // 회원 번호 담기 props로 넘겨주기 위함
   let [adminId, setAdminId] = useState(""); // 관리자 id담기 props로 넘겨주기 위함
   const [isLogin, setIsLogin] = useState(false); // 로그인 상태 관리
@@ -35,7 +67,7 @@ function App() {
     ) {
       // session에 담긴 값이 null이 아닐때
       setNo(sessionStorage.getItem("user_no")); // user_no(회원번호) 가져옴
-      setNo(localStorage.getItem("user_no"));
+      //setNo(localStorage.getItem("user_no"));
     }
   }, [no]);
 
@@ -66,6 +98,27 @@ function App() {
     alert("로그아웃되었습니다.");
     window.location.reload();
   };
+
+  /* **************************************************** */
+  //토탈포인트 가져오기 */
+
+  const [myPoint, setMyPoint] = useState({ point_sum: "" });
+
+  useEffect(() => {
+    const myPoint = async () => {
+      await mypoint({ member_no: no }).then((res) => {
+        if (res.data === null) {
+          return 0;
+        } else {
+          //console.log(res);
+          //console.log(res.data);
+          setMyPoint(res.data);
+        }
+      });
+    };
+    myPoint();
+  }, [no]);
+  /* **************************************************** */
   return (
     <>
       <Routes>
@@ -142,6 +195,34 @@ function App() {
           }
         />
         <Route
+          path="/mypage/point"
+          element={<Point myPoint={myPoint} isLogin={isLogin} no={no} />}
+          exact={true}
+        />
+
+        <Route
+          path="/mypage/friends"
+          element={<Friends myPoint={myPoint} isLogin={isLogin} no={no} />}
+          exact={true}
+        />
+
+        <Route
+          path="/chat/login"
+          element={<ChatLogin authLogic={authLogic} />}
+          exact={true}
+        />
+        <Route
+          path="/chat/chatroom/:userId"
+          element={<ChatMessage authLogic={authLogic} />}
+          exact={true}
+        />
+
+        <Route
+          path="/mypage/subscription"
+          element={<Subscription myPoint={myPoint} isLogin={isLogin} no={no} />}
+          exact={true}
+        />
+        <Route
           path="/register"
           exact={true}
           element={
@@ -163,6 +244,38 @@ function App() {
           path="/faq/detail/:faq_no"
           element={<FaqDetail isLogin={isLogin} />}
           exact={true}
+        />
+        {/* 회원 주소 */}
+        <Route
+          path="/member/board/boardList"
+          exact={true}
+          element={<MemberBoardList />}
+        />
+        <Route
+          path="/member/board/boardDetail/:board_no"
+          exact={true}
+          element={<MemberBoardDetail />}
+        />
+        <Route
+          path="/member/board/boardForm"
+          exact={true}
+          element={<MemberBoardForm pictureUpload={pictureUpload} />}
+        />
+        <Route
+          path="/member/board/boardEditForm/:board_no"
+          exact={true}
+          element={<MemberBoardEditForm />}
+        />
+        <Route exact path="/payment" element={<Payment isLogin={isLogin} />} />
+        <Route
+          exact
+          path="/spayment"
+          element={<SPayment isLogin={isLogin} />}
+        />
+        <Route
+          exact
+          path="/payment/result"
+          element={<PaymentResult isLogin={isLogin} />}
         />
         {/* 관리자 페이지 영역 */}
         <Route
@@ -212,6 +325,73 @@ function App() {
           path="/admin/member/:member_no"
           element={<MemAdminDetail isLogin={isLogin} isAdmin={isAdmin} />}
           exact={true}
+        />
+        <Route
+          path="/admin/board/boardList"
+          exact={true}
+          element={<AdminBoardList />}
+        />
+        <Route
+          path="/admin/board/boardDetail/:board_no"
+          exact={true}
+          element={<AdminBoardDetail />}
+        />
+
+        <Route path="/admin/main" element={<AMain />} />
+
+        <Route path="/astatics" element={<Statics />} />
+
+        <Route path="/amember" element={<Customer />} />
+
+        <Route path="/amd" element={<Amd />} />
+
+        <Route path="/aorder" element={<Order />} />
+
+        <Route path="/aboard" element={<Board />} />
+
+        <Route path="/astore" element={<Store />} />
+
+        <Route path="/products" element={<Products />} />
+
+        <Route path="/product/:id" element={<ProductDetail />} />
+
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/admin/point" element={<PointAdmin />} exact={true} />
+        <Route
+          path="/admin/store"
+          element={<Store isLogin={isLogin} isAdmin={isAdmin} />}
+        />
+        <Route
+          path="/admin/store/modify/:STORE_NO"
+          element={<StoreModify isLogin={isLogin} isAdmin={isAdmin} />}
+        />
+        <Route
+          path="/admin/store/detail/:STORE_NO"
+          element={<StoreDetail isLogin={isLogin} isAdmin={isAdmin} />}
+        />
+        <Route
+          path="/admin/amd"
+          element={
+            <Amd
+              pictureUpload={pictureUpload}
+              isLogin={isLogin}
+              isAdmin={isAdmin}
+            />
+          }
+        />
+        <Route
+          path="/admin/amd/modify/:MD_NO"
+          element={
+            <AmdModify
+              pictureUpload={pictureUpload}
+              isLogin={isLogin}
+              isAdmin={isAdmin}
+            />
+          }
+        />
+        <Route
+          path="/admin/amd/detail/:MD_NO"
+          element={<AmdDetail isLogin={isLogin} isAdmin={isAdmin} />}
         />
       </Routes>
     </>
