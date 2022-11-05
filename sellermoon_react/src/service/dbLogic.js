@@ -204,7 +204,7 @@ export const jsonAmdList = (params) => {
     try {
       const response = axios({
         method: "get",
-        url: process.env.REACT_APP_SPRING_IP + "amd/jsonAmdList",
+        url: process.env.REACT_APP_SPRING_IP + "admin/amd/jsonAmdList",
         params: params,
       });
 
@@ -219,7 +219,7 @@ export const amdInsert = (params) => {
     try {
       const response = axios({
         method: "get",
-        url: process.env.REACT_APP_SPRING_IP + "amd/amdInsert",
+        url: process.env.REACT_APP_SPRING_IP + "admin/amd/amdInsert",
         params: params,
       });
 
