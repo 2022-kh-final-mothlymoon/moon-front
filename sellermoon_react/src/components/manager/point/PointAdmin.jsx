@@ -21,16 +21,20 @@ const PointAdmin = () => {
   const offset = (page - 1) * limit;
   /* ************************************************** */
 
-  /* noticelist 데이터 가져오기 */
+  /* 포인트리스트 데이터 가져오기 */
   useEffect(() => {
-    const oracleDB = async () => {
-        //const result = await jsonDeptList({ DEPTNO: 30 }) -> 스프링콘솔에 com.example.demo.dao.DeptDao  : pMap : {DEPTNO=30}
-        const result = await pointlist() // pMap : {}
-        //console.log(result)
-        console.log(result.data)
-        setPointList(result.data)
+    const pointList = async () => {
+        await pointlist().then((res) => {
+          if (res.data === null) {
+            return 0;
+          } else {
+            //console.log(res);
+            console.log(res.data);
+            setPointList(res.data);
+          }
+        })
     }
-    oracleDB()
+    pointList()
     }, [])
 
 

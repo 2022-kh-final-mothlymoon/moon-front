@@ -21,13 +21,13 @@ import AdminLogin from "./components/manager/login/AdminLogin";
 import { useState, useEffect } from "react";
 import MemAdmin from "./components/manager/member/MemAdmin";
 import MemAdminDetail from "./components/manager/member/MemAdminDetail";
-import { pointlist } from './service/dbLogic';
 import Point from './components/member/point/Point';
 import Friends from './components/member/point/Friends';
 import ChatLogin from './components/member/chat/ChatLogin';
 import ChatMessage from './components/member/chat/ChatMessage';
 import PointAdmin from './components/manager/point/PointAdmin';
 import Subscription from './components/member/subscription/Subscription';
+import { mypoint } from './service/dbLogic';
 
 
 function App({ authLogic }) {
@@ -67,18 +67,23 @@ function App({ authLogic }) {
 
   
   /* **************************************************** */
-  //pointList 데이터 가져오기 */
+  //토탈포인트 가져오기 */
 
-  const [pointList, setPointList] = useState([])
+  const [myPoint, setMyPoint] = useState({point_sum: ""})
 
-    useEffect(() => {
-      const oracleDB = async () => {
-        const result = await pointlist({member_no : no}) 
-        //console.log(result)
-        //console.log(result.data)
-        setPointList(result.data)
-      }
-    oracleDB()
+  useEffect(() => {
+    const myPoint = async () => {
+        await mypoint({member_no: no}).then((res) => {
+          if (res.data === null) {
+            return 0;
+          } else {
+            //console.log(res);
+            //console.log(res.data);
+            setMyPoint(res.data);
+          }
+        })
+    }
+    myPoint()
     }, [no])
 /* **************************************************** */
 
@@ -183,14 +188,14 @@ function App({ authLogic }) {
           exact={true}
         />
         
-        <Route path="/mypage/point" element={<Point pointList={pointList} isLogin={isLogin}  no={no} />} exact={true} />
+        <Route path="/mypage/point" element={<Point myPoint={myPoint} isLogin={isLogin}  no={no} />} exact={true} />
 
-        <Route path="/mypage/friends" element={<Friends pointList={pointList} isLogin={isLogin} no={no} />} exact={true} />
+        <Route path="/mypage/friends" element={<Friends myPoint={myPoint} isLogin={isLogin} no={no} />} exact={true} />
         
         <Route path="/chat/login" element={<ChatLogin authLogic={authLogic} />} exact={true} />
         <Route path="/chat/chatroom/:userId" element={<ChatMessage authLogic={authLogic} />} exact={true} />
         
-        <Route path="/mypage/subscription" element={<Subscription pointList={pointList} isLogin={isLogin} no={no} />} exact={true} />
+        <Route path="/mypage/subscription" element={<Subscription myPoint={myPoint} isLogin={isLogin} no={no} />} exact={true} />
         
 
 
@@ -244,7 +249,7 @@ function App({ authLogic }) {
           exact={true}
         />
 
-      <Route path="/admin/point" element={<PointAdmin pointList={pointList} />} exact={true} />
+      <Route path="/admin/point" element={<PointAdmin />} exact={true} />
       
       
       

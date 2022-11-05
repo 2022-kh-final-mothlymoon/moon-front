@@ -3,7 +3,7 @@ import { MYUL, MYLI1, MYLI2, MYSPAN, MYP } from './../../../styles/MypageStyle';
 
 const NavbarMypage = (props) => {
 
-  let result = props.point;
+  let result = props.myPoint;
 
   return (
     <>
@@ -29,7 +29,12 @@ const NavbarMypage = (props) => {
             적립금 
             <i className="fa-solid fa-angle-right"></i>
           </MYSPAN>
-          <MYP>{result.POINT_SUM.toLocaleString()} P</MYP>
+          <MYP>
+            {
+              result.POINT_SUM > 0 ? result.POINT_SUM : 0
+            }
+            &nbsp;P
+          </MYP>
         </MYLI2>
       </MYUL>
     </>

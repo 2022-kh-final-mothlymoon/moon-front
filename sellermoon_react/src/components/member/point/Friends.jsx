@@ -11,11 +11,11 @@ import FriendsAlert from './FriendsAlert';
 import { memberProfile } from '../../../service/dbLogic';
 import { useEffect } from 'react';
 
-const Friends = ({ pointList, no, isLogin }) => {
+const Friends = ({ myPoint, no, isLogin }) => {
 
   let [ alert, setAlert ] = useState(false);
 
-  const copyCode = ({pointList, no, isLogin}) => {
+  const copyCode = () => {
     setAlert(true)
     const code = document.getElementById('friendCode')
     code.select();
@@ -57,11 +57,7 @@ const Friends = ({ pointList, no, isLogin }) => {
           <div className="col-9 mb-5">
             <div className="list-wrapper">
                 
-              {
-                pointList.map((point, i) => (
-                  <NavbarMypage key={i} point={point} />
-                ))
-              }
+            <NavbarMypage myPoint={myPoint} />
 
                 <div style={{textAlign: "center", marginBottom: "150px"}}>
                   <FRIEND_IMG src="https://res.cloudinary.com/drxxdsv01/image/upload/v1667328789/%EC%B9%9C%EA%B5%AC%EC%B4%88%EB%8C%80_dvu6fy.png" alt="friend_event" />

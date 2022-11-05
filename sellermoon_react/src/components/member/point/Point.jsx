@@ -10,7 +10,7 @@ import { CONTENTS } from '../../../styles/NoticeStyle';
 import { POINT_P, POINT_LI } from '../../../styles/MypageStyle';
 import { pointlist } from '../../../service/dbLogic';
 
-const Point = ({ pointList, no, isLogin }) => {
+const Point = ({ myPoint, no, isLogin }) => {
 
 
 /**************** 페이지네이션 선언 ********************/
@@ -19,6 +19,26 @@ const Point = ({ pointList, no, isLogin }) => {
   const offset = (page - 1) * limit;
 
 /* ************************************************** */
+
+  //포인트 리스트 가져오기 */
+
+  const [pointList, setPointList] = useState([])
+
+  useEffect(() => {
+    const pointList = async () => {
+        await pointlist({member_no: no}).then((res) => {
+          if (res.data === null) {
+            return 0;
+          } else {
+            //console.log(res);
+            console.log(res.data);
+            setPointList(res.data);
+          }
+        })
+    }
+    pointList()
+    }, [no])
+/* **************************************************** */
 
   
   return (
@@ -34,11 +54,7 @@ const Point = ({ pointList, no, isLogin }) => {
           <div className="col-9">
             <div className="list-wrapper">
 
-              {
-                pointList.map((point, i) => (
-                  <NavbarMypage key={i} point={point} />
-                ))
-              }
+              <NavbarMypage myPoint={myPoint} />
 
               <p style={{fontSize:"1.4rem", fontWeight:"600"}}>적립금 현황</p>
                 <table style={{ width: "1020px", marginBottom:"90px" }}>
@@ -55,11 +71,7 @@ const Point = ({ pointList, no, isLogin }) => {
                   </thead>
 
                   <tbody>
-                    {
-                      pointList.map((point, i) => (
-                        <PointTotal key={i} point={point} />
-                      ))
-                    }
+                    <PointTotal myPoint={myPoint} />
                   </tbody>
                 </table>
 
@@ -82,9 +94,11 @@ const Point = ({ pointList, no, isLogin }) => {
 
                   <tbody>
                     {
+                      pointList.length > 0 ?
                       pointList.slice(offset, offset + limit).map((point, i) => (
                         <PointRow key={i} point={point} />
                       ))
+                      : <tr><td>내역이 없습니다.</td></tr>
                     }
                   </tbody>
                 </table>
