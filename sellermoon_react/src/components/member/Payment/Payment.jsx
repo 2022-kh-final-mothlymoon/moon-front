@@ -65,6 +65,8 @@ const Payment = () => {
         ORDER_DE_PRICE: res.paid_amount,
         ORDER_DE_CANCEL: "N",
         DELIVERY_STATUS: "상품준비중",
+        DELIVERY_ADDRESS: res.buyer_addr,
+        DELIVERY_PHONE: res.buyer_tel,
       };
 
       axios

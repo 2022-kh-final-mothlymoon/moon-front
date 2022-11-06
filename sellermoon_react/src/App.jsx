@@ -54,6 +54,7 @@ import AmdDetail from "./components/manager/amd/AmdDetail";
 import AmdModify from "./components/manager/amd/AmdModify";
 import Payment from "./components/member/Payment/Payment";
 import PaymentResult from "./components/member/PaymentResult/PaymentResult";
+import OrderD from "./components/member/orderdetail/OrderD";
 
 function App({ authLogic }) {
   let [no, setNo] = useState(0); // 회원 번호 담기 props로 넘겨주기 위함
@@ -276,6 +277,11 @@ function App({ authLogic }) {
           exact
           path="/payment/result"
           element={<PaymentResult isLogin={isLogin} />}
+        />
+        <Route
+          exact
+          path="/orderdetail/:ORDER_NO"
+          element={<OrderD isLogin={isLogin} />}
         />
         {/* 관리자 페이지 영역 */}
         <Route

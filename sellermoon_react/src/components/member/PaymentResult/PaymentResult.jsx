@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
-import { Route, useLocation, useParams } from "react-router-dom";
+import { Route, useLocation, useNavigate, useParams } from "react-router-dom";
 
 const PaymentResult = ({ props }) => {
+  let navigate = useNavigate();
   const location = useLocation();
 
   const ORDER_NO = location.state.ORDER_NO;
@@ -11,7 +12,13 @@ const PaymentResult = ({ props }) => {
   return (
     <>
       <strong>주문되었습니다</strong>
-      <Button>주문상세페이지로</Button>
+      <Button
+        onClick={() => {
+          navigate("/orderdetail/" + ORDER_NO);
+        }}
+      >
+        주문상세페이지로
+      </Button>
       <Button>홈으로</Button>
     </>
   );
