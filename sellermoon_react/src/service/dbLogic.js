@@ -204,7 +204,7 @@ export const jsonAmdList = (params) => {
     try {
       const response = axios({
         method: "get",
-        url: process.env.REACT_APP_SPRING_IP + "amd/jsonAmdList",
+        url: process.env.REACT_APP_SPRING_IP + "admin/amd/jsonAmdList",
         params: params,
       });
 
@@ -219,7 +219,7 @@ export const amdInsert = (params) => {
     try {
       const response = axios({
         method: "get",
-        url: process.env.REACT_APP_SPRING_IP + "amd/amdInsert",
+        url: process.env.REACT_APP_SPRING_IP + "admin/amd/amdInsert",
         params: params,
       });
 
@@ -371,6 +371,112 @@ export const jsonReplyList = (params) => {
         params: params,
       });
       resolve(rList);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// 리뷰 보기
+export const reviewList = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "onemdallreview",
+        params: params,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+// 리뷰 등록
+export const reviewInsert = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "insertreview",
+        params: params,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+// 리뷰 수정
+export const reviewModify = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "modreview",
+        params: params,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+// 리뷰 수정 위한 view
+export const modReview = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "modviewreview",
+        params: params,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+// 리뷰 삭제
+export const reviewDelete = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "delreview",
+        params: params,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+// 리뷰 좋아요
+export const likeReview = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "likereview",
+        params: params,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+// 마이페이지 리뷰
+export const myReview = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "memreview",
+        params: params,
+      });
+      resolve(response);
     } catch (error) {
       reject(error);
     }
