@@ -8,8 +8,10 @@ import firebaseApp from "./service/firebase";
 import { Provider, useSelector } from "react-redux";
 import { legacy_createStore } from "redux";
 import reducer, { initAuth } from "./store";
+import PictureUpload from "./service/pictureUpload";
 
 const authLogic = new AuthLogic(firebaseApp);
+const pictureUpload = new PictureUpload();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 let store = legacy_createStore(reducer);
@@ -22,7 +24,7 @@ store.dispatch(
 root.render(
   <BrowserRouter>
     <Provider store={store}>
-      <App authLogic={authLogic} />
+      <App authLogic={authLogic} pictureUpload={pictureUpload} />
     </Provider>
   </BrowserRouter>
 );

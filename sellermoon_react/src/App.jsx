@@ -46,8 +46,7 @@ import MemberBoardList from "./components/member/board/MemberBoardList";
 import MemberBoardDetail from "./components/member/board/MemberBoardDetail";
 import MemberBoardForm from "./components/member/board/MemberBoardForm";
 import MemberBoardEditForm from "./components/member/board/MemberBoardEditForm";
-import pictureUpload from "./service/pictureUpload";
-import SPayment from "./components/member/Payment/SPayment";
+//import SPayment from "./components/member/Payment/SPayment";
 import StoreModify from "./components/manager/store/StoreModify";
 import StoreDetail from "./components/manager/store/StoreDetail";
 import AmdDetail from "./components/manager/amd/AmdDetail";
@@ -55,8 +54,13 @@ import AmdModify from "./components/manager/amd/AmdModify";
 import Payment from "./components/member/Payment/Payment";
 import PaymentResult from "./components/member/PaymentResult/PaymentResult";
 import OrderD from "./components/member/orderdetail/OrderD";
+import OrderPage from "./components/member/Payment/OrderPage";
+import SorderPage from "./components/member/Payment/SorderPage";
+import OrderPage2 from "./components/member/Payment/OrderPage2";
+import OrderPage3 from "./components/member/Payment/OrderPage3";
+import OrderPage4 from "./components/member/Payment/OrderPage4";
 
-function App({ authLogic }) {
+function App({ authLogic, pictureUpload }) {
   let [no, setNo] = useState(0); // 회원 번호 담기 props로 넘겨주기 위함
   let [adminId, setAdminId] = useState(""); // 관리자 id담기 props로 넘겨주기 위함
   const [isLogin, setIsLogin] = useState(false); // 로그인 상태 관리
@@ -267,16 +271,47 @@ function App({ authLogic }) {
           exact={true}
           element={<MemberBoardEditForm />}
         />
-        <Route exact path="/payment" element={<Payment isLogin={isLogin} />} />
+        {/*  <Route exact path="/payment" element={<Payment isLogin={isLogin} />} />
         <Route
           exact
           path="/spayment"
           element={<SPayment isLogin={isLogin} />}
-        />
+        /> */}
         <Route
           exact
           path="/payment/result"
           element={<PaymentResult isLogin={isLogin} />}
+        />
+        <Route
+          exact
+          path="/payment"
+          element={<OrderPage isLogin={isLogin} no={no} myPoint={myPoint} />}
+        />
+        <Route
+          exact
+          path="/payment2"
+          element={<OrderPage2 isLogin={isLogin} no={no} myPoint={myPoint} />}
+        />
+        <Route
+          exact
+          path="/payment3"
+          element={<OrderPage3 isLogin={isLogin} no={no} myPoint={myPoint} />}
+        />
+        <Route
+          exact
+          path="/payment4"
+          element={<OrderPage4 isLogin={isLogin} no={no} myPoint={myPoint} />}
+        />
+        <Route
+          exact
+          path="/payments"
+          element={<Payment isLogin={isLogin} no={no} myPoint={myPoint} />}
+        />
+
+        <Route
+          exact
+          path="/spayment"
+          element={<SorderPage isLogin={isLogin} no={no} myPoint={myPoint} />}
         />
         <Route
           exact
@@ -349,7 +384,16 @@ function App({ authLogic }) {
 
         <Route path="/amember" element={<Customer />} />
 
-        <Route path="/amd" element={<Amd />} />
+        <Route
+          path="/amd"
+          element={
+            <Amd
+              pictureUpload={pictureUpload}
+              isLogin={isLogin}
+              isAdmin={isAdmin}
+            />
+          }
+        />
 
         <Route path="/aorder" element={<Order />} />
 

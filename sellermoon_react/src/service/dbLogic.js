@@ -406,3 +406,71 @@ export const jsonOrderDetail2 = (params) => {
     }
   });
 };
+
+/* 주문,결제 - 개별구매 */
+export const paymentlist = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "get",
+        url: process.env.REACT_APP_SPRING_IP + "paymentlist",
+        params: params,
+      });
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/* 총결제금액 - 개별구매 */
+export const paytotal = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "get",
+        url: process.env.REACT_APP_SPRING_IP + "paytotal",
+        params: params,
+      });
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/* 총결제금액 - 정기구독 */
+export const spaymentlist = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "get",
+        url: process.env.REACT_APP_SPRING_IP + "spaymentlist",
+        params: params,
+      });
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/* 주문,결제 - 정기구독 */
+export const spaytotal = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "get",
+        url: process.env.REACT_APP_SPRING_IP + "spaytotal",
+        params: params,
+      });
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
