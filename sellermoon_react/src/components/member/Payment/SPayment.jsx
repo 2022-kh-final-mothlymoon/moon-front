@@ -47,12 +47,12 @@ const SPayment = ({}) => {
       alert("결제 성공");
       console.log(res);
       console.log(res.merchant_uid);
-
+      navigate("/payment/result", { state: { ORDER_NO: res.merchant_uid } });
       let list = {
         // json 형태로 spring에 값을 넘김
         ORDER_NO: res.merchant_uid,
         MEMBER_NO: 1, /////////////////// 일단 상수로 넣음
-        CART_NO: "1", /////////////////// 일단 상수로 넣음
+        CART_NO: "2", /////////////////// 일단 상수로 넣음
         ORDER_PAYMENT: res.paid_amount,
         ORDER_AMOUNT: res.paid_amount,
         ORDER_DATE: `${new Date().getTime()}`,
@@ -64,15 +64,15 @@ const SPayment = ({}) => {
         ORDER_DE_PRICE: res.paid_amount,
         ORDER_DE_CANCEL: "N",
         DELIVERY_STATUS: "상품준비중",
+        DELIVERY_ADDRESS: res.buyer_addr,
+        DELIVERY_PHONE: res.buyer_tel,
       };
-      console.log("paymentInsert => " + JSON.stringify(list));
 
       axios
         .post(process.env.REACT_APP_SPRING_IP + "paymentInsert", list)
         .then((response) => {
           console.log(response);
           console.log(response.data);
-          navigate("/payment/result");
         })
         .catch((error) => {
           console.log(error);
@@ -106,7 +106,7 @@ const SPayment = ({}) => {
         <Form.Control
           type="text"
           name="amount"
-          defaultValue="100"
+          defaultValue="500"
           onChange={handleChangeForm}
         />
       </Form>

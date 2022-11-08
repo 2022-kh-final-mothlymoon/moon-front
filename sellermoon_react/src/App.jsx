@@ -56,6 +56,9 @@ import Payment from "./components/member/Payment/Payment";
 import PaymentResult from "./components/member/PaymentResult/PaymentResult";
 import MemberReview from "./components/member/product_review/MemberReview";
 import MyReview from "./components/member/mypage/MyReview";
+import OrderD from "./components/member/orderdetail/OrderD";
+import OrderPage from "./components/member/Payment/OrderPage";
+import SorderPage from "./components/member/Payment/SorderPage";
 
 function App({ authLogic }) {
   let [no, setNo] = useState(0); // 회원 번호 담기 props로 넘겨주기 위함
@@ -275,19 +278,31 @@ function App({ authLogic }) {
           element={<MemberBoardEditForm />}
         />
         <Route
-          exact={true}
-          path="/payment"
-          element={<Payment isLogin={isLogin} />}
-        />
-        <Route
-          exact={true}
-          path="/spayment"
-          element={<SPayment isLogin={isLogin} />}
-        />
-        <Route
-          exact={true}
+          exact
           path="/payment/result"
           element={<PaymentResult isLogin={isLogin} />}
+        />
+        <Route
+          exact
+          path="/payment"
+          element={<OrderPage isLogin={isLogin} no={no} myPoint={myPoint} />}
+        />
+
+        <Route
+          exact
+          path="/payments"
+          element={<Payment isLogin={isLogin} no={no} myPoint={myPoint} />}
+        />
+
+        <Route
+          exact
+          path="/spayment"
+          element={<SorderPage isLogin={isLogin} no={no} myPoint={myPoint} />}
+        />
+        <Route
+          exact
+          path="/orderdetail/:ORDER_NO"
+          element={<OrderD isLogin={isLogin} />}
         />
         <Route path="/products" element={<Products />} />
         <Route path="/product/:id" element={<ProductDetail />} />
