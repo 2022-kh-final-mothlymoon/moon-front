@@ -5,6 +5,8 @@ const NavbarMypage = (props) => {
 
   let result = props.myPoint;
 
+  const userLevel = sessionStorage.getItem("user_level");
+
   return (
     <>
       <MYUL>
@@ -21,7 +23,12 @@ const NavbarMypage = (props) => {
             회원등급 
             <i className="fa-solid fa-angle-right"></i>
           </MYSPAN>
-          <MYP>초승달</MYP>
+          <MYP>
+            {
+              userLevel === "0" ? "초승달"
+                : userLevel === "1" ? "반달" : "보름달"
+            }
+          </MYP>
         </MYLI2>
 
         <MYLI2>

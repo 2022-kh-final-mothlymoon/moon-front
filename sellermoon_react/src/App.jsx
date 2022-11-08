@@ -54,6 +54,8 @@ import AmdDetail from "./components/manager/amd/AmdDetail";
 import AmdModify from "./components/manager/amd/AmdModify";
 import Payment from "./components/member/Payment/Payment";
 import PaymentResult from "./components/member/PaymentResult/PaymentResult";
+import OrderPage from './components/member/Payment/OrderPage';
+import SorderPage from './components/member/Payment/SorderPage';
 
 function App({ authLogic }) {
   let [no, setNo] = useState(0); // 회원 번호 담기 props로 넘겨주기 위함
@@ -67,7 +69,6 @@ function App({ authLogic }) {
     ) {
       // session에 담긴 값이 null이 아닐때
       setNo(sessionStorage.getItem("user_no")); // user_no(회원번호) 가져옴
-      //setNo(localStorage.getItem("user_no"));
     }
   }, [no]);
 
@@ -166,7 +167,7 @@ function App({ authLogic }) {
           exact={true}
           element={
             isLogin ? (
-              <MyAccount isLogin={isLogin} no={no} logout={logout} />
+              <MyAccount isLogin={isLogin} no={no} logout={logout} myPoint={myPoint}/>
             ) : (
               <Navigate to="/login" />
             )
@@ -177,7 +178,7 @@ function App({ authLogic }) {
           exact={true}
           element={
             isLogin ? (
-              <MyAccountM isLogin={isLogin} no={no} logout={logout} />
+              <MyAccountM isLogin={isLogin} no={no} logout={logout} myPoint={myPoint} />
             ) : (
               <Navigate to="/login" />
             )
@@ -188,7 +189,7 @@ function App({ authLogic }) {
           exact={true}
           element={
             isLogin ? (
-              <MyDelAccount isLogin={isLogin} no={no} />
+              <MyDelAccount isLogin={isLogin} no={no}/>
             ) : (
               <Navigate to="/login" />
             )
@@ -266,17 +267,31 @@ function App({ authLogic }) {
           exact={true}
           element={<MemberBoardEditForm />}
         />
-        <Route exact path="/payment" element={<Payment isLogin={isLogin} />} />
-        <Route
-          exact
-          path="/spayment"
-          element={<SPayment isLogin={isLogin} />}
-        />
+
+
+
         <Route
           exact
           path="/payment/result"
           element={<PaymentResult isLogin={isLogin} />}
         />
+
+        <Route
+          exact
+          path="/payment"
+          element={<OrderPage isLogin={isLogin} no={no} myPoint={myPoint} />}
+        />
+
+        <Route
+          exact
+          path="/spayment"
+          element={<SorderPage isLogin={isLogin} no={no} myPoint={myPoint} />}
+        />
+
+
+
+
+
         {/* 관리자 페이지 영역 */}
         <Route
           path="/admin/login"

@@ -1,16 +1,16 @@
 import styled from "styled-components";
 
 export const P_STRONG = styled.p`
-  font-size: 1.4rem;
+  font-size: 1.48rem;
   font-weight: 600;
   border-bottom: 2px solid #b29d82;
   padding-bottom: 13px;
 `
 
 export const P_SMALL = styled.p`
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  margin: 70px 0 0 0;
+  margin: 0;
   padding: 0;
 `
 

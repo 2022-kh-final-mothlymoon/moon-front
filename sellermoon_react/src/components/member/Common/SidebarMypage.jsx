@@ -33,14 +33,10 @@ const SidebarMypage = () => {
             </LI_SIDE>
 
             <LI_SIDE onClick={()=>{ navigate('/')}}>
-              결제수단
-            </LI_SIDE>
-
-            <LI_SIDE onClick={()=>{ navigate('/')}}>
               사용후기
             </LI_SIDE>
 
-            <LI_SIDE onClick={()=>{ navigate('/')}}>
+            <LI_SIDE onClick={()=>{ navigate('/mypage/profile')}}>
               계정설정
             </LI_SIDE>
 
