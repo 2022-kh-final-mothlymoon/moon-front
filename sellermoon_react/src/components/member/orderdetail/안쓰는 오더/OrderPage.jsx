@@ -12,7 +12,7 @@ import {
   paytotal,
 } from "./../../../service/dbLogic";
 import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BROWN_BTN } from "../../../styles/NoticeStyle";
 import {
   FORM,
@@ -55,6 +55,19 @@ const OrderPage = ({ no, props, myPoint }) => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    const jquery = document.createElement("script");
+    jquery.src = "https://code.jquery.com/jquery-1.12.4.min.js";
+    const iamport = document.createElement("script");
+    iamport.src = "https://cdn.iamport.kr/js/iamport.payment-1.1.7.js";
+    document.head.appendChild(jquery);
+    document.head.appendChild(iamport);
+    return () => {
+      document.head.removeChild(jquery);
+      document.head.removeChild(iamport);
+    };
+  }, []);
 
   // const [payInfo, setPayInfo] = useState({
   //   member_no: no,
@@ -195,11 +208,10 @@ const OrderPage = ({ no, props, myPoint }) => {
 
   /* **************************************************** */
 
-  const onClickPayment = (e) => {
+  const onClickPayment = (props) => {
     e.preventDefault();
     const { IMP } = window;
     IMP.init("imp26765046"); // 가맹점 식별코드 // 결제 데이터 정의
-
     let data = {
       pg: "html5_inicis", // PG사 (필수항목)
       pay_method: "card", // 결제수단 (필수항목)
@@ -229,9 +241,10 @@ const OrderPage = ({ no, props, myPoint }) => {
       alert("결제 성공");
       console.log(res);
       console.log(res.merchant_uid);
-      navigate("/payment/result", { state: { ORDER_NO: res.merchant_uid } });
+      //navigate("/orderdetail/" + res.merchant_uid);
+      location.replace("/orderdetail/" + res.merchant_uid);
+
       let list = {
-        // json 형태로 spring에 값을 넘김
         ORDER_NO: res.merchant_uid,
         MEMBER_NO: no,
         CART_NO: "1", /////////////////// 일단 상수로 넣음 -> insert 안해도 될거가틈..

@@ -1,8 +1,8 @@
 import React from "react";
 import axios from "axios";
-import { P_SMALL, P_STRONG } from "../../../styles/SubStyle";
-import Footer from "../Common/Footer";
-import Header from "../Common/Header";
+import { P_SMALL, P_STRONG } from "../../../../styles/SubStyle";
+import Footer from "../../Common/Footer";
+import Header from "../../Common/Header";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import { Col, Row, Modal, Button } from "react-bootstrap";
 import {
@@ -10,10 +10,10 @@ import {
   memberProfile,
   paymentlist,
   paytotal,
-} from "./../../../service/dbLogic";
+} from "../../../../service/dbLogic";
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { BROWN_BTN } from "../../../styles/NoticeStyle";
+import { BROWN_BTN } from "../../../../styles/NoticeStyle";
 import {
   FORM,
   ORDER_CHECKS,
@@ -23,17 +23,17 @@ import {
   ORDER_SPAN,
   ORDER_UL,
   POINTSUM,
-} from "../../../styles/PaymentStyle";
+} from "../../../../styles/PaymentStyle";
 import {
   ORDER_WRAPPER,
   ORDER_CHECK,
   ORDER_BTN,
   ORDER_NUM2,
   ORDER_P2,
-} from "./../../../styles/PaymentStyle";
-import OrderPageRow from "./OrderPageRow";
+} from "../../../../styles/PaymentStyle";
+import OrderPageRow from "../../Payment/OrderPageRow";
 
-const OrderPage4 = ({ no, props, myPoint }) => {
+const OrderPage = ({ no, props, myPoint }) => {
   let navigate = useNavigate();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -56,7 +56,7 @@ const OrderPage4 = ({ no, props, myPoint }) => {
     md_name: "",
     //md_brand: "",
     md_price: 0,
-    order_amount: 500 /* 주문총금액 (상품금액*개수)  */,
+    order_amount: 0 /* 주문총금액 (상품금액*개수)  */,
     order_payment: 0 /* 총결제금액 (상품금액*개수 - 포인트사용) */,
     order_used_point: 0,
   });
@@ -76,14 +76,11 @@ const OrderPage4 = ({ no, props, myPoint }) => {
 
   // 수정하기 onChange 함수
   const EditChange = (e) => {
-    if (e.currentTarget == null) return;
-    e.preventDefault();
     setPayInfo({
-      ...payInfo, // 처음에 초기화된 정보에 얕은 복사 처리
-
+      ...payInfo,
       [e.target.name]: e.target.value,
     });
-    console.log(payInfo);
+    console.log(e.target.value);
   };
 
   ///// 다음 우편번호 찾기 함수 //////
@@ -121,7 +118,7 @@ const OrderPage4 = ({ no, props, myPoint }) => {
   /* payList 데이터 가져오기 */
   useEffect(() => {
     const paymentList = async () => {
-      await paymentlist({ member_no: no }).then((res) => {
+      await paymentList({ member_no: no }).then((res) => {
         if (res.data === null) {
           return 0;
         } else {
@@ -132,6 +129,34 @@ const OrderPage4 = ({ no, props, myPoint }) => {
     };
     paymentList();
   }, [no]);
+
+  /* 총결제금액 데이터 가져오기 */
+  useEffect(() => {
+    const payTotal = async () => {
+      await paytotal({ member_no: no }).then((res) => {
+        if (res.data === null) {
+          return 0;
+        } else {
+          console.log(res.data);
+          setPayInfo({ order_amount: res.data.ORDER_AMOUNT });
+        }
+      });
+    };
+    payTotal();
+  }, [no]);
+
+  /* *********포인트 모두사용************************* */
+
+  const pointUseAll = () => {
+    setPayInfo({
+      order_used_point: parseInt(myPoint.POINT_SUM),
+      order_amount: parseInt(payInfo.order_amount),
+      order_payment:
+        parseInt(payInfo.order_amount) - parseInt(payInfo.order_used_point),
+    });
+  };
+
+  /* **************************************************** */
 
   useEffect(() => {
     const jquery = document.createElement("script");
@@ -298,17 +323,65 @@ const OrderPage4 = ({ no, props, myPoint }) => {
               />
             </FORM>
             <Button onClick={EditChange}>저장하기</Button>
+            {/* ************적립금사용여부 ************ */}
+            <FORM>
+              <br />
+              <P_SMALL>적립금 사용</P_SMALL>
+              <div className="mt-2 mb-2 row">
+                <label className="col-sm-2 col-form-label">적립금</label>
+                <div className="col-sm-5 d-flex">
+                  <input
+                    type="number"
+                    name="order_used_point"
+                    onChange={EditChange}
+                    value={payInfo.order_used_point}
+                    className="form-control"
+                  />
+                  <BROWN_BTN onClick={pointUseAll} type="button">
+                    모두사용
+                  </BROWN_BTN>
+                </div>
+              </div>
+              <div className="mb-4 row">
+                <label className="col-sm-2 col-form-label"></label>
+                <div className="col-sm-7 d-flex">
+                  <span>&nbsp;보유 적립금</span>
+                  <POINTSUM>
+                    {myPoint.POINT_SUM > 0 ? myPoint.POINT_SUM : 0} P
+                  </POINTSUM>
+                </div>
+              </div>
+            </FORM>
+
+            {/* ********************************************************** */}
           </Col>
 
           <Col xs={6} md={5}>
             <ORDER_WRAPPER>
-              <P_SMALL>주문상품 / 총 1개</P_SMALL>
+              <P_SMALL>주문상품 / 총 {payList.length}개</P_SMALL>
+              <ORDER_UL>
+                {payList.map((pay, i) => (
+                  <OrderPageRow key={i} pay={pay} />
+                ))}
+              </ORDER_UL>
 
               <hr />
 
               <div className="d-flex justify-content-left">
                 <ORDER_NUM1>총 상품금액</ORDER_NUM1>
-                <ORDER_NUM2>500원</ORDER_NUM2>
+                <ORDER_NUM2>
+                  {parseInt(payInfo.order_amount).toLocaleString()}원
+                </ORDER_NUM2>
+              </div>
+
+              <div className="d-flex justify-content-left">
+                <ORDER_NUM1>적립금 사용</ORDER_NUM1>
+                <ORDER_NUM2>
+                  {parseInt(payInfo.order_used_point) > 0
+                    ? parseInt(payInfo.order_used_point).toLocaleString()
+                    : 0}
+                  원
+                </ORDER_NUM2>
               </div>
 
               <div className="d-flex justify-content-left">
@@ -320,7 +393,15 @@ const OrderPage4 = ({ no, props, myPoint }) => {
                 <ORDER_NUM1>
                   <strong>총 결제금액</strong>
                 </ORDER_NUM1>
-                <ORDER_P2>500 원</ORDER_P2>
+                <ORDER_P2>
+                  {parseInt(payInfo.order_used_point) > 0
+                    ? (
+                        parseInt(payInfo.order_amount) -
+                        parseInt(payInfo.order_used_point)
+                      ).toLocaleString()
+                    : parseInt(payInfo.order_amount).toLocaleString()}{" "}
+                  원
+                </ORDER_P2>
               </div>
 
               <hr />
@@ -363,4 +444,4 @@ const OrderPage4 = ({ no, props, myPoint }) => {
   );
 };
 
-export default OrderPage4;
+export default OrderPage;

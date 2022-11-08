@@ -74,13 +74,13 @@ const OrderD = (props) => {
       <br />
       배송 주소 : {odVO.DELIVERY_ADDRESS}
       <br />
-      주문자 : {odVO.MD_NAME}
+      주문자 : {odVO2.MEMBER_NAME}
       <br />
       전화번호 : {odVO.DELIVERY_PHONE}
       <br />
       결제수단 : {odVO.PURCHASE_METHOD}
       <br />
-      구매 상품 no : {odVO2.MD_NO}
+      구매 상품 no : {odVO2.MD_NAME}
       <br />
       구매 상품 갯수 : {odVO2.CART_QUANTITY}
       <br />
