@@ -93,7 +93,7 @@ const LoginPage = ({ no, isLogin }) => {
         sessionStorage.setItem("user_id", email); // 세션에 회원 이메일 저장 브라우저 닫기 전까지 유지
         sessionStorage.setItem("user_name", res.data.member_name); // 세션에 회원 이름 저장
         sessionStorage.setItem("user_no", res.data.member_no); // 세션에 회원 번호 저장
-        sessionStorage.setItem("user_level", res.data.member_level); // 세션에 회원 등급 저장
+        sessionStorage.setItem("user_level", res.data.member_level); // 세션에 회원 레벨 저장
         navigate("/");
         window.location.reload();
         // 로그인을 실패하면 스프링에서 입력한 값만 vo에 담아 보내기때문에

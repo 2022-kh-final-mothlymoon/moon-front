@@ -35,7 +35,7 @@ const NaverLogin = (props) => {
               sessionStorage.setItem("user_id", res.data.member_email); // 세션에 회원 이메일 저장 브라우저 닫기 전까지 유지
               sessionStorage.setItem("user_name", res.data.member_name); // 세션에 회원 이름 저장
               sessionStorage.setItem("user_no", res.data.member_no); // 세션에 회원 번호 저장
-              sessionStorage.setItem("user_level", res.data.member_level); // 세션에 회원 등급 저장
+              sessionStorage.setItem("user_level", res.data.member_level); // 세션에 회원 레벨 저장
               navigate("/");
               window.location.reload();
             });

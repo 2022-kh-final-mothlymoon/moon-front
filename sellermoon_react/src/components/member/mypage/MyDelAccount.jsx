@@ -3,10 +3,6 @@ import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { delMember } from "../../../service/dbLogic";
-import { CONTENTS } from "../../../styles/NoticeStyle";
-import Footer from "../Common/Footer";
-import Header from "../Common/Header";
-import SidebarMypage from './../Common/SidebarMypage';
 
 const MyDelAccount = ({ no }) => {
   let navigate = useNavigate();
@@ -40,19 +36,6 @@ const MyDelAccount = ({ no }) => {
   };
   return (
     <>
-      <Header />
-
-<div className="container">
-  <CONTENTS className="row">
-
-    <SidebarMypage />
-
-    <div className="col-9">
-      <div className="list-wrapper">
-
-
-{/* ************탈퇴 시작 ************ */}
-
       <h1>탈퇴하기</h1>
       이용약관 블라블라 적립금 다 없어짐 ㄱㅊ?
       <br />
@@ -67,17 +50,6 @@ const MyDelAccount = ({ no }) => {
         <label className="form-check-label">동의합니다</label>
       </div>
       <Button onClick={delMem}>탈퇴</Button>
-
-{/* ********************************************************** */}
-
-           </div> {/* end of list-wrapper */}
-          </div> {/* end of col */}
-
-        </CONTENTS>
-      </div> {/* end of container */}
-
-      <Footer />
-
     </>
   );
 };

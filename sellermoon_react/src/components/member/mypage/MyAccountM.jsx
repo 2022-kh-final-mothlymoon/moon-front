@@ -4,13 +4,8 @@ import { memberProfile, modifyProfile } from "../../../service/dbLogic";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import { Link, useNavigate } from "react-router-dom";
 import MyPassword from "./MyPassword";
-import Footer from "../Common/Footer";
-import Header from "../Common/Header";
-import { CONTENTS } from "../../../styles/NoticeStyle";
-import SidebarMypage from './../Common/SidebarMypage';
-import NavbarMypage from './../Common/NavbarMypage';
 
-const MyAccountM = ({ no, props, myPoint }) => {
+const MyAccountM = ({ no, props }) => {
   let navigate = useNavigate();
   const [show, setShow] = useState(false);
 
@@ -104,19 +99,6 @@ const MyAccountM = ({ no, props, myPoint }) => {
   };
   return (
     <>
-      <Header />
-
-      <div className="container">
-        <CONTENTS className="row">
-
-          <SidebarMypage />
-
-          <div className="col-9">
-            <div className="list-wrapper">
-
-              <NavbarMypage myPoint={myPoint} />
-
-{/* ************회원정보시작 ************ */}
       <div>
         <h1>회원정보</h1>&nbsp;&nbsp;
         <MyPassword no={no} />
@@ -184,18 +166,6 @@ const MyAccountM = ({ no, props, myPoint }) => {
       </Button>
       <br />
       <Link to={"/mypage/delmember"}>탈퇴하기</Link>
-{/* ********************************************************** */}
-
-            </div> {/* end of list-wrapper */}
-          </div> {/* end of col */}
-
-        </CONTENTS>
-      </div> {/* end of container */}
-
-      <Footer />
-
-
-
       {/* 우편번호 모달 */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -205,7 +175,6 @@ const MyAccountM = ({ no, props, myPoint }) => {
           <DaumPostcodeEmbed onComplete={handleComplete} {...props} />
         </Modal.Body>
       </Modal>
-
     </>
   );
 };

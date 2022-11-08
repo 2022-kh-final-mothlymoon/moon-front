@@ -54,8 +54,11 @@ import AmdDetail from "./components/manager/amd/AmdDetail";
 import AmdModify from "./components/manager/amd/AmdModify";
 import Payment from "./components/member/Payment/Payment";
 import PaymentResult from "./components/member/PaymentResult/PaymentResult";
-import OrderPage from './components/member/Payment/OrderPage';
-import SorderPage from './components/member/Payment/SorderPage';
+import MemberReview from "./components/member/product_review/MemberReview";
+import MyReview from "./components/member/mypage/MyReview";
+import OrderD from "./components/member/orderdetail/OrderD";
+import OrderPage from "./components/member/Payment/OrderPage";
+import SorderPage from "./components/member/Payment/SorderPage";
 
 function App({ authLogic }) {
   let [no, setNo] = useState(0); // 회원 번호 담기 props로 넘겨주기 위함
@@ -63,12 +66,12 @@ function App({ authLogic }) {
   const [isLogin, setIsLogin] = useState(false); // 로그인 상태 관리
   const [isAdmin, setIsAdmin] = useState(false); // 관리자 권한 관리
   useEffect(() => {
-    if (
-      sessionStorage.getItem("user_no") !== null ||
-      localStorage.getItem("user_no")
-    ) {
-      // session에 담긴 값이 null이 아닐때
+    // session에 담긴 값이 null이 아닐때
+    if (sessionStorage.getItem("user_no") !== null) {
       setNo(sessionStorage.getItem("user_no")); // user_no(회원번호) 가져옴
+      // 자동로그인 상태일 때
+    } else if (localStorage.getItem("user_no") !== null) {
+      setNo(localStorage.getItem("user_no")); // user_no(회원번호) 가져옴
     }
   }, [no]);
 
@@ -167,7 +170,7 @@ function App({ authLogic }) {
           exact={true}
           element={
             isLogin ? (
-              <MyAccount isLogin={isLogin} no={no} logout={logout} myPoint={myPoint}/>
+              <MyAccount isLogin={isLogin} no={no} logout={logout} />
             ) : (
               <Navigate to="/login" />
             )
@@ -178,7 +181,7 @@ function App({ authLogic }) {
           exact={true}
           element={
             isLogin ? (
-              <MyAccountM isLogin={isLogin} no={no} logout={logout} myPoint={myPoint} />
+              <MyAccountM isLogin={isLogin} no={no} logout={logout} />
             ) : (
               <Navigate to="/login" />
             )
@@ -189,7 +192,7 @@ function App({ authLogic }) {
           exact={true}
           element={
             isLogin ? (
-              <MyDelAccount isLogin={isLogin} no={no}/>
+              <MyDelAccount isLogin={isLogin} no={no} />
             ) : (
               <Navigate to="/login" />
             )
@@ -220,7 +223,14 @@ function App({ authLogic }) {
 
         <Route
           path="/mypage/subscription"
-          element={<Subscription myPoint={myPoint} isLogin={isLogin} no={no} />}
+          element={
+            <Subscription
+              myPoint={myPoint}
+              isLogin={isLogin}
+              no={no}
+              logout={logout}
+            />
+          }
           exact={true}
         />
         <Route
@@ -232,7 +242,7 @@ function App({ authLogic }) {
         />
         <Route
           path="/notice"
-          element={<Notice isLogin={isLogin} />}
+          element={<Notice isLogin={isLogin} logout={logout} no={no} />}
           exact={true}
         />
         <Route
@@ -267,15 +277,11 @@ function App({ authLogic }) {
           exact={true}
           element={<MemberBoardEditForm />}
         />
-
-
-
         <Route
           exact
           path="/payment/result"
           element={<PaymentResult isLogin={isLogin} />}
         />
-
         <Route
           exact
           path="/payment"
@@ -284,15 +290,34 @@ function App({ authLogic }) {
 
         <Route
           exact
+          path="/payments"
+          element={<Payment isLogin={isLogin} no={no} myPoint={myPoint} />}
+        />
+
+        <Route
+          exact
           path="/spayment"
           element={<SorderPage isLogin={isLogin} no={no} myPoint={myPoint} />}
         />
-
-
-
-
-
-        {/* 관리자 페이지 영역 */}
+        <Route
+          exact
+          path="/orderdetail/:ORDER_NO"
+          element={<OrderD isLogin={isLogin} />}
+        />
+        <Route path="/products" element={<Products />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route
+          exact={true}
+          path="/review"
+          element={<MemberReview isLogin={isLogin} no={no} />}
+        />
+        <Route
+          exact={true}
+          path="/mypage/review"
+          element={<MyReview isLogin={isLogin} no={no} myPoint={myPoint} />}
+        />
+        {/********************** 관리자 페이지 영역 *************************/}
         <Route
           path="/admin/login"
           element={
@@ -366,11 +391,6 @@ function App({ authLogic }) {
 
         <Route path="/astore" element={<Store />} />
 
-        <Route path="/products" element={<Products />} />
-
-        <Route path="/product/:id" element={<ProductDetail />} />
-
-        <Route path="/cart" element={<Cart />} />
         <Route path="/admin/point" element={<PointAdmin />} exact={true} />
         <Route
           path="/admin/store"

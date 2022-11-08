@@ -4,7 +4,7 @@ import { P_SMALL, P_STRONG } from "../../../styles/SubStyle";
 import Footer from "../Common/Footer";
 import Header from "../Common/Header";
 import DaumPostcodeEmbed from "react-daum-postcode";
-import { Col, Row, Modal } from "react-bootstrap";
+import { Col, Row, Modal, Button } from "react-bootstrap";
 import {
   modifyProfile,
   memberProfile,
@@ -33,7 +33,7 @@ import {
 } from "./../../../styles/PaymentStyle";
 import OrderPageRow from "./OrderPageRow";
 
-const Payment = (effect, deps) => {
+const OrderPage4 = ({ no, props, myPoint }) => {
   useEffect(() => {
     const jquery = document.createElement("script");
     jquery.src = "https://code.jquery.com/jquery-1.12.4.min.js";
@@ -224,24 +224,30 @@ const OrderPage = ({ no, props, myPoint }) => {
   };
 
   const callback = (res) => {
-    const { success } = res;
+    const {
+      success,
+      error_code,
+      error_msg,
+      imp_uid,
+      merchant_uid,
+      pay_method,
+      paid_amount,
+      status,
+    } = res;
     if (success) {
-      alert("결제 성공");
+      console.log("결제 성공");
       console.log(res);
       console.log(res.merchant_uid);
-      navigate("/payment/result", { state: { ORDER_NO: res.merchant_uid } });
-      let list = {
+      let data = {
         // json 형태로 spring에 값을 넘김
         ORDER_NO: res.merchant_uid,
         MEMBER_NO: no,
-        CART_NO: "1", /////////////////// 일단 상수로 넣음 -> insert 안해도 될거가틈..
-        //CART_NO: "",
-        ORDER_PAYMENT: res.paid_amount,
-        ORDER_AMOUNT:
-          parseInt(orderInfo.order_amount) -
-          parseInt(orderInfo.order_used_point),
+        //CART_NO: "1", /////////////////// 일단 상수로 넣음 -> insert 안해도 될거가틈..
+        CART_NO: "",
+        ORDER_PAYMENT: res.order_payment,
+        ORDER_AMOUNT: res.order_amount,
         ORDER_DATE: `${new Date().getTime()}`,
-        ORDER_USED_POINT: parseInt(orderInfo.order_used_point),
+        ORDER_USED_POINT: res.order_used_point,
         PURCHASE_NO: "p" + res.merchant_uid,
         PURCHASE_METHOD: res.pay_method + res.card_name + res.card_number,
         ORDER_DE_NO: "d" + res.merchant_uid,
@@ -251,10 +257,23 @@ const OrderPage = ({ no, props, myPoint }) => {
         DELIVERY_STATUS: "상품준비중",
         DELIVERY_ADDRESS: res.buyer_addr,
         DELIVERY_PHONE: res.buyer_tel,
+        pg: "html5_inicis", // PG사 (필수항목)
+        pay_method: "card", // 결제수단 (필수항목)
+        merchant_uid: `o_${new Date().getTime()}`,
+        name: payList[0].MD_NAME, // 주문명 (필수항목)
+        //amount: parseInt(payInfo.order_amount) - parseInt(payInfo.order_used_point), // 금액 (필수항목)
+        amount: 100,
+        buyer_name: memInfo.member_name, // 구매자 이름
+        buyer_tel: memInfo.member_phone, // 구매자 전화번호 (필수항목)
+        buyer_email: memInfo.member_email, // 구매자 이메일
+        buyer_addr: memInfo.member_address,
+        order_type: "개별구매",
+        //buyer_postalcode: "우편번호", // ....
       };
+      console.log("requestPay => " + JSON.stringify(data));
 
       axios
-        .post(process.env.REACT_APP_SPRING_IP + "paymentInsert", list)
+        .post(process.env.REACT_APP_SPRING_IP + "requestpay", data)
         .then((response) => {
           console.log(response);
           console.log(response.data);
@@ -262,6 +281,8 @@ const OrderPage = ({ no, props, myPoint }) => {
         .catch((error) => {
           console.log(error);
         });
+    } else {
+      console.log(`결제 실패 : ${error_msg}`);
     }
   };
 
@@ -502,4 +523,4 @@ const OrderPage = ({ no, props, myPoint }) => {
   );
 };
 
-export default OrderPage;
+export default OrderPage4;

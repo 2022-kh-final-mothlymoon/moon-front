@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Nav } from 'react-bootstrap';
-import Footer from '../../member/Common/Footer';
-import Header from '../../member/Common/Header';
-import TabCards from '../../member/main/TabCards';
+import Footer from '../Common/Footer';
+import Header from '../Common/Header';
+import TabCards from '../main/TabCards';
 import data from '../../../data.js'
 
 const Order = (props) => {
