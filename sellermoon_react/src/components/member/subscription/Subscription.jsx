@@ -17,7 +17,7 @@ import { subslist, subspurchase } from "../../../service/dbLogic";
 import { useState } from "react";
 import { subsdeliver } from "./../../../service/dbLogic";
 
-const Subscription = ({ myPoint, no, isLogin }) => {
+const Subscription = ({ myPoint, no, isLogin, logout }) => {
   const [subsList, setSubsList] = useState({
     member_name: "",
     member_address: "",
@@ -96,7 +96,7 @@ const Subscription = ({ myPoint, no, isLogin }) => {
 
   return (
     <>
-      <Header />
+      <Header isLogin={isLogin} logout={logout} />
       <div className="container">
         <CONTENTS className="row">
           <SidebarMypage />

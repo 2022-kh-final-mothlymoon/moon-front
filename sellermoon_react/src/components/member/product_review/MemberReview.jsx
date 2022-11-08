@@ -7,8 +7,10 @@ import { ImStarFull } from "react-icons/im";
 import { STARDIV } from "../../../styles/ReviewStyle";
 import { Button, Form, Modal } from "react-bootstrap";
 import Pagination from "../Common/Pagination";
+import Header from "../Common/Header";
+import Footer from "../Common/Footer";
 
-const MemberReview = ({ isLogin, no }) => {
+const MemberReview = ({ no, isLogin, logout }) => {
   const [reviews, setReviews] = useState([]); // 리뷰 리스트 담기
   const [content, setContent] = useState(""); // 작성할 리뷰 내용 담기
   const [show, setShow] = useState(false);
@@ -69,6 +71,7 @@ const MemberReview = ({ isLogin, no }) => {
   };
   return (
     <>
+      <Header isLogin={isLogin} logout={logout} />
       <div>
         <h1>리뷰페이지</h1>
         <button onClick={handleShow}>리뷰 쓰기</button>
@@ -83,6 +86,7 @@ const MemberReview = ({ isLogin, no }) => {
         page={page}
         setPage={setPage}
       />
+      <Footer isLogin={isLogin} logout={logout} />
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>리뷰 등록</Modal.Title>

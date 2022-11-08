@@ -5,9 +5,10 @@ import {
   reviewDelete,
   reviewModify,
 } from "../../../service/dbLogic";
-import { PLUSBTN } from "../../../styles/ReviewStyle";
+import { PLUSBTN, STARSPAN } from "../../../styles/ReviewStyle";
 import MemberReviewM from "./MemberReviewM";
 import { GoThumbsup } from "react-icons/go";
+import { ImStarFull } from "react-icons/im";
 
 const MemberReviewRow = ({ review, no }) => {
   const [limit, setLimit] = useState(30); // 더보기 버튼 글자수 제한
@@ -51,15 +52,17 @@ const MemberReviewRow = ({ review, no }) => {
       <br />
       <div>
         별점 :
-        {review.MD_STAR === 1
-          ? "★"
-          : review.MD_STAR === 2
-          ? "★★"
-          : review.MD_STAR === 3
-          ? "★★★"
-          : review.MD_STAR === 4
-          ? "★★★★"
-          : "★★★★★"}
+        {review.MD_STAR === 1 ? (
+          <STARSPAN>★</STARSPAN>
+        ) : review.MD_STAR === 2 ? (
+          <STARSPAN>★★</STARSPAN>
+        ) : review.MD_STAR === 3 ? (
+          <STARSPAN>★★★</STARSPAN>
+        ) : review.MD_STAR === 4 ? (
+          <STARSPAN>★★★★</STARSPAN>
+        ) : (
+          <STARSPAN>★★★★★</STARSPAN>
+        )}
       </div>
       내용 : {toggleEllipsis(review.MD_REVIEW_CONTENT, limit).string}
       {toggleEllipsis(review.MD_REVIEW_CONTENT, limit).isShowMore && (

@@ -38,7 +38,7 @@ const Main = ({ isLogin, logout, no, isAdmin }) => {
 
       <SocialBanner />
 
-      <Footer />
+      <Footer isLogin={isLogin} logout={logout} />
     </>
   );
 };

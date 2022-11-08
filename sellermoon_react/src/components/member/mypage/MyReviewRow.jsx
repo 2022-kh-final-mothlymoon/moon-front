@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import { reviewDelete } from "../../../service/dbLogic";
-import { PLUSBTN } from "../../../styles/ReviewStyle";
+import { PLUSBTN, STARSPAN } from "../../../styles/ReviewStyle";
 import MemberReviewM from "../product_review/MemberReviewM";
 
 const MyReviewRow = ({ review, no }) => {
@@ -31,18 +31,21 @@ const MyReviewRow = ({ review, no }) => {
   };
   return (
     <>
+      <br />
       상품명: {review.MD_NAME}
       <div>
         별점 :
-        {review.MD_STAR === 1
-          ? "★"
-          : review.MD_STAR === 2
-          ? "★★"
-          : review.MD_STAR === 3
-          ? "★★★"
-          : review.MD_STAR === 4
-          ? "★★★★"
-          : "★★★★★"}
+        {review.MD_STAR === 1 ? (
+          <STARSPAN>★</STARSPAN>
+        ) : review.MD_STAR === 2 ? (
+          <STARSPAN>★★</STARSPAN>
+        ) : review.MD_STAR === 3 ? (
+          <STARSPAN>★★★</STARSPAN>
+        ) : review.MD_STAR === 4 ? (
+          <STARSPAN>★★★★</STARSPAN>
+        ) : (
+          <STARSPAN>★★★★★</STARSPAN>
+        )}
       </div>
       내용 : {toggleEllipsis(review.MD_REVIEW_CONTENT, limit).string}
       {toggleEllipsis(review.MD_REVIEW_CONTENT, limit).isShowMore && (
@@ -59,7 +62,7 @@ const MyReviewRow = ({ review, no }) => {
       {no == review.MEMBER_NO ? (
         <button onClick={handleShow}>수정</button>
       ) : null}
-      &nbsp;
+      <br />
       <Modal show={show} onHide={handleClose}>
         <MemberReviewM review={review} no={no} />
       </Modal>

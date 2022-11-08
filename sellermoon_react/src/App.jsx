@@ -220,7 +220,14 @@ function App({ authLogic }) {
 
         <Route
           path="/mypage/subscription"
-          element={<Subscription myPoint={myPoint} isLogin={isLogin} no={no} />}
+          element={
+            <Subscription
+              myPoint={myPoint}
+              isLogin={isLogin}
+              no={no}
+              logout={logout}
+            />
+          }
           exact={true}
         />
         <Route
@@ -232,7 +239,7 @@ function App({ authLogic }) {
         />
         <Route
           path="/notice"
-          element={<Notice isLogin={isLogin} />}
+          element={<Notice isLogin={isLogin} logout={logout} no={no} />}
           exact={true}
         />
         <Route
@@ -293,7 +300,7 @@ function App({ authLogic }) {
         <Route
           exact={true}
           path="/mypage/review"
-          element={<MyReview isLogin={isLogin} no={no} />}
+          element={<MyReview isLogin={isLogin} no={no} myPoint={myPoint} />}
         />
         {/********************** 관리자 페이지 영역 *************************/}
         <Route

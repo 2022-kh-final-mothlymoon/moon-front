@@ -10,7 +10,7 @@ import { CONTENTS } from "../../../styles/NoticeStyle";
 import { POINT_P, POINT_LI } from "../../../styles/MypageStyle";
 import { pointlist } from "../../../service/dbLogic";
 
-const Point = ({ myPoint, no, isLogin }) => {
+const Point = ({ myPoint, no, isLogin, logout }) => {
   /**************** 페이지네이션 선언 ********************/
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
@@ -40,7 +40,7 @@ const Point = ({ myPoint, no, isLogin }) => {
 
   return (
     <>
-      <Header />
+      <Header isLogin={isLogin} logout={logout} />
       <div className="container">
         <CONTENTS className="row">
           <SidebarMypage />
@@ -135,7 +135,7 @@ const Point = ({ myPoint, no, isLogin }) => {
         </CONTENTS>
       </div>{" "}
       {/* end of container */}
-      <Footer />
+      <Footer isLogin={isLogin} logout={logout} />
     </>
   );
 };
