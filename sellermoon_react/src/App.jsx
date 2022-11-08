@@ -60,7 +60,7 @@ import OrderD from "./components/member/orderdetail/OrderD";
 import OrderPage from "./components/member/Payment/OrderPage";
 import SorderPage from "./components/member/Payment/SorderPage";
 
-function App({ authLogic }) {
+function App({ authLogic, pictureUpload }) {
   let [no, setNo] = useState(0); // 회원 번호 담기 props로 넘겨주기 위함
   let [adminId, setAdminId] = useState(""); // 관리자 id담기 props로 넘겨주기 위함
   const [isLogin, setIsLogin] = useState(false); // 로그인 상태 관리
