@@ -366,6 +366,7 @@ function App({ authLogic, pictureUpload }) {
           element={<MemAdminDetail isLogin={isLogin} isAdmin={isAdmin} />}
           exact={true}
         />
+        {/* 관리자 주소 */}
         <Route
           path="/admin/board/boardList"
           exact={true}

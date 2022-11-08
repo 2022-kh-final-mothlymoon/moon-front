@@ -230,13 +230,14 @@ export const amdInsert = (params) => {
   });
 };
 
-/*   Cart     */
-export const getAllCarts = () => {
+/*  현재 로그인한 유저의 장바구니 목록 조회   */
+export const getAllMyCartAPI = (type) => {
+  console.log(type);
   return new Promise((resolve, reject) => {
     try {
       const response = axios({
         method: "get",
-        url: process.env.REACT_APP_SPRING_IP + "cart/jsonList",
+        url: process.env.REACT_APP_SPRING_IP + "cart?type=" + type,
       });
 
       resolve(response);
@@ -246,12 +247,14 @@ export const getAllCarts = () => {
   });
 };
 
-export const getAllProductAPI = () => {
+/*  장바구니 담기   */
+export const insertCartAPI = (data) => {
   return new Promise((resolve, reject) => {
     try {
       const response = axios({
-        method: "get",
-        url: process.env.REACT_APP_SPRING_IP + "product/list",
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "cart",
+        data: data,
       });
 
       resolve(response);
@@ -261,6 +264,63 @@ export const getAllProductAPI = () => {
   });
 };
 
+/*  장바구니 수정   */
+export const updateCartAPI = (data) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "put",
+        url: process.env.REACT_APP_SPRING_IP + "cart",
+        data: data,
+      });
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/*  장바구니 삭제   */
+export const deleteCartAPI = (data) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "delete",
+        url: process.env.REACT_APP_SPRING_IP + "cart",
+        data: data,
+      });
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/*  모든 상품 목록 조회 (카테고라이징, 소팅, 페이징)  */
+export const getAllProductAPI = (e) => {
+  console.log(e);
+  return new Promise((resolve, reject) => {
+    var url = process.env.REACT_APP_SPRING_IP + "product/list";
+    url += "?page=" + e.page;
+    url += "&category=" + e.category;
+    url += "&sort=" + e.sort;
+
+    try {
+      const response = axios({
+        method: "get",
+        url: url,
+      });
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/*  상품 상세 조회  */
 export const getProductDetailAPI = (no) => {
   const url = process.env.REACT_APP_SPRING_IP + "product/detail?no=" + no;
   console.log(url);
