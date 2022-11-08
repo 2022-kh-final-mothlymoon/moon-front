@@ -41,7 +41,6 @@ const FindPass = (props) => {
   };
   return (
     <div>
-      <h1>비밀번호 찾기</h1>
       <hr />
       <Form>
         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -76,7 +75,7 @@ const FindPass = (props) => {
         </Form.Group>
       </Form>
       <Button variant="warning" onClick={findPass}>
-        비밀번호 찾기
+        임시비밀번호 발급받기
       </Button>
     </div>
   );

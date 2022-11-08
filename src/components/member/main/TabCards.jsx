@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { Navigate, Link } from 'react-router-dom';
 import { CARDDIV, BEST, CARDIMG } from '../../../styles/MainStyle';
 

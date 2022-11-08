@@ -1,17 +1,32 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { REDIRECT_URL, REST_API_KEY } from "../../../service/kakaologin";
 
 const KakaoLogin = (props) => {
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URL}&response_type=code`;
-  // 인가코드 받아오기
-  const code = new URL(window.location.href).searchParams.get("code");
+  let navigate = useNavigate();
+  useEffect(() => {
+    // 인가코드 받아오기
+    const code = new URL(window.location.href).searchParams.get("code");
+    console.log(code);
+    axios
+      .get(process.env.REACT_APP_SPRING_IP + `kakaologin?code=${code}`)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.member_no);
+        alert("로그인 성공");
+        sessionStorage.setItem("user_no", res.data.member_no); // 세션에 스프링에서 넘어온 member_no값 저장
+        sessionStorage.setItem("user_id", res.data.member_email); // 세션에 회원 이메일 저장 브라우저 닫기 전까지 유지
+        sessionStorage.setItem("user_name", res.data.member_name); // 세션에 회원 이름 저장
+        navigate("/");
+        window.location.reload();
+      });
+  }, []);
 
   return (
     <>
-      <div className="KaKaoBtn">
-        <a href={KAKAO_AUTH_URL}>카카오로 시작하기</a>
+      <div>
+        <h1>카카오 로그인 중...</h1>
       </div>
     </>
   );

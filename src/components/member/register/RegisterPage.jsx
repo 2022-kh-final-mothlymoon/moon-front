@@ -4,7 +4,19 @@ import DaumPostcodeEmbed from "react-daum-postcode";
 import axios from "axios";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
-import { RBUTTON, RDIV, RDIV2, RDIV3, RINPUT } from "../../../styles/Register";
+import {
+  RBUTTON,
+  RDIV,
+  RDIV2,
+  RDIV3,
+  RINPUT,
+  RNDIV,
+  RTEXTDIV,
+  RTEXTDIV2,
+  RVALIDDIV,
+  RZINPUT,
+} from "../../../styles/RegisterStyle";
+import { LOGINBTN, VALIDDIV } from "../../../styles/LoginStyle";
 
 const RegisterPage = (props) => {
   const registerM = (e) => {
@@ -14,7 +26,16 @@ const RegisterPage = (props) => {
     document.querySelector("#f_register").submit();
   };
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
+
+  // 오류 메시지 담기
+  const [emailMessage, setEmailMessage] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
+  // 유효성 검사
+  const [isEmail, setIsEmail] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
+  const [isName, setIsName] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -55,8 +76,18 @@ const RegisterPage = (props) => {
   };
 
   const eCheck = (e) => {
-    console.log(e.target.value);
-    setEmail(e.target.value);
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    const emailCurrent = e.target.value;
+    console.log(emailCurrent);
+    setEmail(emailCurrent);
+    if (!emailCurrent || !emailRegex.test(emailCurrent)) {
+      setIsEmail(false);
+      setEmailMessage("이메일 형식이 아닙니다.");
+    } else {
+      setIsEmail(true);
+      setEmailMessage("올바른 이메일 형식입니다.");
+    }
   };
 
   const emailChk = (e) => {
@@ -77,6 +108,34 @@ const RegisterPage = (props) => {
       .catch((err) => {});
   };
 
+  // 비밀번호 유효성 검사
+  const passwordChk = (e) => {
+    const passwordRegex =
+      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,25}$/;
+    const passwordCurrent = e.target.value;
+    setPassword(passwordCurrent);
+    console.log(passwordCurrent);
+    if (!passwordCurrent || !passwordRegex.test(passwordCurrent)) {
+      setIsPassword(false);
+      setPasswordMessage(
+        "숫자+영문자+특수문자 조합으로 6자리 이상 입력해주세요."
+      );
+    } else {
+      setIsPassword(true);
+      setPasswordMessage("안전한 비밀번호 입니다.");
+    }
+  };
+
+  const nameChk = (e) => {
+    const nameCurrent = e.target.value;
+    console.log(nameCurrent);
+    if (!nameCurrent) {
+      setIsName(false);
+    } else {
+      setIsName(true);
+    }
+  };
+
   return (
     <>
       <Header />
@@ -86,8 +145,8 @@ const RegisterPage = (props) => {
         <RDIV3>
           <form id="f_register" method="post">
             <RDIV2>
-              <label>이메일</label>
-              <RINPUT
+              <RTEXTDIV>이메일(아이디)</RTEXTDIV>
+              <RZINPUT
                 type="email"
                 name="member_email"
                 value={email}
@@ -102,21 +161,40 @@ const RegisterPage = (props) => {
                 이메일 중복검사
               </button>
             </RDIV2>
-            <RDIV2>
-              <label>비밀번호</label>
+            {email.length > 0 && (
+              <RVALIDDIV className={`message ${isEmail ? "success" : "error"}`}>
+                {emailMessage}
+              </RVALIDDIV>
+            )}
+            <RNDIV>
+              <RTEXTDIV>비밀번호</RTEXTDIV>
               <RINPUT
                 type="password"
                 name="member_password"
                 placeholder="Password"
+                onChange={passwordChk}
+                value={password}
               />
-            </RDIV2>
-            <RDIV2>
-              <label>이 름</label>
-              <RINPUT type="text" name="member_name" placeholder="이름" />
-            </RDIV2>
-            <RDIV2>
-              <label>우편번호</label>
+            </RNDIV>
+            {password.length > 0 && (
+              <RVALIDDIV
+                className={`message ${isPassword ? "success" : "error"}`}
+              >
+                {passwordMessage}
+              </RVALIDDIV>
+            )}
+            <RNDIV>
+              <RTEXTDIV2>이 름</RTEXTDIV2>
               <RINPUT
+                type="text"
+                name="member_name"
+                placeholder="이름"
+                onChange={nameChk}
+              />
+            </RNDIV>
+            <RDIV2>
+              <RTEXTDIV>우편번호</RTEXTDIV>
+              <RZINPUT
                 name="member_zipcode"
                 value={zipcode}
                 onChange={Inputzipcode}
@@ -130,8 +208,8 @@ const RegisterPage = (props) => {
                 우편번호 찾기
               </button>
             </RDIV2>
-            <RDIV2>
-              <label>주 소</label>
+            <RNDIV>
+              <RTEXTDIV2>주 소</RTEXTDIV2>
               <RINPUT
                 type="text"
                 name="member_address"
@@ -139,35 +217,35 @@ const RegisterPage = (props) => {
                 onChange={Inputaddress}
                 placeholder="주소"
               />
-            </RDIV2>
-            <RDIV2>
-              <label>상세주소</label>
+            </RNDIV>
+            <RNDIV>
+              <RTEXTDIV>상세주소</RTEXTDIV>
               <RINPUT
                 type="text"
                 name="member_address_detail"
                 placeholder="상세주소"
               />
-            </RDIV2>
-            <RDIV2>
-              <label>전화번호</label>
+            </RNDIV>
+            <RNDIV>
+              <RTEXTDIV>전화번호</RTEXTDIV>
               <RINPUT type="text" name="member_phone" placeholder="전화번호" />
-            </RDIV2>
-            <RDIV2>
-              <label>생일</label>
+            </RNDIV>
+            <RNDIV>
+              <RTEXTDIV2>생 일</RTEXTDIV2>
               <RINPUT name="member_birth" type="date" />
-            </RDIV2>
-            <RDIV2>
-              <label>추천인 코드</label>
-              <RINPUT name="member_recommend" type="text" />
-            </RDIV2>
+            </RNDIV>
+            <RNDIV>
+              <RTEXTDIV>추천인 코드</RTEXTDIV>
+              <RZINPUT name="member_recommend" type="text" />
+            </RNDIV>
             <RBUTTON>
-              <button
-                className="btn btn-outline-secondary"
+              <LOGINBTN
                 type="submit"
                 onClick={registerM}
+                disabled={!(isEmail && isPassword && isName)}
               >
                 회원가입
-              </button>
+              </LOGINBTN>
             </RBUTTON>
           </form>
         </RDIV3>

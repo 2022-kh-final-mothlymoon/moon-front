@@ -85,7 +85,7 @@ const Header = ({ isLogin, logout, no, isAdmin }) => {
                 className="btn position-relative"
                 onClick={() => {
                   isLogin === true
-                    ? navigate("/mypage/profile")
+                    ? navigate("/mypage/subscription")
                     : navigate("/login");
                 }}
               >
@@ -144,40 +144,14 @@ const Header = ({ isLogin, logout, no, isAdmin }) => {
                 </NavDropdown.Item>
               </NavDropdown>
 
-              <NavDropdown
-                title="Store"
+              <Nav.Link
                 id="basic-nav-dropdown"
                 className="nav-menu"
-              >
-                <NavDropdown.Item
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
-                  전체상품
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
-                  생리대
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
-                  탐폰
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
-                  굿즈
-                </NavDropdown.Item>
-              </NavDropdown>
+                onClick={() => {
+                  navigate("/products");
+                }}
+              >Store
+              </Nav.Link>
 
               <NavDropdown
                 title="Moon Story"
