@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Button, Form, Modal, Table } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { jsonMemoList } from '../../../service/dbLogic';
-import MemberSendMemoForm from './MemberSendMemoForm';
 
 const MemberReceiveMemoRow = (props) => {
   console.log("[회원] MemberReceiveMemoRow 호출 성공");
