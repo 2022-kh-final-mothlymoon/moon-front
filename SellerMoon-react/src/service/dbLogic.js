@@ -2,8 +2,6 @@
 
 import axios from "axios";
 
-// <<<<<<<<<< 공통 DB 시작 >>>>>>>>>>
-
 //게시글 전체조회/상세조회/조건검색
 export const jsonBoardList = (params) => {
   return new Promise((resolve, reject) => {
@@ -34,8 +32,20 @@ export const jsonReplyList = (params) => {
       reject(error);
     }
   })
+};
+
+// 쪽지 전체 조회 (send, receive)
+export const jsonMemoList = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const mList = axios({
+        method: "get",
+        url : process.env.REACT_APP_SPRING_IP + "member/memo/jsonMemoList",
+        params: params,
+      })
+      resolve(mList);
+    } catch (error) {
+      reject(error);
+    }
+  })
 }
-
-
-
-// <<<<<<<<<< 공통 DB 종료 >>>>>>>>>>

@@ -10,10 +10,8 @@ import MemberReplyList from '../reply/MemberReplyList';
     - 추가할 것 : (해당 글 번호 상세 페이지 진입 시) 조회수 증가, 좋아요/싫어요
 */
 const MemberBoardDetail = () => {
-  // 페이지 이동 시 필요한 객체 선언
   const navigate = useNavigate(); 
   
-  // 데이터 초기화 -----------------------------------------------------
   const { board_no } = useParams();
   const [ boardVO, setBoardVO ] = useState({
     BOARD_NO: 0,
@@ -29,7 +27,7 @@ const MemberBoardDetail = () => {
     FILENAME: "",
   });
 
-  // [R] 데이터 가져오기 -----------------------------------------------
+  // [R] 데이터 가져오기
   useEffect(() => {
     const boardDetailDB = async() => {
       console.log("[회원] : boardDetailDB 호출 성공")

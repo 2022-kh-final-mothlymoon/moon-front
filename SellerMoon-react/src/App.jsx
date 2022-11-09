@@ -1,13 +1,15 @@
 import React from "react"; 
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, Routes } from "react-router-dom";
-import AdminBoardDetail from "./components/admin/board/AdminBoardDetail";
-import AdminBoardList from "./components/admin/board/AdminBoardList";
+import pictureUpload from "./service/pictureUpload";
+import AdminBoardDetail from "./components/manager/board/AdminBoardDetail";
+import AdminBoardList from "./components/manager/board/AdminBoardList";
 import MemberBoardList from "./components/member/board/MemberBoardList";
 import MemberBoardDetail from "./components/member/board/MemberBoardDetail";
 import MemberBoardForm from "./components/member/board/MemberBoardForm";
 import MemberBoardEditForm from "./components/member/board/MemberBoardEditForm";
-import pictureUpload from "./service/pictureUpload";
+import MemberSendMemoList from "./components/member/memo/MemberSendMemoList";
+import MemberReceiveMemoList from "./components/member/memo/MemberReceiveMemoList";
 
 // 화면 구성 router 추가하기 (http://localhost:3000/ + )
 const App = () => {
@@ -45,7 +47,17 @@ const App = () => {
         <Route
           path="/member/board/boardEditForm/:board_no"
           exact={true}
-          element={<MemberBoardEditForm  />}
+          element={<MemberBoardEditForm />}
+        />
+        <Route
+          path="/member/memo/receiveMemoList"
+          exact={true}
+          element={<MemberReceiveMemoList />}
+        />
+        <Route
+          path="/member/memo/sendMemoList"
+          exact={true}
+          element={<MemberSendMemoList />}
         />
       </Routes>
     </>

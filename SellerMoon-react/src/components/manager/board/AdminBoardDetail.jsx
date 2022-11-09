@@ -11,7 +11,6 @@ import AdminReplyList from '../reply/AdminReplyList';
 const AdminBoardDetail = (props) => {
   const navigate = useNavigate(); 
   
-  // 데이터 초기화
   const { board_no } = useParams();
   const [ boardVO, setBoardVO] = useState({
     BOARD_NO: 0,
@@ -33,11 +32,10 @@ const AdminBoardDetail = (props) => {
   useEffect(() => {
     const boardDetailDB = async() => {
       console.log("[관리자] : boardDetailDB 호출 성공")
-      // spring - jsonBoardList 데이터 읽기
       const result = await jsonBoardList({ board_no: board_no });
       // console.log(result);
       // console.log(result.data);
-      setBoardVO(result.data[0]); // 한 건을 받아올 때는 [] 배열 사용
+      setBoardVO(result.data[0]);
     };
     boardDetailDB();
   }, [board_no]);
@@ -82,24 +80,19 @@ const AdminBoardDetail = (props) => {
   // ******************** RENDER ********************
   return (
     <>
-
       <div className='container'>
-
-
 
         <div>
           <h2>게시판 관리 (Moon Story)</h2>
           <hr />
         </div>
 
-
-
         <div>
           <Button variant="primary" onClick={listBtn}>목록으로</Button>
           <Button variant="danger" onClick={delBtn}>삭제</Button>
         </div>
 
-
+        <hr />
     
         <div>
           <div className="form-group">
@@ -148,9 +141,6 @@ const AdminBoardDetail = (props) => {
             <p>{ boardVO.BOARD_REPORT_COUNT }</p>
           </div>
 
-
-
-          {/* 블라인드 처리 폼 */}
           <div>
             <Form id="f_blind" method="get">
               <div className="form-group">
@@ -163,26 +153,18 @@ const AdminBoardDetail = (props) => {
                 </Form.Select>
               </div>
             </Form>
-
             <Button type="submit" variant="primary" onClick={blindSubmitBtn}>
               변경
             </Button>
           </div>
 
-
-
         </div>
-
-
 
         <div className='container'>
           <AdminReplyList />
         </div>
 
-
-
       </div>
-
     </>
   );
 }

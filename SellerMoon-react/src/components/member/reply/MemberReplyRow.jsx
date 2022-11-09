@@ -15,7 +15,7 @@ const MemberReplyRow = (props) => {
   const { board_no } = useParams();
   console.log("현재 글 번호 ===> " + board_no);
 
-  // [U] 수정 버튼 -----------------------------------------------------
+  // [U] 수정 버튼
   const editBtn = async() => {
     console.log("댓글 수정 버튼 클릭");
     console.log("수정할 댓글 번호 ===> " + props.reply.REPLY_NO);
@@ -36,22 +36,24 @@ const MemberReplyRow = (props) => {
   // ******************** RENDER ********************
   return (
     <>
+      <hr />
+      
       <table>
         <thead>
-
+          {/*
+            <tr>
+              <td>{ props.reply.BOARD_NO }</td>
+              <td>{ props.reply.REPLY_NO }</td>
+            </tr>
+          */}
           <tr>
-            <td>글 번호 : { props.reply.BOARD_NO }</td>
-            <td>댓글 번호 : { props.reply.REPLY_NO }</td>
-          </tr>
-
-          <tr>
-            <td>{ props.reply.REPLY_CONTENT }</td>
+            <td>{ props.reply.MEMBER_NAME }</td>
+            <td>{ props.reply.REPLY_DATE }</td>
           </tr>
         </thead> 
         <tbody>
           <tr>
-            <td>{ props.reply.MEMBER_NAME }</td>
-            <td>{ props.reply.REPLY_DATE }</td>
+            <td>{ props.reply.REPLY_CONTENT }</td>
           </tr>
         </tbody>
       </table>
