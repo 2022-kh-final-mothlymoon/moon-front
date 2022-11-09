@@ -16,42 +16,42 @@ const MemberReplyRow = (props) => {
   console.log("현재 글 번호 ===> " + board_no);
 
   // [U] 수정 버튼 -----------------------------------------------------
-  const editBtn = async() => {
+  const editBtn = async () => {
     console.log("댓글 수정 버튼 클릭");
     console.log("수정할 댓글 번호 ===> " + props.reply.REPLY_NO);
-  }
+  };
 
   // [D] 삭제 버튼 -----------------------------------------------------
-  const delBtn = async() => {
+  const delBtn = async () => {
     console.log("삭제할 댓글 번호 ===> " + props.reply.REPLY_NO);
-    if(window.confirm("삭제하시겠습니까?")) {
-      window.location.href 
-      = "http://localhost:9005/member/board/replyDelete?reply_no=" + props.reply.REPLY_NO;
+    if (window.confirm("삭제하시겠습니까?")) {
+      window.location.href =
+        "http://localhost:9005/member/board/replyDelete?reply_no=" +
+        props.reply.REPLY_NO;
       alert("삭제되었습니다.");
     } else {
       alert("취소되었습니다.");
     }
-  }
+  };
 
   // ******************** RENDER ********************
   return (
     <>
       <table>
         <thead>
-
           <tr>
-            <td>글 번호 : { props.reply.BOARD_NO }</td>
-            <td>댓글 번호 : { props.reply.REPLY_NO }</td>
+            <td>글 번호 : {props.reply.BOARD_NO}</td>
+            <td>댓글 번호 : {props.reply.REPLY_NO}</td>
           </tr>
 
           <tr>
-            <td>{ props.reply.REPLY_CONTENT }</td>
+            <td>{props.reply.REPLY_CONTENT}</td>
           </tr>
-        </thead> 
+        </thead>
         <tbody>
           <tr>
-            <td>{ props.reply.MEMBER_NAME }</td>
-            <td>{ props.reply.REPLY_DATE }</td>
+            <td>{props.reply.MEMBER_NAME}</td>
+            <td>{props.reply.REPLY_DATE}</td>
           </tr>
         </tbody>
       </table>
@@ -64,6 +64,6 @@ const MemberReplyRow = (props) => {
       </Button>
     </>
   );
-}
+};
 
 export default MemberReplyRow;

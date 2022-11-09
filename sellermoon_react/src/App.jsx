@@ -76,10 +76,10 @@ function App({ authLogic, pictureUpload }) {
   }, [no]);
 
   useEffect(() => {
-    if (
-      (sessionStorage.getItem("user_no") || localStorage.getItem("user_no")) !==
-      null
-    ) {
+    if (sessionStorage.getItem("user_no") !== null) {
+      console.log("isLogin ===> ", isLogin);
+      setIsLogin(true);
+    } else if (localStorage.getItem("user_no") !== null) {
       console.log("isLogin ===> ", isLogin);
       setIsLogin(true);
     } else if (sessionStorage.getItem("admin") !== null) {
@@ -169,11 +169,17 @@ function App({ authLogic, pictureUpload }) {
           path="/mypage/profile"
           exact={true}
           element={
-            isLogin ? (
-              <MyAccount isLogin={isLogin} no={no} logout={logout} />
+            isLogin &&
+            (isLogin ? (
+              <MyAccount
+                isLogin={isLogin}
+                no={no}
+                logout={logout}
+                myPoint={myPoint}
+              />
             ) : (
               <Navigate to="/login" />
-            )
+            ))
           }
         />
         <Route
@@ -181,7 +187,12 @@ function App({ authLogic, pictureUpload }) {
           exact={true}
           element={
             isLogin ? (
-              <MyAccountM isLogin={isLogin} no={no} logout={logout} />
+              <MyAccountM
+                isLogin={isLogin}
+                no={no}
+                logout={logout}
+                myPoint={myPoint}
+              />
             ) : (
               <Navigate to="/login" />
             )
@@ -192,7 +203,7 @@ function App({ authLogic, pictureUpload }) {
           exact={true}
           element={
             isLogin ? (
-              <MyDelAccount isLogin={isLogin} no={no} />
+              <MyDelAccount isLogin={isLogin} no={no} myPoint={myPoint} />
             ) : (
               <Navigate to="/login" />
             )
@@ -260,22 +271,22 @@ function App({ authLogic, pictureUpload }) {
         <Route
           path="/member/board/boardList"
           exact={true}
-          element={<MemberBoardList />}
+          element={<MemberBoardList no={no} />}
         />
         <Route
           path="/member/board/boardDetail/:board_no"
           exact={true}
-          element={<MemberBoardDetail />}
+          element={<MemberBoardDetail no={no} />}
         />
         <Route
           path="/member/board/boardForm"
           exact={true}
-          element={<MemberBoardForm pictureUpload={pictureUpload} />}
+          element={<MemberBoardForm pictureUpload={pictureUpload} no={no} />}
         />
         <Route
           path="/member/board/boardEditForm/:board_no"
           exact={true}
-          element={<MemberBoardEditForm />}
+          element={<MemberBoardEditForm no={no} />}
         />
         <Route
           exact
@@ -384,8 +395,6 @@ function App({ authLogic, pictureUpload }) {
 
         <Route path="/amember" element={<Customer />} />
 
-        <Route path="/amd" element={<Amd />} />
-
         <Route path="/aorder" element={<Order />} />
 
         <Route path="/aboard" element={<Board />} />
@@ -406,7 +415,7 @@ function App({ authLogic, pictureUpload }) {
           element={<StoreDetail isLogin={isLogin} isAdmin={isAdmin} />}
         />
         <Route
-          path="/admin/amd"
+          path="/admin/md"
           element={
             <Amd
               pictureUpload={pictureUpload}
@@ -416,7 +425,7 @@ function App({ authLogic, pictureUpload }) {
           }
         />
         <Route
-          path="/admin/amd/modify/:MD_NO"
+          path="/admin/md/modify/:MD_NO"
           element={
             <AmdModify
               pictureUpload={pictureUpload}
@@ -426,7 +435,7 @@ function App({ authLogic, pictureUpload }) {
           }
         />
         <Route
-          path="/admin/amd/detail/:MD_NO"
+          path="/admin/md/detail/:MD_NO"
           element={<AmdDetail isLogin={isLogin} isAdmin={isAdmin} />}
         />
       </Routes>

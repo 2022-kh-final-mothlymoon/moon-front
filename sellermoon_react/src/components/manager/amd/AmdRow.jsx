@@ -11,7 +11,7 @@ const AmdRow = (props) => {
         <td>[{props.amd.MD_BRAND}] </td>
         <td
           onClick={() => {
-            navigate("/admin/amd/detail/" + props.amd.MD_NO);
+            navigate("/admin/md/detail/" + props.amd.MD_NO);
           }}
           id="td-title"
         >

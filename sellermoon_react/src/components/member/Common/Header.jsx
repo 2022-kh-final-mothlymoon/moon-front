@@ -144,40 +144,15 @@ const Header = ({ isLogin, logout, no, isAdmin }) => {
                 </NavDropdown.Item>
               </NavDropdown>
 
-              <NavDropdown
-                title="Store"
+              <Nav.Link
                 id="basic-nav-dropdown"
                 className="nav-menu"
+                onClick={() => {
+                  navigate("/products");
+                }}
               >
-                <NavDropdown.Item
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
-                  전체상품
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
-                  생리대
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
-                  탐폰
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  onClick={() => {
-                    navigate("/");
-                  }}
-                >
-                  굿즈
-                </NavDropdown.Item>
-              </NavDropdown>
+                Store
+              </Nav.Link>
 
               <NavDropdown
                 title="Moon Story"
@@ -186,7 +161,7 @@ const Header = ({ isLogin, logout, no, isAdmin }) => {
               >
                 <NavDropdown.Item
                   onClick={() => {
-                    navigate("/");
+                    navigate("/member/board/boardList");
                   }}
                 >
                   커뮤니티
