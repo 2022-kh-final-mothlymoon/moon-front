@@ -12,12 +12,15 @@ const MemAdminRow = ({ isLogin, isAdmin, member }) => {
   };
   return (
     <>
-      <tr id="list" onClick={memberDetail}>
-        <td>{member.MEMBER_NO}</td>
-        <td>{member.MEMBER_NAME}</td>
-        <td>{member.MEMBER_EMAIL}</td>
-        <td>{member.MEMBER_DATE}</td>
-        <td>{member.SUB}</td>
+      <tr onClick={memberDetail}>
+        <td colSpan={10} className="bdr bdt">
+          <span style={{ marginRight: "15%" }}>{member.MEMBER_NO}</span>
+          <span style={{ marginRight: "10%" }}>{member.MEMBER_NAME}</span>
+          <span style={{ marginRight: "10%" }}>{member.MEMBER_EMAIL}</span>
+          <span style={{ marginRight: "12%" }}>{member.MEMBER_DATE}</span>
+          <span style={{ marginRight: "15%" }}>{member.MEMBER_LEVEL}</span>
+          <span>{member.SUB}</span>
+        </td>
       </tr>
     </>
   );

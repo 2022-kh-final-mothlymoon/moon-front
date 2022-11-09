@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { adminLogin } from "../../../service/dbLogic";
+import Footer from "../Common/Footer";
+import Header from "../Common/Header";
+import { Button } from "react-bootstrap";
 
 const AdminLogin = ({ isLogin, isAdmin }) => {
   let navigate = useNavigate();
@@ -32,7 +35,7 @@ const AdminLogin = ({ isLogin, isAdmin }) => {
         sessionStorage.setItem("admin", id);
         sessionStorage.setItem("level", 5);
         navigate("/admin/main");
-        //window.location.reload();
+        window.location.reload();
       } else if (res.data.member_no === 0) {
         alert("아이디 또는 비밀번호를 확인하세요");
       }
@@ -41,19 +44,40 @@ const AdminLogin = ({ isLogin, isAdmin }) => {
 
   return (
     <>
-      <h1>관리자 로그인 페이지</h1>
-      <hr />
-      <label>아이디</label>
-      <input type="text" name="admin_id" value={id} onChange={handleInputId} />
-      <br />
-      <label>비밀번호</label>
-      <input
-        type="password"
-        name="admin_password"
-        value={password}
-        onChange={handleInputPw}
-      />
-      <button onClick={adminLoginBtn}>로그인</button>
+      <Header />
+      <div style={{ width: 300, margin: "10rem auto" }}>
+        <h4 style={{ textAlign: "center" }}>로그인 후 이용해주세요</h4>
+        <div>
+          <input
+            type="text"
+            className="form-control"
+            id="floatingInput"
+            placeholder="아이디"
+            name="admin_id"
+            value={id}
+            onChange={handleInputId}
+            style={{ marginTop: 30 }}
+          />
+          <input
+            type="password"
+            className="form-control"
+            id="floatingPassword"
+            placeholder="비밀번호"
+            name="admin_password"
+            value={password}
+            onChange={handleInputPw}
+            style={{ marginTop: 10 }}
+          />
+        </div>
+        <Button
+          className="w-100 btn btn-lg btn-primary"
+          onClick={adminLoginBtn}
+          style={{ marginTop: 30 }}
+        >
+          로그인
+        </Button>
+      </div>
+      <Footer />
     </>
   );
 };

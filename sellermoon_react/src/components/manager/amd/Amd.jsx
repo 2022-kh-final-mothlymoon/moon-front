@@ -10,7 +10,7 @@ import { jsonAmdList, jsonStoreList } from "../../../service/dbLogic";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 
-const Amd = ({ pictureUpload, isLogin, isAdmin }) => {
+const Amd = ({ pictureUpload }) => {
   //페이지네이션
   const [limit, setLimit] = useState(8);
   const [page, setPage] = useState(1);

@@ -89,7 +89,7 @@ const AmdDetail = (props) => {
         <br />
         <Button
           onClick={() => {
-            navigate("/admin/amd/modify/" + amdVO.MD_NO);
+            navigate("/admin/md/modify/" + amdVO.MD_NO);
           }}
         >
           수정
@@ -97,7 +97,7 @@ const AmdDetail = (props) => {
         <Button onClick={amdDel}>삭제</Button>
         <Button
           onClick={() => {
-            navigate("/admin/amd");
+            navigate("/admin/md");
           }}
         >
           뒤로가기

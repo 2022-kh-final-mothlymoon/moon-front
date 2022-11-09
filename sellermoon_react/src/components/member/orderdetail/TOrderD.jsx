@@ -2,13 +2,18 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
 import {
   jsonOrderDetail,
   jsonOrderDetail2,
   paymentlist,
-  paytotal,
+  spaymentlist,
+  spaytotal,
 } from "../../../service/dbLogic";
+import { BANNER_P } from "../../../styles/MainStyle";
 import {
+  FORM,
+  ORDER_BTN,
   ORDER_NUM1,
   ORDER_NUM2,
   ORDER_P2,
@@ -17,26 +22,17 @@ import {
 import { P_STRONG, TABLE, TD } from "../../../styles/SubStyle";
 import Footer from "../Common/Footer";
 import Header from "../Common/Header";
-import OrderPageRow from "../Payment/OrderPageRow";
-import {
-  ORDER_BTN2,
-  BANNER_P2,
-  FORM2,
-  FORM3,
-  ORDER_UL2,
-  P_SMALL2,
-  P_STRONG2,
-} from "./TOrderD";
+import SorderPageRow from "../Payment/SorderPageRow";
 
-const OrderD = ({ no, props }) => {
+const TOrderD = ({ no, props }) => {
   const navigate = useNavigate();
   const { ORDER_NO } = useParams();
   const [payList, setPayList] = useState([]);
 
   /* payList 데이터 가져오기 */
   useEffect(() => {
-    const paymentList = async () => {
-      await paymentlist({ member_no: no }).then((res) => {
+    const spaymentList = async () => {
+      await spaymentlist({ member_no: no }).then((res) => {
         if (res.data === null) {
           return 0;
         } else {
@@ -45,7 +41,7 @@ const OrderD = ({ no, props }) => {
         }
       });
     };
-    paymentList();
+    spaymentList();
   }, [no]);
   const [orderInfo, setOrderInfo] = useState({
     cart_no: 0,
@@ -58,8 +54,8 @@ const OrderD = ({ no, props }) => {
   });
   /* 총결제금액 데이터 가져오기 */
   useEffect(() => {
-    const payTotal = async () => {
-      await paytotal({ member_no: no }).then((res) => {
+    const spayTotal = async () => {
+      await spaytotal({ member_no: no }).then((res) => {
         if (res.data === null) {
           return 0;
         } else {
@@ -68,7 +64,7 @@ const OrderD = ({ no, props }) => {
         }
       });
     };
-    payTotal();
+    spayTotal();
   }, [no]);
   const [odVO, setOdVO] = useState({
     ORDER_NO: "",
@@ -142,6 +138,7 @@ const OrderD = ({ no, props }) => {
         console.log(error);
       });
   };
+
   return (
     <>
       <Header />
@@ -152,11 +149,12 @@ const OrderD = ({ no, props }) => {
         <FORM3>
           <ORDER_UL2>
             {payList.map((pay, i) => (
-              <OrderPageRow key={i} pay={pay} />
+              <SorderPageRow key={i} pay={pay} />
             ))}
           </ORDER_UL2>
           <ORDER_UL2>배송 현황 : {odVO.DELIVERY_STATUS}</ORDER_UL2>
         </FORM3>
+        <br />
         사용 포인트 : {odVO.ORDER_USED_POINT}
         <br />
         취소여부 : {odVO.ORDER_DE_CANCEL}
@@ -241,4 +239,52 @@ const OrderD = ({ no, props }) => {
   );
 };
 
-export default OrderD;
+export default TOrderD;
+
+export const BANNER_P2 = styled.p`
+  text-align: center;
+  margin-top: 10px;
+  font-size: 20px;
+  line-height: 1.3;
+  font-weight: 700;
+  color: #5e514d;
+  border-bottom: 2px solid #b29d82;
+  padding-bottom: 30px;
+`;
+export const ORDER_BTN2 = styled.button`
+  width: 100px;
+  height: 50px;
+  color: #fafafa;
+  background-color: #5e514d;
+  border: none;
+  margin: 30px 15px 0 15px;
+  font-weight: 600;
+  font-size: 15px;
+`;
+
+export const P_STRONG2 = styled.p`
+  text-align: center;
+  font-size: 1.7rem;
+  margin: 30px 0 0 0;
+  font-weight: 600;
+  padding-bottom: 13px;
+`;
+
+export const P_SMALL2 = styled.p`
+  font-size: 1.15rem;
+  font-weight: 600;
+  padding: 0;
+`;
+
+export const FORM2 = styled.form`
+  padding: 20px 20px 50px 20px;
+  border-bottom: 2px solid #b29d82;
+`;
+
+export const FORM3 = styled.form`
+  border-top: 2px solid #b29d82;
+  border-bottom: 2px solid #b29d82;
+`;
+export const ORDER_UL2 = styled.ul`
+  margin: 0;
+`;

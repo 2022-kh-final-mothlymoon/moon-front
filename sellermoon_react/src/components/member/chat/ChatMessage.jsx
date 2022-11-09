@@ -1,11 +1,28 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, onValue, set } from "firebase/database";
-import { Button, Form, InputGroup } from 'react-bootstrap';
+import { Button, Form, InputGroup } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { CHAT_CONTAINER, CHAT_WRAPPER2, CHAT_FORM, PROFILE_PHOTO, MSG_LI_FRIEND, MSG_LI_MINE, MSG_UL, MSG_FRIEND, MSG_MINE, MSG_COL, MSG_TIME1, MSG_TIME2, MSG_NAME, CHAT_TITLE, GOHOME, SEND_CONTAINER, SEND_INPUT,  } from './../../../styles/ChatStyle';
-import { Link } from 'react-router-dom';
-
+import {
+  CHAT_CONTAINER,
+  CHAT_WRAPPER2,
+  CHAT_FORM,
+  PROFILE_PHOTO,
+  MSG_LI_FRIEND,
+  MSG_LI_MINE,
+  MSG_UL,
+  MSG_FRIEND,
+  MSG_MINE,
+  MSG_COL,
+  MSG_TIME1,
+  MSG_TIME2,
+  MSG_NAME,
+  CHAT_TITLE,
+  GOHOME,
+  SEND_CONTAINER,
+  SEND_INPUT,
+} from "./../../../styles/ChatStyle";
+import { Link } from "react-router-dom";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FS_APIKEY,
@@ -21,17 +38,13 @@ const firebaseApp = initializeApp(firebaseConfig);
 
 const database = getDatabase();
 
-
-
-
 const ChatMessage = ({ authLogic }) => {
-
-  const userId = window.localStorage.getItem("userId")
-  const userName = window.localStorage.getItem("userName")
-  const userPhoto = window.localStorage.getItem("userPhoto")
-    console.log("userUid===>" + userId)
-    console.log("userName===>" + userName)
-    console.log("photoURL===>" + userPhoto)
+  const userId = window.localStorage.getItem("userId");
+  const userName = window.localStorage.getItem("userName");
+  const userPhoto = window.localStorage.getItem("userPhoto");
+  console.log("userUid===>" + userId);
+  console.log("userName===>" + userName);
+  console.log("photoURL===>" + userPhoto);
 
   const formRef = useRef(); // html 노드 접근시 사용함
 
@@ -54,19 +67,18 @@ const ChatMessage = ({ authLogic }) => {
   });
 
   const setClock = () => {
-    const date = new Date()
-    const hour = ('0' + date.getHours()).slice(-2);
-    const min = ('0' + date.getMinutes()).slice(-2);
-    const sec = ('0' + date.getSeconds()).slice(-2);
+    const date = new Date();
+    const hour = ("0" + date.getHours()).slice(-2);
+    const min = ("0" + date.getMinutes()).slice(-2);
+    const sec = ("0" + date.getSeconds()).slice(-2);
 
     const year = date.getFullYear();
-    const month = ('0' + (date.getMonth() + 1)).slice(-2);
-    const day = ('0' + date.getDate()).slice(-2);
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    const day = ("0" + date.getDate()).slice(-2);
 
-    const curtime = year + '-' + month + '-' + day+" "+hour+":"+min
+    const curtime = year + "-" + month + "-" + day + " " + hour + ":" + min;
     return curtime;
-  }
-
+  };
 
   useEffect(() => {
     console.log(database);
@@ -79,28 +91,28 @@ const ChatMessage = ({ authLogic }) => {
   }, []);
 
   const send = (e) => {
-    if(e.key === "Enter") {
+    if (e.key === "Enter") {
       // submit 속성 사용 시 반드시 아래코드 추가할 것! - 버블링 방지
-      e.preventDefault()
+      e.preventDefault();
 
       // 사용자가 입력해서 제출하고 나면 폼 리셋되도록 해줌
       formRef.current.reset();
-      set(ref(database, "talk/"+message.m_no), message);
+      set(ref(database, "talk/" + message.m_no), message);
     }
   };
 
   // send 전송버튼 클릭 이벤트 (if문 제외)
   const handleSend = (e) => {
-      // submit 속성 사용 시 반드시 아래코드 추가할 것! - 버블링 방지
-      e.preventDefault()
+    // submit 속성 사용 시 반드시 아래코드 추가할 것! - 버블링 방지
+    e.preventDefault();
 
-      // 사용자가 입력해서 제출하고 나면 폼 리셋되도록 해줌
-      formRef.current.reset();
-      set(ref(database, "talk/"+message.m_no), message);
-    };
-  
+    // 사용자가 입력해서 제출하고 나면 폼 리셋되도록 해줌
+    formRef.current.reset();
+    set(ref(database, "talk/" + message.m_no), message);
+  };
+
   const handleChangeForm = (e) => {
-    if(e.currentTarget == null) return;
+    if (e.currentTarget == null) return;
     //console.log("폼 내용 변경 발생 name : "+e.target.name);
     //console.log("폼 내용 변경 발생 value : "+e.target.value);
 
@@ -110,20 +122,23 @@ const ChatMessage = ({ authLogic }) => {
       userName: userName,
       userPhoto: userPhoto,
       curtime: setClock(),
-      m_no: setClock(),
-      [e.target.name]: e.target.value
-    })
-  }
-
+      m_no: Date.now(),
+      [e.target.name]: e.target.value,
+    });
+  };
 
   return (
     <>
       <CHAT_CONTAINER>
         <CHAT_WRAPPER2>
-
-          <div className="d-flex justify-content-end" style={{position: "relative", margin: "10px 10px"}}>
+          <div
+            className="d-flex justify-content-end"
+            style={{ position: "relative", margin: "10px 10px" }}
+          >
             <Link to="/">
-              <GOHOME><i className="fa-solid fa-house"></i></GOHOME>
+              <GOHOME>
+                <i className="fa-solid fa-house"></i>
+              </GOHOME>
             </Link>
             <CHAT_TITLE> {userName}님의 1:1 채팅</CHAT_TITLE>
             <PROFILE_PHOTO src={userPhoto} alt="userPhoto" />
@@ -132,42 +147,50 @@ const ChatMessage = ({ authLogic }) => {
           <hr />
 
           <div>
-            <MSG_UL> {/* 삼항연산자로 상대방의 말풍선과 나의 말풍선 구분 */}
-              {
-                messages && Object.keys(messages).map((key) => (
-                  
-                  messages[key].userId === userId
-                  ?
+            <MSG_UL>
+              {" "}
+              {/* 삼항연산자로 상대방의 말풍선과 나의 말풍선 구분 */}
+              {messages &&
+                Object.keys(messages).map((key) =>
+                  messages[key].userId === userId ? (
                     <>
                       <MSG_LI_MINE key={key}>
-                        <MSG_TIME2>{messages[key].dateStr}&nbsp;{messages[key].curtime}</MSG_TIME2>
+                        <MSG_TIME2>
+                          {messages[key].dateStr}&nbsp;{messages[key].curtime}
+                        </MSG_TIME2>
                         <MSG_COL>
                           <MSG_MINE>{messages[key].msg}</MSG_MINE>
                         </MSG_COL>
                       </MSG_LI_MINE>
                     </>
-                  : 
+                  ) : (
                     <>
                       <MSG_LI_FRIEND key={key}>
-                        <PROFILE_PHOTO src={messages[key].userPhoto} alt="userPhoto" />
+                        <PROFILE_PHOTO
+                          src={messages[key].userPhoto}
+                          alt="userPhoto"
+                        />
                         <MSG_COL>
                           <MSG_NAME>{messages[key].userName}</MSG_NAME>
                           <MSG_FRIEND>{messages[key].msg}</MSG_FRIEND>
                         </MSG_COL>
-                        <MSG_TIME1>{messages[key].dateStr}&nbsp;{messages[key].curtime}</MSG_TIME1>
+                        <MSG_TIME1>
+                          {messages[key].dateStr}&nbsp;{messages[key].curtime}
+                        </MSG_TIME1>
                       </MSG_LI_FRIEND>
                     </>
-                ))
-              }
+                  )
+                )}
             </MSG_UL>
           </div>
-          
+
           <CHAT_FORM ref={formRef}>
-            <input type="hidden" 
-              ref={userIdRef} 
+            <input
+              type="hidden"
+              ref={userIdRef}
               name="userId"
-              onChange={handleChangeForm}  //////
-              />
+              onChange={handleChangeForm} //////
+            />
             <SEND_CONTAINER>
               <SEND_INPUT
                 className="search-input"
@@ -184,12 +207,9 @@ const ChatMessage = ({ authLogic }) => {
               </Button>
             </SEND_CONTAINER>
           </CHAT_FORM>
-          
-
         </CHAT_WRAPPER2>
       </CHAT_CONTAINER>
     </>
-    
   );
 };
 
