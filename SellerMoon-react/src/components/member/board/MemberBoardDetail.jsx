@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Form, Modal } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { jsonBoardList } from '../../../service/dbLogic';
 import MemberReplyForm from '../reply/MemberReplyForm';
@@ -9,9 +9,17 @@ import MemberReplyList from '../reply/MemberReplyList';
   <<<<< 회원 게시판 상세 조회 >>>>>
     - 추가할 것 : (해당 글 번호 상세 페이지 진입 시) 조회수 증가, 좋아요/싫어요
 */
-const MemberBoardDetail = () => {
-  const navigate = useNavigate(); 
+const MemberBoardDetail = ({ props, no, isLogin }) => {
+  console.log("MemberBoardDetail 호출 성공");
   
+  const navigate = useNavigate(); 
+
+  // 신고 모달 관련
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  
+  // 데이터 초기화 
   const { board_no } = useParams();
   const [ boardVO, setBoardVO ] = useState({
     BOARD_NO: 0,
@@ -73,6 +81,17 @@ const MemberBoardDetail = () => {
   //   // if 좋아요가 눌러져있는 상태에서 싫어요를 클릭한다면?
   //   // 좋아요 -1 후 싫어요 +1
   // }
+
+  // [C] 신고 폼 전송하기
+  const sendReport = () => {
+    if(window.confirm("해당 게시글을 신고 하시겠습니까?")) {
+      window.location.href 
+      = "http://localhost:9005/member/report/reportInsert";
+      alert("신고되었습니다.");
+    } else {
+      alert("취소되었습니다.");
+    }
+  }
 
   // 목록으로 버튼
   const listBtn = () => {
@@ -164,6 +183,11 @@ const MemberBoardDetail = () => {
           </div>
           {/* 좋아요/싫어요 버튼 종료 */}
 
+          <div>
+            <Button variant="danger" onClick={handleShow}>
+              신고
+            </Button>
+          </div>
         </div>
         {/******************** 선택한 글 상세 보기 종료 ********************/}
       
@@ -176,6 +200,69 @@ const MemberBoardDetail = () => {
         <div>
           <MemberReplyForm />
         </div>
+
+        {/* 신고 모달 */}
+        <Modal show={show} onHide={handleClose} animation={false}>
+        
+          <Modal.Header closeButton>
+            <Modal.Title>신고하기</Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            <Form id="f_report" method="get">
+
+              <input type="hidden" name="member_no" id="member_no" value={no} />
+            
+              <Form.Group className="mb-3" controlId="formBasicFromMsg">
+                <Form.Label>신고 내용</Form.Label>
+                <p>신고할 글 내용을 확인해주세요.</p>
+                <Form.Control 
+                  type="text"
+                  as="textarea"
+                  name="to_id"
+                  plaintext readOnly defaultValue={ boardVO.BOARD_CONTENT }
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicFromMsg">
+                <Form.Label>신고 사유 선택</Form.Label>
+                <Form.Select id="report_sort" name="report_sort">
+                    <option value="">신고 사유를 선택헤주세요.</option>
+                    <option value="욕설, 비방, 차별, 혐오">욕설, 비방, 차별, 혐오</option>
+                    <option value="홍보, 영리목적">홍보, 영리목적</option>
+                    <option value="불법 정보">불법 정보</option>
+                    <option value="음란, 청소년 유해">음란, 청소년 유해</option>
+                    <option value="개인 정보 노출, 유포, 거래">개인 정보 노출, 유포, 거래</option>
+                    <option value="도배, 스팸">도배, 스팸</option>
+                    <option value="기타">기타</option>
+                </Form.Select>
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicMember_no">
+                <Form.Label>신고 이유</Form.Label>
+                <p>신고 이유를 작성해주세요.</p>
+                <Form.Control
+                  type="text"
+                  as="textarea"
+                  name="report_reason"
+                />
+              </Form.Group>
+
+            </Form>
+
+            <Modal.Footer>
+              <Button variant="primary" onClick={handleClose}>
+                취소
+              </Button>
+              <Button variant="danger" onClick={sendReport}>
+                신고
+              </Button>
+            </Modal.Footer>
+
+          </Modal.Body>
+        </Modal>
+
+
       </div>
     </>
   );
