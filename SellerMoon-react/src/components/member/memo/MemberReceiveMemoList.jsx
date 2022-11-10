@@ -38,6 +38,7 @@ const MemberReceiveMemoList = ({ props, no, isLogin }) => {
     memoListDB();
   }, []);
 
+  // ******************** RENDER ********************
   return (
     <>
       <div className='container'>
@@ -83,17 +84,16 @@ const MemberReceiveMemoList = ({ props, no, isLogin }) => {
         {/* 쪽지 보내기 모달 */}
         {/* 세션에서 받아온 로그인 한 회원 user_id, user_no 들어가야해! */}
         <Modal show={show} onHide={handleClose} animation={false}>
+          
           <Modal.Header closeButton>
             <Modal.Title>쪽지 보내기</Modal.Title>
           </Modal.Header>
+
           <Modal.Body>
-
             <Form id="f_sendMemo" method="get">
-
               <input type="hidden" name="msg_no" id="msg_no" />
               <input type="hidden" name="read_yn" id="read_yn" />
               <input type="hidden" name="from_id" id="from_id" value={user_id} />
-              {/* <input type="hidden" name="member_no" id="member_no" value={no} /> */}
 
               <Form.Group className="mb-3" controlId="formBasicFromMsg">
                 <Form.Label>받는 사람</Form.Label>
@@ -103,6 +103,7 @@ const MemberReceiveMemoList = ({ props, no, isLogin }) => {
                   placeholder="받는 사람의 이메일을 입력하세요."
                 />
               </Form.Group>
+
               <Form.Group className="mb-3" controlId="formBasicFromMsg">
                 <Form.Label>내용</Form.Label>
                 <Form.Control 
@@ -124,8 +125,8 @@ const MemberReceiveMemoList = ({ props, no, isLogin }) => {
               </Form.Group>
 
             </Form>
-
           </Modal.Body>
+
           <Modal.Footer>
             <Button variant="info" onClick={sendMemoBtn}>
               전송

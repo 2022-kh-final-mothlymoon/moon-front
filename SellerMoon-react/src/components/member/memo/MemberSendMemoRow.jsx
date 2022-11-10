@@ -12,8 +12,8 @@ const MemberSendMemoRow = (props) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
-  
- // [D] 쪽지 한 건 삭제하기
+
+  // [D] 쪽지 한 건 삭제하기
   const msgDelBtn = () => {
   // alert("삭제 버튼 클릭");
   console.log("삭제할 쪽지 번호 ===> " + props.memo.MSG_NO);
@@ -47,7 +47,6 @@ const MemberSendMemoRow = (props) => {
               </Button>
             </td>
             <td>{ props.memo.MSG_SEND_DATE }</td>
-            <td>{ props.memo.READ_YN }</td>
             <td><Button variant="danger" onClick={msgDelBtn}>삭제</Button></td>
           </tr>
         </>
