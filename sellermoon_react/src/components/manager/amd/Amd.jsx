@@ -10,7 +10,7 @@ import { jsonAmdList, jsonStoreList } from "../../../service/dbLogic";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 
-const Amd = ({ pictureUpload }) => {
+const Amd = ({ props, pictureUpload }) => {
   //페이지네이션
   const [limit, setLimit] = useState(8);
   const [page, setPage] = useState(1);
@@ -32,8 +32,7 @@ const Amd = ({ pictureUpload }) => {
     MD_DETAIL_IMAGE_URL: null,
   });
 
-  // html 렌더링 된 후 호출됨
-  // 엠디리스트
+  // html 렌더링 된 후 호출됨 -> amdList 불러오기용(다건용)
   useEffect(() => {
     console.log("useEffect 호출");
     const oracleDB = async () => {
@@ -47,12 +46,11 @@ const Amd = ({ pictureUpload }) => {
     oracleDB();
   }, []);
 
-  // 옵션값용
+  // store 옵션값 불러오기용
   useEffect(() => {
     console.log("useEffect 호출");
     const storeDB = async () => {
       console.log("storeDB 호출");
-      //const result = await jsonDeptList({ DEPTNO: 30 }) -> 스프링콘솔에 com.example.demo.dao.DeptDao  : pMap : {DEPTNO=30}
       const result = await jsonStoreList(); // pMap : {}
       console.log(result);
       console.log(result.data[0]);
@@ -60,16 +58,19 @@ const Amd = ({ pictureUpload }) => {
     };
     storeDB();
   }, []);
+
   const store = [];
+
+  // store 옵션값 push용
   for (let i = 0; i < storeList.length; i++) {
     const element = [];
     element[i] = storeList[i].STORE_NO + storeList[i].FIELD;
-
     if (element.length > 0) {
       store.push(element);
       console.log(store);
     }
   }
+
   //이미지 저장용(이미지,상세이미지)
   const imgChange1 = async (event) => {
     console.log("imgChange1 호출");
@@ -236,6 +237,7 @@ const Amd = ({ pictureUpload }) => {
           {/* ***************** AmdList 끝************************** */}
         </CONTENTS>
       </div>
+
       {/* ============================== [[ 상품 등록 모달 시작 ]] ============================== */}
       <Modal size="lg" show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
@@ -295,7 +297,9 @@ const Amd = ({ pictureUpload }) => {
                 aria-label="Default select example"
               >
                 <option>MD_CATEGORY</option>
-                <option value="생리대">생리대</option>
+                <option value="생리대-대형">생리대-대형</option>
+                <option value="생리대-중형">생리대-중형</option>
+                <option value="생리대-소형">생리대-소형</option>
                 <option value="탐폰">탐폰</option>
                 <option value="그 외">그 외</option>
               </Form.Select>

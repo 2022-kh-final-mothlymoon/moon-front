@@ -26,7 +26,9 @@ import SorderPageRow from "../Payment/SorderPageRow";
 
 const TOrderD = ({ no, props }) => {
   const navigate = useNavigate();
+
   const { ORDER_NO } = useParams();
+
   const [payList, setPayList] = useState([]);
 
   /* payList 데이터 가져오기 */
@@ -43,6 +45,7 @@ const TOrderD = ({ no, props }) => {
     };
     spaymentList();
   }, [no]);
+
   const [orderInfo, setOrderInfo] = useState({
     cart_no: 0,
     cart_quantity: 0,
@@ -52,6 +55,7 @@ const TOrderD = ({ no, props }) => {
     order_payment: 0 /* 총결제금액 (상품금액*개수 - 포인트사용) */,
     order_used_point: 0,
   });
+
   /* 총결제금액 데이터 가져오기 */
   useEffect(() => {
     const spayTotal = async () => {
@@ -66,6 +70,7 @@ const TOrderD = ({ no, props }) => {
     };
     spayTotal();
   }, [no]);
+
   const [odVO, setOdVO] = useState({
     ORDER_NO: "",
     ORDER_PAYMENT: 0,
@@ -81,6 +86,7 @@ const TOrderD = ({ no, props }) => {
     DELIVERY_PHONE: "",
     PURCHASE_METHOD: "",
   });
+
   const [odVO2, setOdVO2] = useState({
     //ORDER_NO: "",
     ORDER_PAYMENT: 0,
@@ -95,7 +101,9 @@ const TOrderD = ({ no, props }) => {
     MD_BRAND: "",
     MD_IMAGE_URL: "",
   });
+
   console.log(ORDER_NO);
+
   useEffect(() => {
     const asyncDB = async () => {
       const res = await jsonOrderDetail({ ORDER_NO: ORDER_NO });
@@ -104,6 +112,7 @@ const TOrderD = ({ no, props }) => {
     };
     asyncDB();
   }, [ORDER_NO]);
+
   useEffect(() => {
     const asyncDB = async () => {
       const res = await jsonOrderDetail2({ ORDER_NO: ORDER_NO });
@@ -113,11 +122,14 @@ const TOrderD = ({ no, props }) => {
     asyncDB();
   }, [ORDER_NO]);
 
+  //주문취소 업데이트
   const orderCancle = () => {
     let list = {
       // json 형태로 spring에 값을 넘김
       ORDER_NO: ORDER_NO,
     };
+
+    //주문취소 배송테이블 업데이트
     axios
       .post(process.env.REACT_APP_SPRING_IP + "deliUpdate", list)
       .then((response) => {
@@ -127,6 +139,8 @@ const TOrderD = ({ no, props }) => {
       .catch((error) => {
         console.log(error);
       });
+
+    //주문취소 배송테이블 업데이트
     axios
       .post(process.env.REACT_APP_SPRING_IP + "cancelUpdate", list)
       .then((response) => {
@@ -143,7 +157,7 @@ const TOrderD = ({ no, props }) => {
     <>
       <Header />
       <P_STRONG2>주문되었습니다</P_STRONG2>
-      <BANNER_P2>{odVO.ORDER_NO}[정기구독]</BANNER_P2>
+      <BANNER_P3>{odVO.ORDER_NO}[정기구독]</BANNER_P3>
       <FORM2>
         <P_SMALL2>주문상품정보</P_SMALL2>
         <FORM3>
@@ -166,8 +180,6 @@ const TOrderD = ({ no, props }) => {
         배송 번호 :{odVO.DELIVERY_NO}
         <br />
         배송 시작 일자 : {odVO.DELIVERY_DATE}
-        <br />
-        배송비 : {odVO.DELIVERY_FEE}
         <br />
         배송 주소 : {odVO.DELIVERY_ADDRESS}
         <br />
@@ -241,7 +253,7 @@ const TOrderD = ({ no, props }) => {
 
 export default TOrderD;
 
-export const BANNER_P2 = styled.p`
+export const BANNER_P3 = styled.p`
   text-align: center;
   margin-top: 10px;
   font-size: 20px;

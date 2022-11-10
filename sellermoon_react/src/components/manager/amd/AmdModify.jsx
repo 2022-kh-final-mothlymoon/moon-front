@@ -5,10 +5,18 @@ import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 import { jsonAmdList, jsonStoreList } from "../../../service/dbLogic";
 
+/*
+ * /admin/Amd/modify/Amd.MD_NO
+ * 상품 수정 페이지입니다.
+ * 가능한 기능 R, U, D
+ */
+
 const AmdModify = ({ props, pictureUpload }) => {
   const navigate = useNavigate();
+
   const { MD_NO } = useParams();
   console.log(MD_NO);
+
   const [amdVO, setAmdVO] = useState({
     STORE_NO: 0,
     MD_NO: 0,
@@ -25,7 +33,7 @@ const AmdModify = ({ props, pictureUpload }) => {
     MD_BRAND: "",
     ST_AMOUNT: 0,
   });
-
+  // input 정보 가져오기
   useEffect(() => {
     const asyncDB = async () => {
       const res = await jsonAmdList({ MD_NO: MD_NO });
@@ -33,13 +41,14 @@ const AmdModify = ({ props, pictureUpload }) => {
       setAmdVO(res.data[0]);
     };
     asyncDB();
-  }, [MD_NO]); // 의존배열의 존재 유무는 useState의 순서에는 영향이 없음.
+  }, [MD_NO]);
+
+  // store 옵션값 불러오기용
   const [storeList, setStoreList] = useState([]);
   useEffect(() => {
     console.log("useEffect 호출");
     const storeDB = async () => {
       console.log("storeDB 호출");
-      //const result = await jsonDeptList({ DEPTNO: 30 }) -> 스프링콘솔에 com.example.demo.dao.DeptDao  : pMap : {DEPTNO=30}
       const result = await jsonStoreList(); // pMap : {}
       console.log(result);
       console.log(result.data[0]);
@@ -47,6 +56,8 @@ const AmdModify = ({ props, pictureUpload }) => {
     };
     storeDB();
   }, []);
+
+  // store 옵션값 push용
   const store = [];
   for (let i = 0; i < storeList.length; i++) {
     const element = [];
@@ -58,6 +69,7 @@ const AmdModify = ({ props, pictureUpload }) => {
     }
   }
 
+  //이미지 저장용(이미지,상세이미지)
   const [file1, setFile1] = useState({ MD_IMAGE: null, MD_IMAGE_URL: null });
   const [file2, setFile2] = useState({
     MD_DETAIL_IMAGE: null,
@@ -65,7 +77,6 @@ const AmdModify = ({ props, pictureUpload }) => {
   });
   const imgChange1 = async (event) => {
     console.log("imgChange1 호출");
-
     console.log(event.target.files[0]);
     const upload1 = await pictureUpload.upload(event.target.files[0]);
     console.log(upload1.url);
@@ -92,9 +103,7 @@ const AmdModify = ({ props, pictureUpload }) => {
   };
   const imgChange2 = async (event) => {
     console.log("imgChange2 호출");
-
     console.log(event.target.files[0]);
-
     const upload2 = await pictureUpload.upload(event.target.files[0]);
     console.log(upload2.url);
     setFile2({
@@ -118,6 +127,8 @@ const AmdModify = ({ props, pictureUpload }) => {
     reader.readAsDataURL(file2);
     return false;
   };
+
+  //엠디 수정 스프링단으로 보내기
   const amdUpdate = () => {
     document.querySelector("#MD_IMAGE").value = file1.MD_IMAGE;
     document.querySelector("#MD_DETAIL_IMAGE").value = file2.MD_DETAIL_IMAGE;
@@ -129,6 +140,8 @@ const AmdModify = ({ props, pictureUpload }) => {
       "http://localhost:9005/admin/amd/amdUpdate?MD_NO=" + MD_NO;
     document.querySelector("#f_amd").submit();
   };
+
+  //수정값 저장
   const handleChangeForm = (e) => {
     if (e.currentTarget == null) return;
     e.preventDefault();
@@ -136,12 +149,12 @@ const AmdModify = ({ props, pictureUpload }) => {
     setAmdVO({
       ...amdVO, // 처음에 초기화된 정보에 얕은 복사 처리
       MD_NO: MD_NO,
-
       [e.target.name]: e.target.value,
     });
     console.log(amdVO);
   };
   console.log(MD_NO);
+
   return (
     <>
       <Header />
@@ -197,7 +210,9 @@ const AmdModify = ({ props, pictureUpload }) => {
             <option defaultValue>
               {"선택한 카테고리:" + amdVO.MD_CATEGORY}
             </option>
-            <option value="생리대">생리대</option>
+            <option value="생리대-대형">생리대-대형</option>
+            <option value="생리대-중형">생리대-중형</option>
+            <option value="생리대-소형">생리대-소형</option>
             <option value="탐폰">탐폰</option>
             <option value="그 외">그 외</option>
           </Form.Select>

@@ -7,6 +7,12 @@ import Footer from "../Common/Footer";
 import Pagination from "../Common/Pagination";
 import StoreRow from "./StoreRow";
 
+/*
+ * /admin/store
+ * 거래처 전체목록 페이지입니다.
+ * 가능한 기능 C(모달), R, 페이징, 검색
+ */
+
 const Store = () => {
   //페이지네이션
   const [limit, setLimit] = useState(8);
@@ -20,7 +26,7 @@ const Store = () => {
 
   const [storeList, setStoreList] = useState([]);
 
-  // html 렌더링 된 후 호출됨 -> StoreList
+  // html 렌더링 된 후 호출됨 -> storeList 불러오기용(다 건)
   useEffect(() => {
     console.log("useEffect 호출");
     const oracleDB = async () => {
@@ -63,6 +69,7 @@ const Store = () => {
   return (
     <>
       <Header />
+
       <div className="container">
         <CONTENTS className="row">
           {/* ####################[[조건 검색]]############################## */}
@@ -84,7 +91,6 @@ const Store = () => {
                 placeholder="검색어를 입력하세요"
               />
             </div>
-
             <div className="col-3">
               <Button
                 id="btn_search"
@@ -96,6 +102,7 @@ const Store = () => {
             </div>
           </div>
           {/* ###################[[조건검색 끝]]####################### */}
+
           {/******************StoreList*******************/}
           <div className="col-9">
             <div className="list-wrapper">
@@ -125,6 +132,7 @@ const Store = () => {
                   ))}
                 </tbody>
               </table>
+
               <Pagination
                 total={storeList.length}
                 limit={limit}
@@ -132,6 +140,7 @@ const Store = () => {
                 setPage={setPage}
               />
               <hr />
+
               <div className="deptlist-footer">
                 <Button variant="warning" onClick={allList}>
                   전체조회
@@ -142,19 +151,21 @@ const Store = () => {
                 </Button>
               </div>
             </div>
-          </div>{" "}
+          </div>
           {/* end of container */}
+
           {/* ***************** StoreList 끝************************** */}
         </CONTENTS>
       </div>
-      {/* ============================== [[ 부서등록 모달 시작 ]] ============================== */}
+
+      {/* ============================== [[ 스토어 등록 모달 시작 ]] ============================== */}
       <Modal show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title>거래처 등록</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form id="f_store" method="get">
-            {/* 부서 입력 폼 */}
+            {/* 스토어 입력 폼 */}
             <Form.Group className="mb-3" controlId="formBasicDeptno">
               <Form.Label>FIELD</Form.Label>
               <Form.Control
@@ -195,7 +206,8 @@ const Store = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      {/* ============================== [[ 부서등록 모달 종료 ]] ============================== */}
+      {/* ============================== [[ 스토어 등록 모달 종료 ]] ============================== */}
+
       <Footer />
     </>
   );

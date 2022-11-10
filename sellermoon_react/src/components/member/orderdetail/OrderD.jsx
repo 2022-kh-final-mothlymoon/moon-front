@@ -26,11 +26,14 @@ import {
   ORDER_UL2,
   P_SMALL2,
   P_STRONG2,
+  BANNER_P3,
 } from "./TOrderD";
 
 const OrderD = ({ no, props }) => {
   const navigate = useNavigate();
+
   const { ORDER_NO } = useParams();
+
   const [payList, setPayList] = useState([]);
 
   /* payList 데이터 가져오기 */
@@ -47,6 +50,7 @@ const OrderD = ({ no, props }) => {
     };
     paymentList();
   }, [no]);
+
   const [orderInfo, setOrderInfo] = useState({
     cart_no: 0,
     cart_quantity: 0,
@@ -56,7 +60,10 @@ const OrderD = ({ no, props }) => {
     order_payment: 0 /* 총결제금액 (상품금액*개수 - 포인트사용) */,
     order_used_point: 0,
   });
+
   /* 총결제금액 데이터 가져오기 */
+  const [shipFee, setShipFee] = useState(0); /* 배송비 */
+
   useEffect(() => {
     const payTotal = async () => {
       await paytotal({ member_no: no }).then((res) => {
@@ -65,11 +72,17 @@ const OrderD = ({ no, props }) => {
         } else {
           console.log(res.data);
           setOrderInfo({ order_amount: res.data.ORDER_AMOUNT });
+
+          /* 구매금액 3만원 이상이면 배송비 0원 */
+          if (res.data.ORDER_AMOUNT < 30000) {
+            setShipFee(3000);
+          } else setShipFee(0);
         }
       });
     };
     payTotal();
   }, [no]);
+
   const [odVO, setOdVO] = useState({
     ORDER_NO: "",
     ORDER_PAYMENT: 0,
@@ -85,6 +98,7 @@ const OrderD = ({ no, props }) => {
     DELIVERY_PHONE: "",
     PURCHASE_METHOD: "",
   });
+
   const [odVO2, setOdVO2] = useState({
     //ORDER_NO: "",
     ORDER_PAYMENT: 0,
@@ -100,6 +114,7 @@ const OrderD = ({ no, props }) => {
     MD_IMAGE_URL: "",
   });
   console.log(ORDER_NO);
+
   useEffect(() => {
     const asyncDB = async () => {
       const res = await jsonOrderDetail({ ORDER_NO: ORDER_NO });
@@ -108,6 +123,7 @@ const OrderD = ({ no, props }) => {
     };
     asyncDB();
   }, [ORDER_NO]);
+
   useEffect(() => {
     const asyncDB = async () => {
       const res = await jsonOrderDetail2({ ORDER_NO: ORDER_NO });
@@ -117,11 +133,14 @@ const OrderD = ({ no, props }) => {
     asyncDB();
   }, [ORDER_NO]);
 
+  //주문취소 업데이트
   const orderCancle = () => {
     let list = {
       // json 형태로 spring에 값을 넘김
       ORDER_NO: ORDER_NO,
     };
+
+    //주문취소 배송테이블 업데이트
     axios
       .post(process.env.REACT_APP_SPRING_IP + "deliUpdate", list)
       .then((response) => {
@@ -131,6 +150,8 @@ const OrderD = ({ no, props }) => {
       .catch((error) => {
         console.log(error);
       });
+
+    //주문취소 오더테이블 업데이트
     axios
       .post(process.env.REACT_APP_SPRING_IP + "cancelUpdate", list)
       .then((response) => {
@@ -146,7 +167,7 @@ const OrderD = ({ no, props }) => {
     <>
       <Header />
       <P_STRONG2>주문되었습니다</P_STRONG2>
-      <BANNER_P2>{odVO.ORDER_NO}[정기구독]</BANNER_P2>
+      <BANNER_P3>{odVO.ORDER_NO}[정기구독]</BANNER_P3>
       <FORM2>
         <P_SMALL2>주문상품정보</P_SMALL2>
         <FORM3>
@@ -211,16 +232,17 @@ const OrderD = ({ no, props }) => {
               </ORDER_NUM2>
             </TD>
             <TD>
-              <ORDER_NUM2>무료배송</ORDER_NUM2>
+              <ORDER_NUM2>{shipFee}원</ORDER_NUM2>
             </TD>
             <TD>
               <ORDER_P2>
                 {parseInt(odVO.ORDER_USED_POINT) > 0
                   ? (
                       parseInt(orderInfo.order_amount) -
-                      parseInt(odVO.ORDER_USED_POINT)
+                      parseInt(odVO.ORDER_USED_POINT) +
+                      shipFee
                     ).toLocaleString()
-                  : parseInt(orderInfo.order_amount).toLocaleString()}{" "}
+                  : parseInt(orderInfo.order_amount).toLocaleString()}
                 원
               </ORDER_P2>
             </TD>

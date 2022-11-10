@@ -7,9 +7,13 @@ import { jsonAmdList } from "../../../service/dbLogic";
 
 const AmdDetail = (props) => {
   const navigate = useNavigate();
+
   const { MD_NO } = useParams();
+
   console.log(MD_NO);
+
   const [isOk, setIsOk] = useState(false);
+
   const [amdVO, setAmdVO] = useState({
     STORE_NO: 0,
     MD_NO: 0,
@@ -26,6 +30,8 @@ const AmdDetail = (props) => {
     MD_BRAND: "",
     ST_AMOUNT: "",
   });
+
+  // html 렌더링 된 후 호출됨 -> amdList 불러오기용(다건용)
   useEffect(() => {
     const asyncDB = async () => {
       const res = await jsonAmdList({ MD_NO: MD_NO });
@@ -34,11 +40,15 @@ const AmdDetail = (props) => {
     };
     asyncDB();
   }, [MD_NO]);
+
   console.log(MD_NO);
+
+  // amd 삭제용(한건용)
   const amdDel = () => {
     window.location.href =
       "http://localhost:9005/admin/amd/amdDelete?MD_NO=" + amdVO.MD_NO;
   };
+
   return (
     <>
       <Header />
@@ -87,6 +97,7 @@ const AmdDetail = (props) => {
         <br />
         {amdVO.MD_DISCOUNT}
         <br />
+
         <Button
           onClick={() => {
             navigate("/admin/md/modify/" + amdVO.MD_NO);
@@ -94,6 +105,7 @@ const AmdDetail = (props) => {
         >
           수정
         </Button>
+
         <Button onClick={amdDel}>삭제</Button>
         <Button
           onClick={() => {

@@ -5,9 +5,17 @@ import { jsonStoreDetail } from "../../../service/dbLogic";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 
+/*
+ * /admin/store/modify/store.STORE_NO
+ * 거래처 수정 페이지입니다.
+ * 가능한 기능 R, U
+ */
+
 const StoreModify = (props) => {
   const navigate = useNavigate();
+
   const { STORE_NO } = useParams();
+
   const [storeVO, setStoreVO] = useState({
     STORE_NO: 0,
     MD_NO: 0,
@@ -19,27 +27,27 @@ const StoreModify = (props) => {
     STORE_START_DATE: "",
     FIELD: "",
   });
+
+  // input 정보 가져오기
   useEffect(() => {
-    // 서버를 왔다갔다 하기 때문에 비동기처리가 필요함
     const asyncDB = async () => {
-      // 처리될 때까지 기다려야하기 때문에 반드시 await을 사용!
       const res = await jsonStoreDetail({ STORE_NO: STORE_NO });
-      // 여기서 호출하게 되면 fetch 함수와의 차이점을 발견할 수 있다
-      // JSON.stringify, JSON.parse
       console.log(res);
       setStoreVO(res.data[0]);
     };
     asyncDB();
-  }, [STORE_NO]); // 의존배열의 존재 유무는 useState의 순서에는 영향이 없음.
+  }, [STORE_NO]);
+
+  // 폼 스프링단으로 쏘기
   const storeUpdate = () => {
     document.querySelector("#f_store").action =
-      "http://localhost:9005/admin//store/storeUpdate";
+      "http://localhost:9005/admin/store/storeUpdate";
     document.querySelector("#f_store").submit();
   };
+
+  // input 수정한 정보로 업데이트 하기
   const handleChangeForm = (e) => {
     if (e.currentTarget == null) return;
-    // console.log("폼 내용 변경 발생 name : " + e.target.name);
-    // console.log("폼 내용 변경 발생 value : " + e.target.value);
     e.preventDefault();
     setStoreVO({
       ...storeVO, // 처음에 초기화된 정보에 얕은 복사 처리
@@ -48,7 +56,7 @@ const StoreModify = (props) => {
     });
     console.log(storeVO);
   };
-  // 목록 이동 구현
+
   return (
     <>
       <Header />
@@ -65,6 +73,7 @@ const StoreModify = (props) => {
             onChange={handleChangeForm}
           />
         </Form.Group>
+
         <Form.Group className="mb-3" controlId="formBasicWriter">
           <Form.Select
             type="text"
@@ -79,15 +88,7 @@ const StoreModify = (props) => {
             <option value="N">N</option>
           </Form.Select>
         </Form.Group>
-        {/*  <Form.Group className="mb-3" controlId="formBasicWriter">
-          <Form.Label>STORE_YN</Form.Label>
-          <Form.Control
-            type="text"
-            name="STORE_YN"
-            value={storeVO.STORE_YN}
-            onChange={handleChangeForm}
-          />
-        </Form.Group> */}
+
         <Form.Group className="mb-3" controlId="formBasicWriter">
           <Form.Label>STORE_MANAGER</Form.Label>
           <Form.Control
@@ -97,6 +98,7 @@ const StoreModify = (props) => {
             onChange={handleChangeForm}
           />
         </Form.Group>
+
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
           <Form.Label>STORE_CONTACT</Form.Label>
           <Form.Control
@@ -115,6 +117,7 @@ const StoreModify = (props) => {
             onChange={handleChangeForm}
           />
         </Form.Group>
+
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
           <Form.Control
             type="hidden"
@@ -128,6 +131,17 @@ const StoreModify = (props) => {
       <Button variant="primary" onClick={storeUpdate}>
         수정
       </Button>
+      <Button
+        onClick={() => {
+          navigate("/admin/store");
+        }}
+      >
+        뒤로가기
+      </Button>
+      <br />
+      <br />
+      <br />
+      <br />
       <Footer />
     </>
   );

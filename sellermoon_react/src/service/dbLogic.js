@@ -169,6 +169,7 @@ export const memberList = (params) => {
   });
 };
 
+// storeList 불러오기용(다 건)
 export const jsonStoreList = (params) => {
   return new Promise((resolve, reject) => {
     try {
@@ -184,6 +185,8 @@ export const jsonStoreList = (params) => {
     }
   });
 };
+
+// storeList 불러오기용(한 건)
 export const jsonStoreDetail = (params) => {
   return new Promise((resolve, reject) => {
     try {
@@ -199,6 +202,8 @@ export const jsonStoreDetail = (params) => {
     }
   });
 };
+
+// amdList 불러오기(다건용, 검색용)
 export const jsonAmdList = (params) => {
   return new Promise((resolve, reject) => {
     try {
@@ -214,6 +219,8 @@ export const jsonAmdList = (params) => {
     }
   });
 };
+
+// amd 등록용(한건용)
 export const amdInsert = (params) => {
   return new Promise((resolve, reject) => {
     try {
@@ -543,6 +550,7 @@ export const myReview = (params) => {
   });
 };
 
+/* 상세주문서1 */
 export const jsonOrderDetail = (params) => {
   return new Promise((resolve, reject) => {
     try {
@@ -558,6 +566,7 @@ export const jsonOrderDetail = (params) => {
   });
 };
 
+/* 상세주문서2 */
 export const jsonOrderDetail2 = (params) => {
   return new Promise((resolve, reject) => {
     try {

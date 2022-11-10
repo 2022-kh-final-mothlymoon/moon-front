@@ -50,6 +50,7 @@ const Payment = (effect, deps) => {
 };
 
 const OrderPage = ({ no, props, myPoint }) => {
+  //인덱스에 있음 상관없는 듯
   useEffect(() => {
     const jquery = document.createElement("script");
     jquery.src = "https://code.jquery.com/jquery-1.12.4.min.js";
@@ -62,6 +63,7 @@ const OrderPage = ({ no, props, myPoint }) => {
       document.head.removeChild(iamport);
     };
   }, []);
+
   let navigate = useNavigate();
 
   const [show, setShow] = useState(false);
@@ -209,6 +211,7 @@ const OrderPage = ({ no, props, myPoint }) => {
 
   /* **************************************************** */
 
+  //결제 창 열기
   const onClickPayment = (e) => {
     e.preventDefault();
     const { IMP } = window;
@@ -242,6 +245,7 @@ const OrderPage = ({ no, props, myPoint }) => {
     console.log(data.buyer_addr);
   };
 
+  //결제 정보 스프링단으로 보내기
   const callback = (res) => {
     const { success } = res;
     if (success) {
@@ -274,6 +278,7 @@ const OrderPage = ({ no, props, myPoint }) => {
         DELIVERY_FEE: shipFee,
       };
 
+      //결제정보
       axios
         .post(process.env.REACT_APP_SPRING_IP + "paymentInsert", list)
         .then((response) => {
@@ -284,6 +289,8 @@ const OrderPage = ({ no, props, myPoint }) => {
         .catch((error) => {
           console.log(error);
         });
+
+      //포인트 업데이트
       const pointUpdate = () => {
         axios
           .post(process.env.REACT_APP_SPRING_IP + "payPointUpdate", list)
@@ -472,7 +479,7 @@ const OrderPage = ({ no, props, myPoint }) => {
                         parseInt(orderInfo.order_used_point) +
                         shipFee
                       ).toLocaleString()
-                    : parseInt(orderInfo.order_amount).toLocaleString()}{" "}
+                    : parseInt(orderInfo.order_amount).toLocaleString()}
                   원
                 </ORDER_P2>
               </div>
