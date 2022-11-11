@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { jsonReplyList } from '../../../service/dbLogic';
 import MemberReplyForm from './MemberReplyForm';
 import MemberReplyRow from './MemberReplyRow';
@@ -10,17 +9,15 @@ import MemberReplyRow from './MemberReplyRow';
     - 추가할 것 : 댓글 pagination
     - 수정할 것 : 댓글 갯수 추가하기
 */
-const MemberReplyList = () => {
-  console.log("MemberReplyList 호출 성공");
-  
-  // [ R ] 데이터 가져오기
-  const { board_no } = useParams();
+const MemberReplyList = ({ no }) => {
+// [ R ] 데이터 가져오기 ---------------------------------------
   const [replyList, setReplyList] = useState([]);
   useEffect(() => {
     const replyListDB = async() => {
       console.log("[관리자] replyListDB 호출 성공");
-      const result = await jsonReplyList({ board_no: board_no });
-      // console.log(result);
+      // spring - jsonReplyList 데이터 읽기
+      const result = await jsonReplyList();
+      console.log(result);
       // console.log(result.data);
       // console.log(result.data[1].MEMBER_NAME);
       console.log(result.data.length); // 댓글 개수
@@ -32,22 +29,26 @@ const MemberReplyList = () => {
   // ******************** RENDER ********************
   return (
     <>
+
+
+
+      <hr />
+
       <div className='container'>
-
-        <div>
-          <hr />
-          <small>댓글 (n)</small>
-          {
-            replyList.map((reply, i) => (
-              <MemberReplyRow
-                key={i}
-                reply={reply}
-              />
-            ))
-          }
-        </div>
-
+        <small>댓글 (n)</small>
+        {
+          replyList.map((reply, i) => (
+            <MemberReplyRow
+              no={no}
+              key={i}
+              reply={reply}
+            />
+          ))
+        }
       </div>
+
+
+
     </>
   );
 }

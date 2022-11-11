@@ -11,6 +11,10 @@ import MemberReplyList from '../reply/MemberReplyList';
 */
 const MemberBoardDetail = ({ props, no, isLogin }) => {
   console.log("MemberBoardDetail 호출 성공");
+
+  // 세션에 담긴 정보 (로그인 한 사용자)
+  const user_id = window.sessionStorage.getItem("user_id");
+  console.log("로그인한 아이디 ===> " + user_id);
   
   const navigate = useNavigate(); 
 
@@ -19,7 +23,7 @@ const MemberBoardDetail = ({ props, no, isLogin }) => {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
   
-  // 데이터 초기화 
+  // 데이터 초기화
   const { board_no } = useParams();
   const [ boardVO, setBoardVO ] = useState({
     BOARD_NO: 0,
@@ -27,6 +31,7 @@ const MemberBoardDetail = ({ props, no, isLogin }) => {
     BOARD_TITLE: "",
     BOARD_CONTENT: "",
     MEMBER_NAME: "",
+    MEMBER_NO: 0,
     BOARD_WRITTEN_DATE: "",
     BOARD_HIT: 0,
     BOARD_LIKE: 0,
@@ -49,7 +54,7 @@ const MemberBoardDetail = ({ props, no, isLogin }) => {
     boardDetailDB();
   }, [board_no]);
 
-  // [D] 삭제 버튼 -----------------------------------------------------
+  // [D] 삭제 버튼
   const delBtn = async() => {
     console.log("삭제할 글 번호 ===> " + boardVO.BOARD_NO);
     if(window.confirm("삭제하시겠습니까?")) {
@@ -61,32 +66,20 @@ const MemberBoardDetail = ({ props, no, isLogin }) => {
     }
   };
 
-  // [C] 좋아요 버튼 -> 
+  // [C] 좋아요 버튼
   // const likeBtn = () => {
   //   if() { // 좋아요 클릭 +1
 
   //   } else if () { // re좋아요 클릭 -1
 
-  //   } else if () { // if 싫어요가 눌러져있는 상태에서 좋아요를 클릭한다면? 싫어요 -1 좋아요 +1
-
   //   }
   // };
-
-  // 싫어요 버튼 -> db 저장
-  // const dislikeBtn = () => {
-  //   // 싫어요 클릭 +1
-
-  //   // re싫어요 클릭 -1
-
-  //   // if 좋아요가 눌러져있는 상태에서 싫어요를 클릭한다면?
-  //   // 좋아요 -1 후 싫어요 +1
-  // }
 
   // [C] 신고 폼 전송하기
   const sendReport = () => {
     if(window.confirm("해당 게시글을 신고 하시겠습니까?")) {
-      window.location.href 
-      = "http://localhost:9005/member/report/reportInsert";
+      document.querySelector("#f_bReport").action = "http://localhost:9005/member/board/reportBInsert";
+      document.querySelector("#f_bReport").submit();
       alert("신고되었습니다.");
     } else {
       alert("취소되었습니다.");
@@ -168,21 +161,6 @@ const MemberBoardDetail = ({ props, no, isLogin }) => {
             <p>{ boardVO.BOARD_HIT }</p>
           </div>
 
-          {/* 좋아요/싫어요 버튼 시작 */}
-          <div>
-            <div className="form-group">
-              <label>좋아요</label>
-              {/* <Button onClick={}>👍🏻</Button> */}
-              <p>{ boardVO.BOARD_LIKE }</p>
-            </div>
-            <div className="form-group">
-              <label>싫어요</label>
-              {/* <Button onClick={}>👎🏻</Button> */}
-              <p>{ boardVO.BOARD_DISLIKE }</p>
-            </div>
-          </div>
-          {/* 좋아요/싫어요 버튼 종료 */}
-
           <div>
             <Button variant="danger" onClick={handleShow}>
               신고
@@ -193,12 +171,12 @@ const MemberBoardDetail = ({ props, no, isLogin }) => {
       
 
         <div>
-          <MemberReplyList />
+          <MemberReplyList no={no} />
         </div>
 
 
         <div>
-          <MemberReplyForm />
+          <MemberReplyForm no={no} />
         </div>
 
         {/* 신고 모달 */}
@@ -209,17 +187,35 @@ const MemberBoardDetail = ({ props, no, isLogin }) => {
           </Modal.Header>
 
           <Modal.Body>
-            <Form id="f_report" method="get">
+            <Form id="f_bReport" method="get">
 
-              <input type="hidden" name="member_no" id="member_no" value={no} />
-            
+              {/* <input type="hidden" name="report_no" id="report_no" /> */}
+
+              <Form.Group className="mb-3" controlId="formBasicFromMsg">
+                <Form.Label>신고할 회원</Form.Label>
+                <Form.Control 
+                  type="text"
+                  name="member_no2"
+                  plaintext readOnly defaultValue={ boardVO.MEMBER_NO }
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicFromMsg">
+                <Form.Label>신고할 글 번호</Form.Label>
+                <Form.Control 
+                  type="text"
+                  name="board_no"
+                  plaintext readOnly defaultValue={ boardVO.BOARD_NO }
+                />
+              </Form.Group>
+
               <Form.Group className="mb-3" controlId="formBasicFromMsg">
                 <Form.Label>신고 내용</Form.Label>
                 <p>신고할 글 내용을 확인해주세요.</p>
                 <Form.Control 
                   type="text"
                   as="textarea"
-                  name="to_id"
+                  // name="report_content"
                   plaintext readOnly defaultValue={ boardVO.BOARD_CONTENT }
                 />
               </Form.Group>
@@ -227,7 +223,7 @@ const MemberBoardDetail = ({ props, no, isLogin }) => {
               <Form.Group className="mb-3" controlId="formBasicFromMsg">
                 <Form.Label>신고 사유 선택</Form.Label>
                 <Form.Select id="report_sort" name="report_sort">
-                    <option value="">신고 사유를 선택헤주세요.</option>
+                    <option defaultValue="">신고 사유를 선택헤주세요.</option>
                     <option value="욕설, 비방, 차별, 혐오">욕설, 비방, 차별, 혐오</option>
                     <option value="홍보, 영리목적">홍보, 영리목적</option>
                     <option value="불법 정보">불법 정보</option>
@@ -245,6 +241,15 @@ const MemberBoardDetail = ({ props, no, isLogin }) => {
                   type="text"
                   as="textarea"
                   name="report_reason"
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formBasicMember_no">
+                <Form.Control
+                  type="text"
+                  name="member_no"
+                  value={no}
+                  hidden={true}
                 />
               </Form.Group>
 
