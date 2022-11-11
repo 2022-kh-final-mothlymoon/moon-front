@@ -8,10 +8,16 @@ import {
   paymentlist,
   paytotal,
 } from "../../../service/dbLogic";
+import { CONTENTS } from "../../../styles/NoticeStyle";
 import {
+  ORDER_H3,
+  ORDER_IMG,
+  ORDER_LI,
   ORDER_NUM1,
   ORDER_NUM2,
+  ORDER_P1,
   ORDER_P2,
+  ORDER_SPAN,
   ORDER_UL,
 } from "../../../styles/PaymentStyle";
 import { P_STRONG, TABLE, TD } from "../../../styles/SubStyle";
@@ -27,6 +33,15 @@ import {
   P_SMALL2,
   P_STRONG2,
   BANNER_P3,
+  CONTENTS2,
+  TA,
+  Td3,
+  ORDER_H4,
+  ORDER_H5,
+  TA2,
+  Td4,
+  ORDER_H4_1,
+  Td2,
 } from "./TOrderD";
 
 const OrderD = ({ no, props }) => {
@@ -166,98 +181,252 @@ const OrderD = ({ no, props }) => {
   return (
     <>
       <Header />
-      <P_STRONG2>주문되었습니다</P_STRONG2>
-      <BANNER_P3>{odVO.ORDER_NO}[정기구독]</BANNER_P3>
-      <FORM2>
-        <P_SMALL2>주문상품정보</P_SMALL2>
-        <FORM3>
-          <ORDER_UL2>
+      <div className="container">
+        <br />
+        <br />
+        <CONTENTS2>
+          <P_STRONG2>주문상세내역</P_STRONG2>
+          <BANNER_P3>{odVO.ORDER_NO}[개별구매]</BANNER_P3>
+          <br />
+          <br />
+          <br />
+          <P_SMALL2>주문 상품 정보</P_SMALL2>
+          <TA2>
+            <tr>
+              <Td3 colSpan="2">
+                <ORDER_H4>상품정보</ORDER_H4>
+              </Td3>
+              <Td3>
+                <ORDER_H4>가격</ORDER_H4>
+              </Td3>
+              <Td3>
+                <ORDER_H4>주문현황</ORDER_H4>
+              </Td3>
+            </tr>
+
             {payList.map((pay, i) => (
-              <OrderPageRow key={i} pay={pay} />
+              <tr>
+                <td width="10%">
+                  <ORDER_IMG src={pay.MD_IMAGE_URL} alt="orderimg" />
+                </td>
+                <td>
+                  <div>
+                    <ORDER_H5>[{pay.MD_BRAND}]</ORDER_H5>
+                    <ORDER_H5>{pay.MD_NAME}</ORDER_H5>
+                    <ORDER_P1>
+                      [{pay.MD_DISCOUNT}%]&nbsp;
+                      {pay.MD_PRICE.toLocaleString()}원 / 수량
+                      {pay.CART_QUANTITY}개
+                    </ORDER_P1>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <ORDER_H4>
+                      {parseInt(pay.CART_QUANTITY) > 1
+                        ? (
+                            parseInt(pay.MD_PRICE) * parseInt(pay.CART_QUANTITY)
+                          ).toLocaleString()
+                        : parseInt(pay.MD_PRICE).toLocaleString()}
+                      원
+                    </ORDER_H4>
+                  </div>
+                </td>
+                <td>
+                  <div>
+                    <ORDER_H4>{odVO.DELIVERY_STATUS}</ORDER_H4>
+                  </div>
+                </td>
+              </tr>
             ))}
-          </ORDER_UL2>
-          <ORDER_UL2>배송 현황 : {odVO.DELIVERY_STATUS}</ORDER_UL2>
-        </FORM3>
-        사용 포인트 : {odVO.ORDER_USED_POINT}
-        <br />
-        취소여부 : {odVO.ORDER_DE_CANCEL}
-        <br />
-        배송 현황 : {odVO.DELIVERY_STATUS}
-        <br />
-        배송 회사 : {odVO.DELIVERY_COMPANY}
-        <br />
-        배송 번호 :{odVO.DELIVERY_NO}
-        <br />
-        배송 시작 일자 : {odVO.DELIVERY_DATE}
-        <br />
-        배송비 : {odVO.DELIVERY_FEE}
-        <br />
-        배송 주소 : {odVO.DELIVERY_ADDRESS}
-        <br />
-        주문자 : {odVO2.MEMBER_NAME}
-        <br />
-        전화번호 : {odVO.DELIVERY_PHONE}
-        <br />
-        결제수단 : {odVO.PURCHASE_METHOD}
-        <TABLE>
-          <tr>
-            <TD>
-              <ORDER_NUM1>총 상품금액</ORDER_NUM1>
-            </TD>
-            <TD>
-              <ORDER_NUM1>적립금 사용</ORDER_NUM1>
-            </TD>
-            <TD>
-              <ORDER_NUM1>배송비</ORDER_NUM1>
-            </TD>
-            <TD>
-              {" "}
-              <ORDER_NUM1>
-                <strong>총 결제금액</strong>
-              </ORDER_NUM1>
-            </TD>
-          </tr>
-          <tr>
-            <TD>
-              <ORDER_NUM2>
-                {parseInt(orderInfo.order_amount).toLocaleString()}원
-              </ORDER_NUM2>
-            </TD>
-            <TD>
-              <ORDER_NUM2>
-                {parseInt(odVO.ORDER_USED_POINT) > 0
-                  ? parseInt(odVO.ORDER_USED_POINT).toLocaleString()
-                  : 0}
-                원
-              </ORDER_NUM2>
-            </TD>
-            <TD>
-              <ORDER_NUM2>{shipFee}원</ORDER_NUM2>
-            </TD>
-            <TD>
-              <ORDER_P2>
-                {parseInt(odVO.ORDER_USED_POINT) > 0
-                  ? (
-                      parseInt(orderInfo.order_amount) -
-                      parseInt(odVO.ORDER_USED_POINT) +
-                      shipFee
-                    ).toLocaleString()
-                  : parseInt(orderInfo.order_amount).toLocaleString()}
-                원
-              </ORDER_P2>
-            </TD>
-          </tr>
-        </TABLE>
-        <br />
-        <ORDER_BTN2 onClick={orderCancle}>주문취소</ORDER_BTN2>
-        <ORDER_BTN2
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          뒤로가기
-        </ORDER_BTN2>
-      </FORM2>
+          </TA2>
+          <br />
+          <br />
+          <br />
+          <P_SMALL2>구매자 정보</P_SMALL2>
+          <TA2>
+            <tr>
+              <Td4>
+                <ORDER_H4>주문자</ORDER_H4>
+              </Td4>
+              <Td2 width="30%">
+                <ORDER_H4_1>{odVO2.MEMBER_NAME}</ORDER_H4_1>
+              </Td2>
+              <Td2>
+                <ORDER_H4>이메일주소</ORDER_H4>
+              </Td2>
+              <Td2 width="30%">
+                <ORDER_H4_1>{odVO2.MEMBER_EMAIL}</ORDER_H4_1>
+              </Td2>
+            </tr>
+            <tr>
+              <Td4>
+                <ORDER_H4>전화 번호</ORDER_H4>
+              </Td4>
+              <Td2 width="30%"></Td2>
+              <Td2>
+                <ORDER_H4>휴대폰 번호</ORDER_H4>
+              </Td2>
+              <Td2 width="30%">
+                <ORDER_H4_1>{odVO.DELIVERY_PHONE}</ORDER_H4_1>
+              </Td2>
+            </tr>
+          </TA2>
+          <br />
+          <br />
+          <br />
+          <P_SMALL2>배송지 정보</P_SMALL2>
+          <TA2>
+            <tr>
+              <Td4 width="20%" border-right="none">
+                <ORDER_H4>받는 사람</ORDER_H4>
+              </Td4>
+              <Td2>
+                <ORDER_H4_1>{odVO2.MEMBER_NAME}</ORDER_H4_1>
+              </Td2>
+            </tr>
+            <tr>
+              <Td4 width="20%">
+                <ORDER_H4>전화번호</ORDER_H4>
+              </Td4>
+              <Td2>
+                <ORDER_H4_1>{odVO.DELIVERY_PHONE}</ORDER_H4_1>
+              </Td2>
+              <Td2 width="20%">
+                <ORDER_H4>휴대폰번호</ORDER_H4>
+              </Td2>
+              <Td2>
+                <ORDER_H4_1>{odVO.DELIVERY_PHONE}</ORDER_H4_1>
+              </Td2>
+            </tr>
+            <tr>
+              <Td4 width="20%">
+                <ORDER_H4>주소</ORDER_H4>
+              </Td4>
+              <Td2 colSpan="3">
+                <ORDER_H4_1>{odVO.DELIVERY_ADDRESS}</ORDER_H4_1>
+              </Td2>
+            </tr>
+            {/*  <tr>
+              <Td2 width="20%">
+                <ORDER_H4>배송요청사항</ORDER_H4>
+              </Td2>
+              <Td2 colSpan="3"></Td2>
+            </tr> */}
+          </TA2>
+          <br />
+          <br />
+          <br />
+          <P_SMALL2>배송 현황</P_SMALL2>
+          <TA2>
+            <tr>
+              <Td4 colSpan="4">
+                <ORDER_H4>{odVO.DELIVERY_STATUS}</ORDER_H4>
+              </Td4>
+            </tr>
+            <tr>
+              <Td4 width="20%">
+                <ORDER_H4>배송 회사</ORDER_H4>
+              </Td4>
+              <Td2>
+                <ORDER_H4_1>{odVO.DELIVERY_COMPANY}</ORDER_H4_1>
+              </Td2>
+              <Td2 width="20%">
+                <ORDER_H4>배송 번호</ORDER_H4>
+              </Td2>
+              <Td2>
+                <ORDER_H4_1>{odVO.DELIVERY_NO}</ORDER_H4_1>
+              </Td2>
+            </tr>
+            <tr>
+              <Td4 width="20%">
+                <ORDER_H4>배송 시작 일자</ORDER_H4>
+              </Td4>
+              <Td2>
+                <ORDER_H4_1>{odVO.DELIVERY_DATE}</ORDER_H4_1>
+              </Td2>
+              <Td2 width="20%">
+                <ORDER_H4>배송비</ORDER_H4>
+              </Td2>
+              <Td2 width="30%">
+                <ORDER_H4_1>{odVO.DELIVERY_FEE}</ORDER_H4_1>
+              </Td2>
+            </tr>
+          </TA2>
+          <br />
+          <br />
+          <br />
+          <br />
+          <P_SMALL2>결제 정보</P_SMALL2>
+          <TA2>
+            <tr>
+              <Td4 width="20%">
+                <ORDER_H4>결제수단</ORDER_H4>
+              </Td4>
+              <Td2 colSpan="3">
+                <ORDER_H4_1>{odVO.PURCHASE_METHOD}</ORDER_H4_1>
+              </Td2>
+            </tr>
+            <tr>
+              <Td3 width="20%">
+                <ORDER_H4>총 상품금액</ORDER_H4>
+              </Td3>
+              <Td3 width="20%">
+                <ORDER_H4>적립금 사용</ORDER_H4>
+              </Td3>
+              <Td3 width="20%">
+                <ORDER_H4>배송비</ORDER_H4>
+              </Td3>
+              <Td3>
+                <ORDER_H4>총 결제금액</ORDER_H4>
+              </Td3>
+            </tr>
+            <tr>
+              <Td3 width="25%">
+                <ORDER_H4_1>
+                  {parseInt(orderInfo.order_amount).toLocaleString()}원
+                </ORDER_H4_1>
+              </Td3>
+              <Td3 width="25%">
+                <ORDER_H4_1>
+                  -{" "}
+                  {parseInt(odVO.ORDER_USED_POINT) > 0
+                    ? parseInt(odVO.ORDER_USED_POINT).toLocaleString()
+                    : 0}
+                  원
+                </ORDER_H4_1>
+              </Td3>
+              <Td3 width="25%">
+                <ORDER_H4_1>+ {shipFee}</ORDER_H4_1>
+              </Td3>
+              <Td3>
+                <ORDER_P2 style={{ textAlign: "center", margin: "8px 18px" }}>
+                  {parseInt(odVO.ORDER_USED_POINT) > 0
+                    ? (
+                        parseInt(orderInfo.order_amount) -
+                        parseInt(odVO.ORDER_USED_POINT) +
+                        shipFee
+                      ).toLocaleString()
+                    : parseInt(orderInfo.order_amount).toLocaleString()}
+                  원
+                </ORDER_P2>
+              </Td3>
+            </tr>
+          </TA2>
+          <br />
+          <br />
+          <div style={{ textAlign: "center" }}>
+            <ORDER_BTN2 onClick={orderCancle}>주문취소</ORDER_BTN2>
+            <ORDER_BTN2
+              onClick={() => {
+                navigate("/");
+              }}
+            >
+              뒤로가기
+            </ORDER_BTN2>
+          </div>
+        </CONTENTS2>
+      </div>
       <Footer />
     </>
   );

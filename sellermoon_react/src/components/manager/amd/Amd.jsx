@@ -5,7 +5,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { CONTENTS } from "../../../styles/NoticeStyle";
 import AmdRow from "./AmdRow";
-import Pagination from "../Common/Pagination";
+import Pagination from "./../../member/Common/Pagination";
 import { jsonAmdList, jsonStoreList } from "../../../service/dbLogic";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";

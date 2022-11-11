@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { jsonStoreDetail } from "../../../service/dbLogic";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
+import { CONTENTS2 } from "../../member/orderdetail/TOrderD";
 
 /*
  * /admin/store/modify/store.STORE_NO
@@ -60,84 +61,124 @@ const StoreModify = (props) => {
   return (
     <>
       <Header />
-      <h1>
-        <strong>{storeVO.STORE_NO}</strong>
-      </h1>
-      <Form id="f_store" method="get">
-        <Form.Group className="mb-3" controlId="formBasicWriter">
-          <Form.Label>FIELD</Form.Label>
-          <Form.Control
-            type="text"
-            name="FIELD"
-            value={storeVO.FIELD}
-            onChange={handleChangeForm}
-          />
-        </Form.Group>
+      <br />
+      <br />
+      <br />
+      <div className="container">
+        <CONTENTS2>
+          {/*  <h1>
+            <strong>{storeVO.STORE_NO}</strong>
+          </h1> */}
+          <Form id="f_store" method="get">
+            <Form.Group className="mb-3" controlId="formBasicWriter">
+              <Form.Label>
+                <strong>거래처 이름</strong>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="FIELD"
+                value={storeVO.FIELD}
+                onChange={handleChangeForm}
+              />
+            </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicWriter">
-          <Form.Select
-            type="text"
-            name="STORE_YN"
-            id="STORE_YN"
-            aria-label="Default select example"
-            value={storeVO.STORE_YN}
-            onChange={handleChangeForm}
-          >
-            <option defaultValue>{"사용여부:" + storeVO.STORE_YN}</option>
-            <option value="Y">Y</option>
-            <option value="N">N</option>
-          </Form.Select>
-        </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicWriter">
+              <Form.Label>
+                <strong>사용 여부</strong>
+              </Form.Label>
+              <Form.Select
+                type="text"
+                name="STORE_YN"
+                id="STORE_YN"
+                aria-label="Default select example"
+                value={storeVO.STORE_YN}
+                onChange={handleChangeForm}
+              >
+                <option defaultValue>{"사용여부:" + storeVO.STORE_YN}</option>
+                <option value="Y">Y</option>
+                <option value="N">N</option>
+              </Form.Select>
+            </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formBasicWriter">
-          <Form.Label>STORE_MANAGER</Form.Label>
-          <Form.Control
-            type="text"
-            name="STORE_MANAGER"
-            value={storeVO.STORE_MANAGER}
-            onChange={handleChangeForm}
-          />
-        </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicWriter">
+              <Form.Label>
+                <strong>담당자</strong>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="STORE_MANAGER"
+                value={storeVO.STORE_MANAGER}
+                onChange={handleChangeForm}
+              />
+            </Form.Group>
 
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Label>STORE_CONTACT</Form.Label>
-          <Form.Control
-            type="text"
-            name="STORE_CONTACT"
-            value={storeVO.STORE_CONTACT}
-            onChange={handleChangeForm}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Label>STORE_MEMO</Form.Label>
-          <Form.Control
-            type="text"
-            name="STORE_MEMO"
-            value={storeVO.STORE_MEMO}
-            onChange={handleChangeForm}
-          />
-        </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Label>
+                <strong>전화번호</strong>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="STORE_CONTACT"
+                value={storeVO.STORE_CONTACT}
+                onChange={handleChangeForm}
+              />
+            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Label>
+                <strong>메모</strong>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="STORE_MEMO"
+                value={storeVO.STORE_MEMO}
+                onChange={handleChangeForm}
+              />
+            </Form.Group>
 
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Control
-            type="hidden"
-            name="STORE_NO"
-            value={storeVO.STORE_NO}
-            onChange={handleChangeForm}
-          />
-        </Form.Group>
-      </Form>
-
-      <Button variant="primary" onClick={storeUpdate}>
-        수정
-      </Button>
-      <Button
-        onClick={() => {
-          navigate("/admin/store");
-        }}
-      >
-        뒤로가기
-      </Button>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Control
+                type="hidden"
+                name="STORE_NO"
+                value={storeVO.STORE_NO}
+                onChange={handleChangeForm}
+              />
+            </Form.Group>
+          </Form>
+          <br />
+          <br />
+          <br />
+          <div style={{ textAlign: "center" }}>
+            <Button
+              onClick={storeUpdate}
+              variant="outline-secondary"
+              id="btn_search"
+              style={{ width: "100px" }}
+            >
+              <i className="fa-regular fa-file-lines"></i>
+              &nbsp;수정
+            </Button>
+            &nbsp;&nbsp;&nbsp;
+            <Button
+              variant="outline-secondary"
+              id="btn_search"
+              onClick={() => {
+                navigate("/admin/store");
+              }}
+            >
+              &nbsp;&nbsp;전체목록&nbsp;&nbsp;
+            </Button>
+          </div>
+        </CONTENTS2>
+      </div>
       <br />
       <br />
       <br />

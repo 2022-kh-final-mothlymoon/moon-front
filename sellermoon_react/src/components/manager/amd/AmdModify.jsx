@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 import { jsonAmdList, jsonStoreList } from "../../../service/dbLogic";
+import { CONTENTS2 } from "../../member/orderdetail/TOrderD";
 
 /*
  * /admin/Amd/modify/Amd.MD_NO
@@ -158,38 +159,45 @@ const AmdModify = ({ props, pictureUpload }) => {
   return (
     <>
       <Header />
-      <h1>
-        <strong>{MD_NO}</strong>
-      </h1>
-      <Form id="f_amd" method="get">
-        <input type="hidden" name="MD_IMAGE" id="MD_IMAGE" />
-        <input type="hidden" name="MD_IMAGE_URL" id="MD_IMAGE_URL" />
-        <input type="hidden" name="MD_DETAIL_IMAGE" id="MD_DETAIL_IMAGE" />
-        <input
-          type="hidden"
-          name="MD_DETAIL_IMAGE_URL"
-          id="MD_DETAIL_IMAGE_URL"
-        />
 
-        <Form.Group className="mb-3" controlId="formBasicWriter">
-          <Form.Label>MD_NAME</Form.Label>
-          <Form.Control
-            type="text"
-            name="MD_NAME"
-            value={amdVO.MD_NAME}
-            onChange={handleChangeForm}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicWriter">
-          <Form.Label>MD_CONTENT</Form.Label>
-          <Form.Control
-            type="text"
-            name="MD_CONTENT"
-            value={amdVO.MD_CONTENT}
-            onChange={handleChangeForm}
-          />
-        </Form.Group>
-        {/*  <Form.Group className="mb-3" controlId="formBasicWriter">
+      <br />
+      <br />
+      <br />
+      <div className="container">
+        <CONTENTS2>
+          <Form id="f_amd" method="get">
+            <input type="hidden" name="MD_IMAGE" id="MD_IMAGE" />
+            <input type="hidden" name="MD_IMAGE_URL" id="MD_IMAGE_URL" />
+            <input type="hidden" name="MD_DETAIL_IMAGE" id="MD_DETAIL_IMAGE" />
+            <input
+              type="hidden"
+              name="MD_DETAIL_IMAGE_URL"
+              id="MD_DETAIL_IMAGE_URL"
+            />
+
+            <Form.Group className="mb-3" controlId="formBasicWriter">
+              <Form.Label>
+                <strong>상품 이름</strong>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="MD_NAME"
+                value={amdVO.MD_NAME}
+                onChange={handleChangeForm}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicWriter">
+              <Form.Label>
+                <strong>내용</strong>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="MD_CONTENT"
+                value={amdVO.MD_CONTENT}
+                onChange={handleChangeForm}
+              />
+            </Form.Group>
+            {/*  <Form.Group className="mb-3" controlId="formBasicWriter">
           <Form.Label>MD_CATEGORY</Form.Label>
           <Form.Control
             type="text"
@@ -198,79 +206,103 @@ const AmdModify = ({ props, pictureUpload }) => {
             onChange={handleChangeForm}
           />
         </Form.Group> */}
-        <Form.Group className="mb-3" controlId="formBasicWriter">
-          <Form.Label>MD_CATEGORY</Form.Label>
-          <Form.Select
-            type="text"
-            name="MD_CATEGORY"
-            id="MD_CATEGORY"
-            value={amdVO.MD_CATEGORY}
-            onChange={handleChangeForm}
-          >
-            <option defaultValue>
-              {"선택한 카테고리:" + amdVO.MD_CATEGORY}
-            </option>
-            <option value="생리대-대형">생리대-대형</option>
-            <option value="생리대-중형">생리대-중형</option>
-            <option value="생리대-소형">생리대-소형</option>
-            <option value="탐폰">탐폰</option>
-            <option value="그 외">그 외</option>
-          </Form.Select>
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Label>MD_PRICE</Form.Label>
-          <Form.Control
-            type="text"
-            name="MD_PRICE"
-            value={amdVO.MD_PRICE}
-            onChange={handleChangeForm}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Label>MD_COST</Form.Label>
-          <Form.Control
-            type="text"
-            name="MD_COST"
-            value={amdVO.MD_COST}
-            onChange={handleChangeForm}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Label>MD_DISCOUNT</Form.Label>
-          <Form.Control
-            type="text"
-            name="MD_DISCOUNT"
-            value={amdVO.MD_DISCOUNT}
-            onChange={handleChangeForm}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Label>MD_BRAND</Form.Label>
-          <Form.Control
-            type="text"
-            name="MD_BRAND"
-            value={amdVO.MD_BRAND}
-            onChange={handleChangeForm}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicLoc">
-          <Form.Label>STORE_NO</Form.Label>
-          <Form.Select
-            type="text"
-            name="STORE_NO"
-            aria-label="Default select example"
-          >
-            <option value={amdVO.STORE_NO} defaultValue>
-              {":" + amdVO.STORE_NO}
-            </option>
-            {storeList.map((storeList) => (
-              <option value={storeList.STORE_NO}>
-                {storeList.STORE_NO + "/" + storeList.FIELD}
-              </option>
-            ))}
-          </Form.Select>
-        </Form.Group>
-        {/* <Form.Group className="mb-3" controlId="formBasicLoc">
+            <Form.Group className="mb-3" controlId="formBasicWriter">
+              <Form.Label>
+                <strong>상품 카테고리</strong>
+              </Form.Label>
+              <Form.Select
+                type="text"
+                name="MD_CATEGORY"
+                id="MD_CATEGORY"
+                value={amdVO.MD_CATEGORY}
+                onChange={handleChangeForm}
+              >
+                <option defaultValue>
+                  {"선택한 카테고리:" + amdVO.MD_CATEGORY}
+                </option>
+                <option value="생리대-대형">생리대-대형</option>
+                <option value="생리대-중형">생리대-중형</option>
+                <option value="생리대-소형">생리대-소형</option>
+                <option value="탐폰">탐폰</option>
+                <option value="그 외">그 외</option>
+              </Form.Select>
+            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Label>
+                <strong>상품 가격</strong>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="MD_PRICE"
+                value={amdVO.MD_PRICE}
+                onChange={handleChangeForm}
+              />
+            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Label>
+                <strong>상품 원가</strong>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="MD_COST"
+                value={amdVO.MD_COST}
+                onChange={handleChangeForm}
+              />
+            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Label>
+                <strong>할인율</strong>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="MD_DISCOUNT"
+                value={amdVO.MD_DISCOUNT}
+                onChange={handleChangeForm}
+              />
+            </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Label>
+                <strong>브랜드</strong>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="MD_BRAND"
+                value={amdVO.MD_BRAND}
+                onChange={handleChangeForm}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicLoc">
+              <Form.Label>
+                <strong>거래처</strong>
+              </Form.Label>
+              <Form.Select
+                type="text"
+                name="STORE_NO"
+                aria-label="Default select example"
+              >
+                <option value={amdVO.STORE_NO} defaultValue>
+                  {"현재 거래체 번호 : " + amdVO.STORE_NO}
+                </option>
+                {storeList.map((storeList) => (
+                  <option value={storeList.STORE_NO}>
+                    {storeList.STORE_NO + "/" + storeList.FIELD}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+            {/* <Form.Group className="mb-3" controlId="formBasicLoc">
           <Form.Label>STORE_NO</Form.Label>
           <Form.Control
             type="text"
@@ -279,65 +311,118 @@ const AmdModify = ({ props, pictureUpload }) => {
             placeholder="Enter STORE_NO"
           />
         </Form.Group> */}
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Label>ST_AMOUNT</Form.Label>
-          <Form.Control
-            type="text"
-            name="ST_AMOUNT"
-            value={amdVO.ST_AMOUNT}
-            onChange={handleChangeForm}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <input
-            className="form-control"
-            type="file"
-            id="img1"
-            name="img1"
-            onChange={imgChange1}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3">
-          <input
-            className="form-control"
-            type="file"
-            id="img2"
-            name="img2"
-            onChange={imgChange2}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Control
-            type="hidden"
-            name="MD_NO"
-            value={amdVO.MD_NO}
-            onChange={handleChangeForm}
-          />
-        </Form.Group>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Label>
+                <strong>재고</strong>
+              </Form.Label>
+              <Form.Control
+                type="text"
+                name="ST_AMOUNT"
+                value={amdVO.ST_AMOUNT}
+                onChange={handleChangeForm}
+              />
+            </Form.Group>
 
-        {/* 부서 등록 이미지 미리보기 */}
-        <div id="uploadImg1">
-          <img
-            className="thumbNail"
-            src="https://via.placeholder.com/200"
-            alt="미리보기"
-          />
-        </div>
-        <div id="uploadImg2">
-          <img
-            className="thumbNail"
-            src="https://via.placeholder.com/200"
-            alt="미리보기"
-          />
-        </div>
-      </Form>
+            <div style={{ width: "100%", textAlign: "center" }}>
+              <tr>
+                <td>
+                  <strong>메인 이미지</strong>
+                </td>
+                <td>
+                  <strong>상세 이미지</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <Form.Group className="mb-3" width="150px">
+                    <input
+                      className="form-control"
+                      type="file"
+                      id="img1"
+                      name="img1"
+                      onChange={imgChange1}
+                    />
+                  </Form.Group>
+                </td>
+                <td>
+                  <Form.Group className="mb-3">
+                    <input
+                      className="form-control"
+                      type="file"
+                      id="img2"
+                      name="img2"
+                      onChange={imgChange2}
+                    />
+                  </Form.Group>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div id="uploadImg1">
+                    <img
+                      className="thumbNail"
+                      src="https://via.placeholder.com/200"
+                      alt="미리보기"
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div id="uploadImg2">
+                    <img
+                      className="thumbNail"
+                      src="https://via.placeholder.com/200"
+                      alt="미리보기"
+                    />
+                  </div>
+                </td>
+              </tr>
+            </div>
+            <Form.Group
+              className="mb-3"
+              controlId="exampleForm.ControlTextarea1"
+            >
+              <Form.Control
+                type="hidden"
+                name="MD_NO"
+                value={amdVO.MD_NO}
+                onChange={handleChangeForm}
+              />
+            </Form.Group>
 
-      <Button variant="primary" onClick={amdUpdate}>
-        수정
-      </Button>
-      <br />
-      <br />
-      <br />
+            {/* 부서 등록 이미지 미리보기 */}
+          </Form>
+
+          <div style={{ textAlign: "center" }}>
+            <Button
+              onClick={() => {
+                navigate("/admin/amd/modify/" + MD_NO);
+              }}
+              variant="outline-secondary"
+              id="btn_search"
+              style={{ width: "100px" }}
+            >
+              <i className="fa-regular fa-file-lines"></i>
+              &nbsp;수정
+            </Button>
+            &nbsp;&nbsp;&nbsp;
+            <Button
+              variant="outline-secondary"
+              id="btn_search"
+              onClick={() => {
+                navigate("/admin/md");
+              }}
+            >
+              &nbsp;&nbsp;전체목록&nbsp;&nbsp;
+            </Button>
+          </div>
+          <br />
+          <br />
+          <br />
+        </CONTENTS2>
+      </div>
       <Footer />
     </>
   );

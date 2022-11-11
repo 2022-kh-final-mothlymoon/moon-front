@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { jsonStoreList } from "../../../service/dbLogic";
-import { CONTENTS } from "../../../styles/NoticeStyle";
+import { BROWN_BTN, CONTENTS } from "../../../styles/NoticeStyle";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
-import Pagination from "../Common/Pagination";
+import Pagination from "./../../member/Common/Pagination";
 import StoreRow from "./StoreRow";
+import { CONTENTS2 } from "../../member/orderdetail/TOrderD";
 
 /*
  * /admin/store
@@ -71,7 +72,7 @@ const Store = () => {
       <Header />
 
       <div className="container">
-        <CONTENTS className="row">
+        <CONTENTS2>
           {/* ####################[[조건 검색]]############################## */}
           <div className="row">
             <div className="col-3">
@@ -141,22 +142,30 @@ const Store = () => {
               />
               <hr />
 
-              <div className="deptlist-footer">
-                <Button variant="warning" onClick={allList}>
+              <div style={{ textAlign: "center" }}>
+                <Button
+                  variant="outline-secondary"
+                  id="btn_search"
+                  onClick={allList}
+                >
                   전체조회
                 </Button>
-                &nbsp;
-                <Button variant="success" onClick={handleShow}>
+                &nbsp;&nbsp;&nbsp;
+                <Button
+                  variant="outline-secondary"
+                  id="btn_search"
+                  onClick={handleShow}
+                >
                   거래처등록
                 </Button>
               </div>
             </div>
           </div>
-          {/* end of container */}
-
-          {/* ***************** StoreList 끝************************** */}
-        </CONTENTS>
+        </CONTENTS2>
       </div>
+      {/* end of container */}
+
+      {/* ***************** StoreList 끝************************** */}
 
       {/* ============================== [[ 스토어 등록 모달 시작 ]] ============================== */}
       <Modal show={show} onHide={handleClose} animation={false}>
@@ -167,43 +176,25 @@ const Store = () => {
           <Form id="f_store" method="get">
             {/* 스토어 입력 폼 */}
             <Form.Group className="mb-3" controlId="formBasicDeptno">
-              <Form.Label>FIELD</Form.Label>
-              <Form.Control
-                type="text"
-                name="FIELD"
-                placeholder="Enter FIELD"
-              />
+              <Form.Label>거래처 이름</Form.Label>
+              <Form.Control type="text" name="FIELD" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicDname">
-              <Form.Label>STORE_MANAGER</Form.Label>
-              <Form.Control
-                type="text"
-                name="STORE_MANAGER"
-                placeholder="Enter STORE_MANAGER"
-              />
+              <Form.Label>담당자</Form.Label>
+              <Form.Control type="text" name="STORE_MANAGER" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicLoc">
-              <Form.Label>STORE_CONTACT</Form.Label>
-              <Form.Control
-                type="text"
-                name="STORE_CONTACT"
-                placeholder="Enter STORE_CONTACT"
-              />
+              <Form.Label>전화번호</Form.Label>
+              <Form.Control type="text" name="STORE_CONTACT" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicLoc">
-              <Form.Label>STORE_MEMO</Form.Label>
-              <Form.Control
-                type="text"
-                name="STORE_MEMO"
-                placeholder="Enter STORE_CONTACT"
-              />
+              <Form.Label>메모</Form.Label>
+              <Form.Control type="text" name="STORE_MEMO" />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={storeInsert}>
-            저장
-          </Button>
+          <BROWN_BTN onClick={storeInsert}>저장</BROWN_BTN>
         </Modal.Footer>
       </Modal>
       {/* ============================== [[ 스토어 등록 모달 종료 ]] ============================== */}

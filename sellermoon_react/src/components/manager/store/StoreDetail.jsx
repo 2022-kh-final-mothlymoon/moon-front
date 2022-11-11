@@ -8,7 +8,8 @@ import { CONTENTS } from "../../../styles/NoticeStyle";
 import styled from "styled-components";
 import { TD } from "../../../styles/SubStyle";
 import { BANNER_P2 } from "../../../styles/MainStyle";
-import { BANNER_P3 } from "../../member/orderdetail/TOrderD";
+import { BANNER_P3, CONTENTS2 } from "../../member/orderdetail/TOrderD";
+import { TA, Td5, Td6 } from "../amd/AmdDetail";
 
 /*
  * /admin/store/detail/store.STORE_NO
@@ -69,62 +70,82 @@ const StoreDetail = (props) => {
   return (
     <>
       <Header />
-      <CONTENTS>
-        <TABEL>
-          <tr>
-            <TD colspan="4">{STORE_NO}</TD>
-            <Col></Col>
-          </tr>
+      <div className="container">
+        <CONTENTS2>
+          <TA>
+            <tr>
+              <Td6 width="20%">
+                <strong>거래여부</strong>
+              </Td6>
+              <Td5>{storeVO.length && storeVO[0].STORE_YN}</Td5>
+              <Td5 width="20%">
+                <strong>거래처이름</strong>
+              </Td5>
+              <Td5>{storeVO.length && storeVO[0].FIELD}</Td5>
+            </tr>
+            <tr>
+              <Td6>
+                <strong>담당자</strong>
+              </Td6>
+              <Td5>{storeVO.length && storeVO[0].STORE_MANAGER}</Td5>
+              <Td5>
+                <strong>전화번호</strong>
+              </Td5>
+              <Td5>{storeVO.length && storeVO[0].STORE_CONTACT}</Td5>
+            </tr>
+            <tr>
+              <Td6>
+                <strong>거래시작일</strong>
+              </Td6>
+              <Td5>{storeVO.length && storeVO[0].STORE_START_DATE}</Td5>
+              <Td5>
+                <strong>거래상품</strong>
+                <br />
+                (상품번호 상품이름)
+              </Td5>
+              <Td5>
+                {storemd.map((storemd) => (
+                  <tr>{storemd}</tr>
+                ))}
+              </Td5>
+            </tr>
+            <tr>
+              <Td6>
+                <strong>메모</strong>
+              </Td6>
+              <Td5>{storeVO.length && storeVO[0].STORE_MEMO}</Td5>
+            </tr>
+          </TA>
 
-          <tr>
-            <TD>거래여부</TD>
-            <TD>{storeVO.length && storeVO[0].STORE_YN}</TD>
-            <TD>거래처이름</TD>
-            <TD>{storeVO.length && storeVO[0].FIELD}</TD>
-          </tr>
-          <tr>
-            <td>담당자</td>
-            <td>{storeVO.length && storeVO[0].STORE_MANAGER}</td>
-            <td>번호</td>
-            <td>{storeVO.length && storeVO[0].STORE_CONTACT}</td>
-          </tr>
-          <tr>
-            <td>담당자</td>
-            <td>{storeVO.length && storeVO[0].STORE_MANAGER}</td>
-            <td>번호</td>
-            <td>{storeVO.length && storeVO[0].STORE_CONTACT}</td>
-          </tr>
-          <tr>
-            <td>거래시작일</td>
-            <td>{storeVO.length && storeVO[0].STORE_START_DATE}</td>
-          </tr>
-          <tr>
-            <td>거래상품</td>
-            {storemd.map((storemd) => (
-              <tr>{storemd}</tr>
-            ))}
-          </tr>
-          <tr>
-            <td>메모</td>
-            <td>{storeVO.length && storeVO[0].STORE_MEMO}</td>
-          </tr>
-        </TABEL>
-      </CONTENTS>
+          <br />
+          <br />
+          <br />
+          <div style={{ textAlign: "center" }}>
+            <Button
+              onClick={() => {
+                navigate("/admin/store/modify/" + STORE_NO);
+              }}
+              variant="outline-secondary"
+              id="btn_search"
+              style={{ width: "100px" }}
+            >
+              <i className="fa-regular fa-file-lines"></i>
+              &nbsp;수정
+            </Button>
+            &nbsp;&nbsp;&nbsp;
+            <Button
+              variant="outline-secondary"
+              id="btn_search"
+              onClick={() => {
+                navigate("/admin/store");
+              }}
+            >
+              &nbsp;&nbsp;전체목록&nbsp;&nbsp;
+            </Button>
+          </div>
+        </CONTENTS2>
+      </div>
 
-      <Button
-        onClick={() => {
-          navigate("/admin/store/modify/" + STORE_NO);
-        }}
-      >
-        수정
-      </Button>
-      <Button
-        onClick={() => {
-          navigate("/admin/store");
-        }}
-      >
-        뒤로가기
-      </Button>
       <br />
       <br />
       <br />
@@ -136,23 +157,3 @@ const StoreDetail = (props) => {
 };
 
 export default StoreDetail;
-
-const TABEL = styled.table`
-  margin: 10px;
-  padding-bottom: 30px;
-  border: 2px solid grey;
-`;
-const TR = styled.tr`
-  text-align: center;
-`;
-
-const P = styled.p`
-  text-align: center;
-  margin-top: 10px;
-  font-size: 20px;
-  line-height: 1.3;
-  font-weight: 700;
-  color: #5e514d;
-  border-bottom: 2px solid grey;
-  padding-bottom: 30px;
-`;
