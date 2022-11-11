@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Main from "./components/member/main/Main";
@@ -59,8 +59,13 @@ import MyReview from "./components/member/mypage/MyReview";
 import OrderD from "./components/member/orderdetail/OrderD";
 import OrderPage from "./components/member/Payment/OrderPage";
 import SorderPage from "./components/member/Payment/SorderPage";
+import MyAccountConfirm from "./components/member/mypage/MyAccountConfirm";
+import AdminReview from "./components/manager/admin_review/AdminReview";
+import MemberReceiveMemoList from "./components/member/memo/MemberReceiveMemoList";
+import MemberSendMemoList from "./components/member/memo/MemberSendMemoList";
 
-function App({ authLogic }) {
+function App({ authLogic, pictureUpload }) {
+  let navigate = useNavigate();
   let [no, setNo] = useState(0); // 회원 번호 담기 props로 넘겨주기 위함
   let [adminId, setAdminId] = useState(""); // 관리자 id담기 props로 넘겨주기 위함
   const [isLogin, setIsLogin] = useState(false); // 로그인 상태 관리
@@ -72,14 +77,17 @@ function App({ authLogic }) {
       // 자동로그인 상태일 때
     } else if (localStorage.getItem("user_no") !== null) {
       setNo(localStorage.getItem("user_no")); // user_no(회원번호) 가져옴
+    } else if (sessionStorage.getItem("admin") !== null) {
+      // 관리자 로그인시
+      setAdminId(sessionStorage.getItem("admin")); // 관리자 id가져옴
     }
   }, [no]);
 
   useEffect(() => {
-    if (
-      (sessionStorage.getItem("user_no") || localStorage.getItem("user_no")) !==
-      null
-    ) {
+    if (sessionStorage.getItem("user_no") !== null) {
+      console.log("isLogin ===> ", isLogin);
+      setIsLogin(true);
+    } else if (localStorage.getItem("user_no") !== null) {
       console.log("isLogin ===> ", isLogin);
       setIsLogin(true);
     } else if (sessionStorage.getItem("admin") !== null) {
@@ -100,6 +108,7 @@ function App({ authLogic }) {
     window.localStorage.removeItem("user_no");
     window.localStorage.removeItem("com.naver.nid.access_token");
     alert("로그아웃되었습니다.");
+    navigate("/");
     window.location.reload();
   };
 
@@ -169,11 +178,34 @@ function App({ authLogic }) {
           path="/mypage/profile"
           exact={true}
           element={
-            isLogin ? (
-              <MyAccount isLogin={isLogin} no={no} logout={logout} />
+            isLogin &&
+            (isLogin ? (
+              <MyAccount
+                isLogin={isLogin}
+                no={no}
+                logout={logout}
+                myPoint={myPoint}
+              />
             ) : (
               <Navigate to="/login" />
-            )
+            ))
+          }
+        />
+        <Route
+          path="/mypage/chkpass"
+          exact={true}
+          element={
+            isLogin &&
+            (isLogin ? (
+              <MyAccountConfirm
+                isLogin={isLogin}
+                no={no}
+                logout={logout}
+                myPoint={myPoint}
+              />
+            ) : (
+              <Navigate to="/login" />
+            ))
           }
         />
         <Route
@@ -181,7 +213,12 @@ function App({ authLogic }) {
           exact={true}
           element={
             isLogin ? (
-              <MyAccountM isLogin={isLogin} no={no} logout={logout} />
+              <MyAccountM
+                isLogin={isLogin}
+                no={no}
+                logout={logout}
+                myPoint={myPoint}
+              />
             ) : (
               <Navigate to="/login" />
             )
@@ -192,7 +229,12 @@ function App({ authLogic }) {
           exact={true}
           element={
             isLogin ? (
-              <MyDelAccount isLogin={isLogin} no={no} />
+              <MyDelAccount
+                isLogin={isLogin}
+                no={no}
+                myPoint={myPoint}
+                logout={logout}
+              />
             ) : (
               <Navigate to="/login" />
             )
@@ -200,13 +242,27 @@ function App({ authLogic }) {
         />
         <Route
           path="/mypage/point"
-          element={<Point myPoint={myPoint} isLogin={isLogin} no={no} />}
+          element={
+            <Point
+              myPoint={myPoint}
+              isLogin={isLogin}
+              no={no}
+              logout={logout}
+            />
+          }
           exact={true}
         />
 
         <Route
           path="/mypage/friends"
-          element={<Friends myPoint={myPoint} isLogin={isLogin} no={no} />}
+          element={
+            <Friends
+              myPoint={myPoint}
+              isLogin={isLogin}
+              no={no}
+              logout={logout}
+            />
+          }
           exact={true}
         />
 
@@ -247,82 +303,134 @@ function App({ authLogic }) {
         />
         <Route
           path="/notice/detail/:notice_no"
-          element={<NoticeDetail />}
+          element={<NoticeDetail logout={logout} />}
           exact={true}
         />
-        <Route path="/faq" element={<Faq isLogin={isLogin} />} exact={true} />
+        <Route
+          path="/faq"
+          element={<Faq isLogin={isLogin} logout={logout} />}
+          exact={true}
+        />
         <Route
           path="/faq/detail/:faq_no"
-          element={<FaqDetail isLogin={isLogin} />}
+          element={<FaqDetail isLogin={isLogin} logout={logout} />}
           exact={true}
         />
         {/* 회원 주소 */}
         <Route
           path="/member/board/boardList"
           exact={true}
-          element={<MemberBoardList />}
+          element={<MemberBoardList no={no} logout={logout} />}
         />
         <Route
           path="/member/board/boardDetail/:board_no"
           exact={true}
-          element={<MemberBoardDetail />}
+          element={<MemberBoardDetail no={no} logout={logout} />}
         />
         <Route
           path="/member/board/boardForm"
           exact={true}
-          element={<MemberBoardForm pictureUpload={pictureUpload} />}
+          element={<MemberBoardForm pictureUpload={pictureUpload} no={no} />}
         />
         <Route
           path="/member/board/boardEditForm/:board_no"
           exact={true}
-          element={<MemberBoardEditForm />}
+          element={<MemberBoardEditForm no={no} logout={logout} />}
+        />
+        <Route
+          path="/member/memo/receiveMemoList"
+          exact={true}
+          element={<MemberReceiveMemoList no={no} logout={logout} />}
+        />
+        <Route
+          path="/member/memo/sendMemoList"
+          exact={true}
+          element={<MemberSendMemoList no={no} logout={logout} />}
         />
         <Route
           exact
           path="/payment/result"
-          element={<PaymentResult isLogin={isLogin} />}
+          element={<PaymentResult isLogin={isLogin} logout={logout} />}
         />
         <Route
           exact
           path="/payment"
-          element={<OrderPage isLogin={isLogin} no={no} myPoint={myPoint} />}
+          element={
+            <OrderPage
+              isLogin={isLogin}
+              no={no}
+              myPoint={myPoint}
+              logout={logout}
+            />
+          }
         />
 
         <Route
           exact
           path="/payments"
-          element={<Payment isLogin={isLogin} no={no} myPoint={myPoint} />}
+          element={
+            <Payment
+              isLogin={isLogin}
+              no={no}
+              myPoint={myPoint}
+              logout={logout}
+            />
+          }
         />
 
         <Route
           exact
           path="/spayment"
-          element={<SorderPage isLogin={isLogin} no={no} myPoint={myPoint} />}
+          element={
+            <SorderPage
+              isLogin={isLogin}
+              no={no}
+              myPoint={myPoint}
+              logout={logout}
+            />
+          }
         />
         <Route
           exact
           path="/orderdetail/:ORDER_NO"
-          element={<OrderD isLogin={isLogin} />}
+          element={<OrderD isLogin={isLogin} logout={logout} />}
         />
-        <Route path="/products" element={<Products />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route
+          path="/products"
+          element={<Products isLogin={isLogin} no={no} logout={logout} />}
+        />
+        <Route
+          path="/product/:id"
+          element={<ProductDetail isLogin={isLogin} no={no} logout={logout} />}
+        />
+        <Route path="/cart" element={<Cart logout={logout} />} />
         <Route
           exact={true}
           path="/review"
-          element={<MemberReview isLogin={isLogin} no={no} />}
+          element={<MemberReview isLogin={isLogin} no={no} logout={logout} />}
         />
         <Route
           exact={true}
           path="/mypage/review"
-          element={<MyReview isLogin={isLogin} no={no} myPoint={myPoint} />}
+          element={
+            <MyReview
+              isLogin={isLogin}
+              no={no}
+              myPoint={myPoint}
+              logout={logout}
+            />
+          }
         />
         {/********************** 관리자 페이지 영역 *************************/}
         <Route
           path="/admin/login"
           element={
             !isAdmin ? (
-              <AdminLogin isLogin={isLogin} isAdmin={isAdmin} />
+              <AdminLogin
+                adminId={adminId}
+                isLogin={isLogin}
+                isAdmin={isAdmin}
+              />
             ) : (
               <Navigate to="/" />
             )
@@ -331,22 +439,38 @@ function App({ authLogic }) {
         />
         <Route
           path="/admin/notice"
-          element={<NoticeAdmin isLogin={isLogin} isAdmin={isAdmin} />}
+          element={
+            <NoticeAdmin
+              adminId={adminId}
+              isLogin={isLogin}
+              isAdmin={isAdmin}
+            />
+          }
           exact={true}
         />
         <Route
           path="/admin/notice/update/:notice_no"
-          element={<NoticeUpAdmin isLogin={isLogin} isAdmin={isAdmin} />}
+          element={
+            <NoticeUpAdmin
+              adminId={adminId}
+              isLogin={isLogin}
+              isAdmin={isAdmin}
+            />
+          }
           exact={true}
         />
         <Route
           path="/admin/faq"
-          element={<FaqAdmin isLogin={isLogin} isAdmin={isAdmin} />}
+          element={
+            <FaqAdmin adminId={adminId} isLogin={isLogin} isAdmin={isAdmin} />
+          }
           exact={true}
         />
         <Route
           path="/admin/faq/update/:faq_no"
-          element={<FaqUpAdmin isLogin={isLogin} isManage={isAdmin} />}
+          element={
+            <FaqUpAdmin adminId={adminId} isLogin={isLogin} isAdmin={isAdmin} />
+          }
           exact={true}
         />
         <Route
@@ -354,7 +478,7 @@ function App({ authLogic }) {
           element={
             isAdmin &&
             (isAdmin ? (
-              <MemAdmin isLogin={isLogin} isAdmin={isAdmin} />
+              <MemAdmin adminId={adminId} isLogin={isLogin} isAdmin={isAdmin} />
             ) : (
               <Navigate to="/admin/login" />
             ))
@@ -363,38 +487,75 @@ function App({ authLogic }) {
         />
         <Route
           path="/admin/member/:member_no"
-          element={<MemAdminDetail isLogin={isLogin} isAdmin={isAdmin} />}
+          element={
+            <MemAdminDetail
+              adminId={adminId}
+              isLogin={isLogin}
+              isAdmin={isAdmin}
+            />
+          }
           exact={true}
         />
         <Route
+          path="/admin/review"
+          element={
+            <AdminReview
+              adminId={adminId}
+              isLogin={isLogin}
+              isAdmin={isAdmin}
+            />
+          }
+          exact={true}
+        />
+        {/* 관리자 주소 */}
+        <Route
           path="/admin/board/boardList"
           exact={true}
-          element={<AdminBoardList />}
+          element={
+            <AdminBoardList
+              adminId={adminId}
+              isLogin={isLogin}
+              isAdmin={isAdmin}
+            />
+          }
         />
         <Route
           path="/admin/board/boardDetail/:board_no"
           exact={true}
-          element={<AdminBoardDetail />}
+          element={
+            <AdminBoardDetail
+              adminId={adminId}
+              isLogin={isLogin}
+              isAdmin={isAdmin}
+            />
+          }
         />
 
-        <Route path="/admin/main" element={<AMain />} />
+        <Route
+          path="/admin/statics"
+          element={
+            <Statics adminId={adminId} isLogin={isLogin} isAdmin={isAdmin} />
+          }
+        />
 
-        <Route path="/astatics" element={<Statics />} />
-
-        <Route path="/amember" element={<Customer />} />
-
-        <Route path="/amd" element={<Amd />} />
-
-        <Route path="/aorder" element={<Order />} />
-
-        <Route path="/aboard" element={<Board />} />
-
-        <Route path="/astore" element={<Store />} />
-
-        <Route path="/admin/point" element={<PointAdmin />} exact={true} />
+        <Route
+          path="/admin/order"
+          element={
+            <Order adminId={adminId} isLogin={isLogin} isAdmin={isAdmin} />
+          }
+        />
+        <Route
+          path="/admin/point"
+          element={
+            <PointAdmin adminId={adminId} isLogin={isLogin} isAdmin={isAdmin} />
+          }
+          exact={true}
+        />
         <Route
           path="/admin/store"
-          element={<Store isLogin={isLogin} isAdmin={isAdmin} />}
+          element={
+            <Store adminId={adminId} isLogin={isLogin} isAdmin={isAdmin} />
+          }
         />
         <Route
           path="/admin/store/modify/:STORE_NO"
@@ -405,7 +566,7 @@ function App({ authLogic }) {
           element={<StoreDetail isLogin={isLogin} isAdmin={isAdmin} />}
         />
         <Route
-          path="/admin/amd"
+          path="/admin/md"
           element={
             <Amd
               pictureUpload={pictureUpload}
@@ -415,7 +576,7 @@ function App({ authLogic }) {
           }
         />
         <Route
-          path="/admin/amd/modify/:MD_NO"
+          path="/admin/md/modify/:MD_NO"
           element={
             <AmdModify
               pictureUpload={pictureUpload}
@@ -425,7 +586,7 @@ function App({ authLogic }) {
           }
         />
         <Route
-          path="/admin/amd/detail/:MD_NO"
+          path="/admin/md/detail/:MD_NO"
           element={<AmdDetail isLogin={isLogin} isAdmin={isAdmin} />}
         />
       </Routes>

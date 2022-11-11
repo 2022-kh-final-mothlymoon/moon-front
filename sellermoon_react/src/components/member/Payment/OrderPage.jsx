@@ -120,6 +120,16 @@ const OrderPage = ({ no, props, myPoint }) => {
     });
   };
 
+  // 포인트 사용하기 onChange
+  const pointChange = (e) => {
+    if (e.currentTarget === null) return;
+    e.preventDefault();
+    setOrderInfo({
+      ...orderInfo,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   ///// 다음 우편번호 찾기 함수 //////
   const handleComplete = (data) => {
     let fullAddress = data.address;
@@ -194,6 +204,18 @@ const OrderPage = ({ no, props, myPoint }) => {
   };
 
   /* **************************************************** */
+  useEffect(() => {
+    const jquery = document.createElement("script");
+    jquery.src = "https://code.jquery.com/jquery-1.12.4.min.js";
+    const iamport = document.createElement("script");
+    iamport.src = "https://cdn.iamport.kr/js/iamport.payment-1.1.7.js";
+    document.head.appendChild(jquery);
+    document.head.appendChild(iamport);
+    return () => {
+      document.head.removeChild(jquery);
+      document.head.removeChild(iamport);
+    };
+  }, []);
 
   const onClickPayment = (e) => {
     e.preventDefault();
@@ -203,8 +225,8 @@ const OrderPage = ({ no, props, myPoint }) => {
     let data = {
       pg: "html5_inicis", // PG사 (필수항목)
       pay_method: "card", // 결제수단 (필수항목)
-      merchant_uid: `o_${new Date().getTime()}`,
-      name: payList[0].MD_NAME, // 주문명 (필수항목)
+      merchant_uid: `O_${new Date().getTime()}`,
+      name: payList[0].MD_NAME + " 외 " + payList.length + "건", // 주문명 (필수항목)
       amount:
         parseInt(orderInfo.order_amount) - parseInt(orderInfo.order_used_point), // 금액 (필수항목)
       //amount: 100,
@@ -212,7 +234,7 @@ const OrderPage = ({ no, props, myPoint }) => {
       buyer_tel: memInfo.member_phone, // 구매자 전화번호 (필수항목)
       buyer_email: memInfo.member_email, // 구매자 이메일
       buyer_addr: memInfo.member_address,
-      order_type: "개별구매",
+      order_type: "O",
       //buyer_postalcode: "우편번호", // ....
     };
     console.log("requestPay => " + JSON.stringify(data));
@@ -267,12 +289,12 @@ const OrderPage = ({ no, props, myPoint }) => {
 
   /* ***************************************************** */
 
-  const payInsert = (e) => {
-    e.preventDefault();
-    console.log(memInfo.member_name);
-    console.log(memInfo.member_address);
-    console.log(memInfo.member_email);
-  };
+  // const payInsert = (e) => {
+  //   e.preventDefault();
+  //   console.log(memInfo.member_name);
+  //   console.log(memInfo.member_address);
+  //   console.log(memInfo.member_email);
+  // }
 
   return (
     <>
@@ -292,7 +314,7 @@ const OrderPage = ({ no, props, myPoint }) => {
                     type="text"
                     name="member_name"
                     id="member_name"
-                    value={memInfo.member_name || ""}
+                    value={memInfo && memInfo.member_name}
                     onChange={onChange}
                     className="form-control"
                   />
@@ -306,7 +328,7 @@ const OrderPage = ({ no, props, myPoint }) => {
                     type="text"
                     name="member_zipcode"
                     id="member_zipcode"
-                    value={memInfo.member_zipcode || ""}
+                    value={memInfo && memInfo.member_zipcode}
                     onChange={onChange}
                     className="form-control"
                   />
@@ -323,7 +345,7 @@ const OrderPage = ({ no, props, myPoint }) => {
                     type="text"
                     name="member_address"
                     id="member_address"
-                    value={memInfo.member_address || ""}
+                    value={memInfo && memInfo.member_address}
                     onChange={onChange}
                     className="form-control"
                   />
@@ -337,7 +359,7 @@ const OrderPage = ({ no, props, myPoint }) => {
                     type="text"
                     name="member_address_detail"
                     id="member_address_detail"
-                    value={memInfo.member_address_detail || ""}
+                    value={memInfo && memInfo.member_address_detail}
                     onChange={onChange}
                     className="form-control"
                   />
@@ -351,7 +373,7 @@ const OrderPage = ({ no, props, myPoint }) => {
                     type="text"
                     name="member_phone"
                     id="member_phone"
-                    value={memInfo.member_phone || ""}
+                    value={memInfo && memInfo.member_phone}
                     onChange={onChange}
                     className="form-control"
                   />
@@ -361,7 +383,7 @@ const OrderPage = ({ no, props, myPoint }) => {
                 type="hidden"
                 name="member_email"
                 id="member_email"
-                value={memInfo.member_email || ""}
+                value={memInfo && memInfo.member_email}
                 onChange={onChange}
                 className="form-control"
               />
@@ -375,9 +397,10 @@ const OrderPage = ({ no, props, myPoint }) => {
                 <label className="col-sm-2 col-form-label">적립금</label>
                 <div className="col-sm-5 d-flex">
                   <input
-                    type="number"
+                    type="text"
                     name="order_used_point"
-                    onChange={onChange}
+                    id="order_used_point"
+                    onChange={pointChange}
                     value={orderInfo.order_used_point || ""}
                     className="form-control"
                   />

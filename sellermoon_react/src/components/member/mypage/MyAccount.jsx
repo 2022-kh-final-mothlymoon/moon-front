@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { memberProfile } from "../../../service/dbLogic";
+import { CONTENTS } from "../../../styles/NoticeStyle";
+import Footer from "../Common/Footer";
+import Header from "../Common/Header";
+import NavbarMypage from "../Common/NavbarMypage";
+import SidebarMypage from "../Common/SidebarMypage";
 
-const MyAccount = ({ no, isLogin }) => {
+const MyAccount = ({ no, isLogin, logout, myPoint }) => {
   const [memInfo, setMemInfo] = useState({
     member_no: 0,
     member_name: "",
@@ -35,36 +40,49 @@ const MyAccount = ({ no, isLogin }) => {
   }, [no]);
   return (
     <>
-      <div>
-        <h1>회원정보</h1>&nbsp;&nbsp;
-        <p>
-          {" "}
-          <Link to={"/mypage/modifyprofile"}>내정보수정</Link>
-        </p>
-        <hr />
-      </div>
-      <div>
-        회원번호 : {memInfo.member_no}
-        <br />
-        이름 : {memInfo.member_name}
-        <br />
-        회원등급 : {memInfo.member_level}
-        <br />
-        이메일 :{memInfo.member_email}
-        <br />
-        주소 :{" "}
-        {memInfo.member_zipcode +
-          memInfo.member_address +
-          memInfo.member_address_detail}
-        <br />
-        전화번호 : {memInfo.member_phone}
-        <br />
-        생일 : {memInfo.member_birth}
-        <br />
-        가입일 : {memInfo.member_date}
-        <br />
-        회원코드 : {memInfo.member_code}
-      </div>
+      <Header isLogin={isLogin} logout={logout} />
+      <div className="container">
+        <CONTENTS className="row">
+          <SidebarMypage />
+          <div className="col-9">
+            <div className="list-wrapper">
+              <NavbarMypage myPoint={myPoint} />
+              <div>
+                회원번호 : {memInfo.member_no}
+                <br />
+                이름 : {memInfo.member_name}
+                <br />
+                회원등급 : {memInfo.member_level}
+                <br />
+                이메일 :{memInfo.member_email}
+                <br />
+                주소 :{" "}
+                {memInfo.member_zipcode +
+                  memInfo.member_address +
+                  memInfo.member_address_detail}
+                <br />
+                전화번호 : {memInfo.member_phone}
+                <br />
+                생일 : {memInfo.member_birth}
+                <br />
+                가입일 : {memInfo.member_date}
+                <br />
+                회원가입방법 : {memInfo.member_method}
+              </div>
+              {/* 이메일 가입은 비밀번호 확인이 가능하니 
+              정보 수정 전 비밀번호 확인 페이지로 가기 */}
+              {memInfo.member_method === "이메일" ? (
+                <Link to={"/mypage/chkpass"}>내정보수정</Link>
+              ) : (
+                <Link to={"/mypage/modifyprofile"}>내정보수정</Link>
+              )}
+            </div>{" "}
+            {/* end of list-wrapper */}
+          </div>{" "}
+          {/* end of col */}
+        </CONTENTS>
+      </div>{" "}
+      <Footer />
     </>
   );
 };

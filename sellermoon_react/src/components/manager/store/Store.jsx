@@ -7,7 +7,7 @@ import Footer from "../Common/Footer";
 import Pagination from "../Common/Pagination";
 import StoreRow from "./StoreRow";
 
-const Store = () => {
+const Store = ({ isLogin, isAdmin, adminId }) => {
   //페이지네이션
   const [limit, setLimit] = useState(8);
   const [page, setPage] = useState(1);
@@ -62,7 +62,7 @@ const Store = () => {
 
   return (
     <>
-      <Header />
+      <Header isLogin={isLogin} isAdmin={isAdmin} adminId={adminId} />
       <div className="container">
         <CONTENTS className="row">
           {/* ####################[[조건 검색]]############################## */}

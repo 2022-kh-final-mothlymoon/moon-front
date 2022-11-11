@@ -4,8 +4,13 @@ import { memberProfile, modifyProfile } from "../../../service/dbLogic";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import { Link, useNavigate } from "react-router-dom";
 import MyPassword from "./MyPassword";
+import Header from "../Common/Header";
+import { CONTENTS } from "../../../styles/NoticeStyle";
+import SidebarMypage from "../Common/SidebarMypage";
+import NavbarMypage from "../Common/NavbarMypage";
+import Footer from "../Common/Footer";
 
-const MyAccountM = ({ no, props }) => {
+const MyAccountM = ({ no, isLogin, logout, myPoint, props }) => {
   let navigate = useNavigate();
   const [show, setShow] = useState(false);
 
@@ -99,73 +104,87 @@ const MyAccountM = ({ no, props }) => {
   };
   return (
     <>
-      <div>
-        <h1>회원정보</h1>&nbsp;&nbsp;
-        <MyPassword no={no} />
-        <hr />
-      </div>
-      <Form id="f_modifym" method="post">
-        회원번호 : {memInfo.member_no}
-        <br />
-        이름 :
-        <input
-          type="text"
-          value={memInfo.member_name}
-          name="member_name"
-          onChange={EditChange}
-        />
-        <br />
-        회원등급 : {memInfo.member_level}
-        <br />
-        이메일 :
-        <input
-          type="text"
-          value={memInfo.member_email}
-          name="member_email"
-          onChange={EditChange}
-        />
-        <br />
-        주소 :
-        <input
-          type="text"
-          value={memInfo.member_zipcode}
-          name="member_zipcode"
-          onChange={EditChange}
-        />
-        <input
-          type="text"
-          value={memInfo.member_address}
-          name="member_address"
-          onChange={EditChange}
-        />
-        <input
-          type="text"
-          name="member_address_detail"
-          value={memInfo.member_address_detail}
-          onChange={EditChange}
-        />
-        <br />
-        <Button variant="warning" type="button" onClick={handleShow}>
-          Open
-        </Button>
-        <br />
-        전화번호 :{" "}
-        <input
-          type="text"
-          value={memInfo.member_phone}
-          name="member_phone"
-          onChange={EditChange}
-        />
-        <br />
-        생일 : {memInfo.member_birth}
-        <br />
-        가입일 : {memInfo.member_date}
-      </Form>
-      <Button variant="warning" onClick={memModify}>
-        수정하기
-      </Button>
-      <br />
-      <Link to={"/mypage/delmember"}>탈퇴하기</Link>
+      <Header isLogin={isLogin} logout={logout} />
+      <div className="container">
+        <CONTENTS className="row">
+          <SidebarMypage />
+          <div className="col-9">
+            <div className="list-wrapper">
+              <NavbarMypage myPoint={myPoint} />
+              <div>
+                <h1>회원정보</h1>&nbsp;&nbsp;
+                <MyPassword no={no} />
+                <hr />
+              </div>
+              <Form id="f_modifym" method="post">
+                회원번호 : {memInfo.member_no}
+                <br />
+                이름 :
+                <input
+                  type="text"
+                  value={memInfo.member_name}
+                  name="member_name"
+                  onChange={EditChange}
+                />
+                <br />
+                회원등급 : {memInfo.member_level}
+                <br />
+                이메일 :
+                <input
+                  type="text"
+                  value={memInfo.member_email}
+                  name="member_email"
+                  onChange={EditChange}
+                />
+                <br />
+                주소 :
+                <input
+                  type="text"
+                  value={memInfo.member_zipcode}
+                  name="member_zipcode"
+                  onChange={EditChange}
+                />
+                <input
+                  type="text"
+                  value={memInfo.member_address}
+                  name="member_address"
+                  onChange={EditChange}
+                />
+                <input
+                  type="text"
+                  name="member_address_detail"
+                  value={memInfo.member_address_detail}
+                  onChange={EditChange}
+                />
+                <br />
+                <Button variant="warning" type="button" onClick={handleShow}>
+                  Open
+                </Button>
+                <br />
+                전화번호 :{" "}
+                <input
+                  type="text"
+                  value={memInfo.member_phone}
+                  name="member_phone"
+                  onChange={EditChange}
+                />
+                <br />
+                생일 : {memInfo.member_birth}
+                <br />
+                가입일 : {memInfo.member_date}
+              </Form>
+              <Button variant="warning" onClick={memModify}>
+                수정하기
+              </Button>
+              <br />
+              <Link to={"/mypage/delmember"}>탈퇴하기</Link>
+            </div>{" "}
+            {/* end of list-wrapper */}
+          </div>{" "}
+          {/* end of col */}
+        </CONTENTS>
+      </div>{" "}
+      <Footer />
       {/* 우편번호 모달 */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

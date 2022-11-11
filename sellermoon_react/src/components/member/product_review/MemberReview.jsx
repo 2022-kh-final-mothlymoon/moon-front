@@ -1,7 +1,11 @@
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { reviewInsert, reviewList } from "../../../service/dbLogic";
+import {
+  reviewCheck,
+  reviewInsert,
+  reviewList,
+} from "../../../service/dbLogic";
 import MemberReviewRow from "./MemberReviewRow";
 import { ImStarFull } from "react-icons/im";
 import { STARDIV } from "../../../styles/ReviewStyle";
@@ -10,13 +14,22 @@ import Pagination from "../Common/Pagination";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 
-const MemberReview = ({ no, isLogin, logout }) => {
+const MemberReview = ({ no, isLogin, logout, md_no }) => {
   const [reviews, setReviews] = useState([]); // 리뷰 리스트 담기
   const [content, setContent] = useState(""); // 작성할 리뷰 내용 담기
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    reviewCheck({ member_no: no, md_no: md_no }).then((res) => {
+      console.log(res.data);
+      if (res.data === 1) {
+        setShow(true);
+      } else {
+        alert("구매 상품이 아닙니다!");
+      }
+    });
+  };
   // 별점 기본값 설정
   const [clicked, setClicked] = useState([false, false, false, false, false]);
   // 더미 배열을 통해 항상 별이 총 5개가 나오도록 한다.
@@ -38,7 +51,7 @@ const MemberReview = ({ no, isLogin, logout }) => {
   const offset = (page - 1) * limit;
 
   useEffect(() => {
-    reviewList({ md_no: 2 }).then((res) => {
+    reviewList({ md_no: md_no }).then((res) => {
       if (res.data === null) {
         return () => {};
       } else {
@@ -55,10 +68,10 @@ const MemberReview = ({ no, isLogin, logout }) => {
   };
 
   const insertR = (e) => {
-    console.log("버튼 클릭");
+    //console.log("버튼 클릭");
     reviewInsert({
       member_no: no,
-      md_no: 2,
+      md_no: md_no,
       md_review_content: content,
       md_star: score,
     }).then((res) => {
@@ -71,7 +84,7 @@ const MemberReview = ({ no, isLogin, logout }) => {
   };
   return (
     <>
-      <Header isLogin={isLogin} logout={logout} />
+      <hr />
       <div>
         <h1>리뷰페이지</h1>
         <button onClick={handleShow}>리뷰 쓰기</button>
@@ -86,7 +99,6 @@ const MemberReview = ({ no, isLogin, logout }) => {
         page={page}
         setPage={setPage}
       />
-      <Footer isLogin={isLogin} logout={logout} />
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>리뷰 등록</Modal.Title>

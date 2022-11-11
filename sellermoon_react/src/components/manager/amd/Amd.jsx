@@ -10,7 +10,7 @@ import { jsonAmdList, jsonStoreList } from "../../../service/dbLogic";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 
-const Amd = ({ pictureUpload }) => {
+const Amd = ({ pictureUpload, isLogin, isAdmin, adminId }) => {
   //페이지네이션
   const [limit, setLimit] = useState(8);
   const [page, setPage] = useState(1);
@@ -152,7 +152,7 @@ const Amd = ({ pictureUpload }) => {
 
   return (
     <>
-      <Header />
+      <Header isLogin={isLogin} isAdmin={isAdmin} adminId={adminId} />
       <div className="container">
         <CONTENTS className="row">
           {/* ####################[[조건 검색]]############################## */}

@@ -239,4 +239,13 @@ td {
   font-weight: 600;
 }
 
+/* ##############################[[Products]]################################## */
+.product_container {
+  border: 1px solid black;
+  border-radius: 1rem;
+  display: block;
+  margin: 1rem;
+  padding: 0.5rem;
+}
+
 /* ############################################################################# */

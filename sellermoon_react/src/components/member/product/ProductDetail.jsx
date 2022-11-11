@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getProductDetailAPI } from "../../../service/dbLogic";
-import queryString from 'query-string'
+import queryString from "query-string";
 import { useLocation } from "react-router-dom";
+import Header from "../Common/Header";
+import Footer from "../Common/Footer";
+import MemberReview from "../product_review/MemberReview";
 
-const ProductDetail = ({  }) => {
+const ProductDetail = ({ no, isLogin }) => {
   const [product, setProduct] = useState([]);
   const location = useLocation();
-  const query = queryString.parse(location.search)
-  const name = new URLSearchParams(location).get("no");
-  const no = query.no;
+  const query = queryString.parse(location.search);
+  const md_no = query.no;
 
   useEffect(() => {
     console.log("useEffet 호출");
     const getProductDetail = async () => {
-      await getProductDetailAPI(no).then((res) => {
+      await getProductDetailAPI(md_no).then((res) => {
         if (res.data === null) {
           return () => {};
         } else {
@@ -26,7 +28,11 @@ const ProductDetail = ({  }) => {
   }, []);
   return (
     <>
-      <div className="product_detail_container">
+      <Header />
+      <div className="body_container">
+        <div className="product_detail_image">
+          <img src={product.mdImageUrl} alt="img" />
+        </div>
         <div className="product_detail_brand">{product.mdBrand}</div>
         <div className="product_detail_category">{product.mdCategory}</div>
         <div className="product_detail_name">{product.mdName}</div>
@@ -36,12 +42,11 @@ const ProductDetail = ({  }) => {
         <div className="product_detail_dc">{product.mdDiscount}</div>
         <div className="product_detail_amount">{product.stAmout}</div>
         <div className="product_detail_d_image">
-          <img src={product.mdDetailImageUrl} alt="d-img"/>
+          <img src={product.mdDetailImageUrl} alt="d-img" />
         </div>
-        <div className="product_detail_image">
-          <img src={product.mdImageUrl} alt="img"/>
-        </div>
+        <MemberReview md_no={md_no} no={no} />
       </div>
+      <Footer />
     </>
   );
 };

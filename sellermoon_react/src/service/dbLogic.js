@@ -59,6 +59,21 @@ export const memberProfile = (params) => {
     }
   });
 };
+/* 회원 정보 수정 전 비밀번호 확인 */
+export const checkMem = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "passcheck",
+        params: params,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 
 export const modifyProfile = (params) => {
   return new Promise((resolve, reject) => {
@@ -230,13 +245,14 @@ export const amdInsert = (params) => {
   });
 };
 
-/*   Cart     */
-export const getAllCarts = () => {
+/*  현재 로그인한 유저의 장바구니 목록 조회   */
+export const getAllMyCartAPI = (type) => {
+  console.log(type);
   return new Promise((resolve, reject) => {
     try {
       const response = axios({
         method: "get",
-        url: process.env.REACT_APP_SPRING_IP + "cart/jsonList",
+        url: process.env.REACT_APP_SPRING_IP + "cart?type=" + type,
       });
 
       resolve(response);
@@ -246,12 +262,14 @@ export const getAllCarts = () => {
   });
 };
 
-export const getAllProductAPI = () => {
+/*  장바구니 담기   */
+export const insertCartAPI = (data) => {
   return new Promise((resolve, reject) => {
     try {
       const response = axios({
-        method: "get",
-        url: process.env.REACT_APP_SPRING_IP + "product/list",
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "cart",
+        data: data,
       });
 
       resolve(response);
@@ -261,6 +279,63 @@ export const getAllProductAPI = () => {
   });
 };
 
+/*  장바구니 수정   */
+export const updateCartAPI = (data) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "put",
+        url: process.env.REACT_APP_SPRING_IP + "cart",
+        data: data,
+      });
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/*  장바구니 삭제   */
+export const deleteCartAPI = (data) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "delete",
+        url: process.env.REACT_APP_SPRING_IP + "cart",
+        data: data,
+      });
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/*  모든 상품 목록 조회 (카테고라이징, 소팅, 페이징)  */
+export const getAllProductAPI = (e) => {
+  console.log(e);
+  return new Promise((resolve, reject) => {
+    var url = process.env.REACT_APP_SPRING_IP + "product/list";
+    url += "?page=" + e.page;
+    url += "&category=" + e.category;
+    url += "&sort=" + e.sort;
+
+    try {
+      const response = axios({
+        method: "get",
+        url: url,
+      });
+
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+/*  상품 상세 조회  */
 export const getProductDetailAPI = (no) => {
   const url = process.env.REACT_APP_SPRING_IP + "product/detail?no=" + no;
   console.log(url);
@@ -407,6 +482,21 @@ export const reviewInsert = (params) => {
     }
   });
 };
+// 리뷰 등록 전 구매회원 확인
+export const reviewCheck = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "chkrevieworder",
+        params: params,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 // 리뷰 수정
 export const reviewModify = (params) => {
   return new Promise((resolve, reject) => {
@@ -474,6 +564,51 @@ export const myReview = (params) => {
       const response = axios({
         method: "post",
         url: process.env.REACT_APP_SPRING_IP + "memreview",
+        params: params,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+// 관리자 리뷰 보기
+export const adminReview = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "admin/review",
+        params: params,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+// 관리자 베스트 리뷰 선정
+export const bestReview = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "admin/bestreview",
+        params: params,
+      });
+      resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+// 관리자 셀렉트 박스
+export const selectReview = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const response = axios({
+        method: "post",
+        url: process.env.REACT_APP_SPRING_IP + "admin/selectreview",
         params: params,
       });
       resolve(response);
@@ -575,6 +710,56 @@ export const spaytotal = (params) => {
       });
 
       resolve(response);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// 쪽지 전체 조회 (send, receive)
+export const jsonMemoList = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const mList = axios({
+        method: "get",
+        url: process.env.REACT_APP_SPRING_IP + "member/memo/jsonMemoList",
+        params: params,
+      });
+      resolve(mList);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// 게시글 신고 내역 전체 조회
+export const jsonReportBoardList = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const reportBList = axios({
+        method: "get",
+        url:
+          process.env.REACT_APP_SPRING_IP + "admin/report/jsonReportBoardList",
+        params: params,
+      });
+      resolve(reportBList);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// 댓글 신고 내역 전체 조회
+export const jsonReportReplyList = (params) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const reportRList = axios({
+        method: "get",
+        url:
+          process.env.REACT_APP_SPRING_IP + "admin/report/jsonReportReplyList",
+        params: params,
+      });
+      resolve(reportRList);
     } catch (error) {
       reject(error);
     }
