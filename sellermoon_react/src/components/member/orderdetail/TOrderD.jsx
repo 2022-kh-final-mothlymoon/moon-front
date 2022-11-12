@@ -408,7 +408,6 @@ const TOrderD = ({ no, props }) => {
 
 export default TOrderD;
 
-
 export const TA2 = styled.table`
   border-top: 2px solid #b29d82;
   border-bottom: 2px solid #b29d82;
@@ -480,11 +479,14 @@ export const ORDER_UL2 = styled.ul`
 `;
 
 export const CONTENTS2 = styled.div`
-  textAlign: center
-  width: 80%;
   height: 100%;
   margin-top: 50px;
   margin-bottom: 150px;
+`;
+export const CONTENTS3 = styled.div`
+  height: 100%;
+  margin-top: 50px;
+  margin-bottom: 50px;
 `;
 
 export const ORDER_H4 = styled.h3`

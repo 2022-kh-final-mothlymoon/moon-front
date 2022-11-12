@@ -18,9 +18,10 @@ const StoreRow = (props) => {
   return (
     <>
       <tr>
-        <td>{props.store.STORE_NO}</td>
-        <td>[{props.store.STORE_YN}]</td>
+        <td style={{ textAlign: "center" }}>{props.store.STORE_NO}</td>
+        <td style={{ textAlign: "center" }}>[{props.store.STORE_YN}]</td>
         <td
+          style={{ textAlign: "center" }}
           onClick={() => {
             navigate("/admin/store/detail/" + props.store.STORE_NO);
           }}
@@ -28,8 +29,8 @@ const StoreRow = (props) => {
         >
           {props.store.FIELD}
         </td>
-        <td>{props.store.STORE_MANAGER}</td>
-        <td>{props.store.STORE_CONTACT}</td>
+        <td style={{ textAlign: "center" }}>{props.store.STORE_MANAGER}</td>
+        <td style={{ textAlign: "center" }}>{props.store.STORE_CONTACT}</td>
       </tr>
     </>
   );

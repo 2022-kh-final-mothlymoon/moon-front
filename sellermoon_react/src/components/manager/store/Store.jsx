@@ -6,7 +6,7 @@ import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 import Pagination from "./../../member/Common/Pagination";
 import StoreRow from "./StoreRow";
-import { CONTENTS2 } from "../../member/orderdetail/TOrderD";
+import { CONTENTS2, CONTENTS3 } from "../../member/orderdetail/TOrderD";
 
 /*
  * /admin/store
@@ -70,12 +70,19 @@ const Store = () => {
   return (
     <>
       <Header />
-
+      <br />
+      {/* ####################[[조건 검색]]############################## */}
       <div className="container">
-        <CONTENTS2>
-          {/* ####################[[조건 검색]]############################## */}
-          <div className="row">
-            <div className="col-3">
+        <CONTENTS3>
+          <h4>
+            <strong>거래처 관리</strong>
+          </h4>
+          <br />
+          <div
+            className="d-flex mx-auto"
+            style={{ width: "140%", height: "45px" }}
+          >
+            <div className="col-2">
               <select id="gubun" className="form-select" aria-label="분류선택">
                 <option defaultValue>분류선택</option>
                 <option value="STORE_YN">거래여부</option>
@@ -83,7 +90,6 @@ const Store = () => {
                 <option value="STORE_MANAGER">매니저</option>
               </select>
             </div>
-
             <div className="col-6">
               <input
                 type="text"
@@ -92,7 +98,7 @@ const Store = () => {
                 placeholder="검색어를 입력하세요"
               />
             </div>
-            <div className="col-3">
+            <div className="col-1">
               <Button
                 id="btn_search"
                 variant="outline-secondary"
@@ -102,69 +108,70 @@ const Store = () => {
               </Button>
             </div>
           </div>
-          {/* ###################[[조건검색 끝]]####################### */}
+        </CONTENTS3>
+      </div>
+      {/* ###################[[조건검색 끝]]####################### */}
+      <div className="container">
+        {/******************StoreList*******************/}
+        <CONTENTS2>
+          <table>
+            <colgroup>
+              <col style={{ width: "10%", textAlign: "center" }} />
+              <col style={{ width: "10%", textAlign: "center" }} />
+              <col style={{ width: "30%", textAlign: "center" }} />
+              <col style={{ width: "20%", textAlign: "center" }} />
+              <col style={{ width: "30%", textAlign: "center" }} />
+            </colgroup>
 
-          {/******************StoreList*******************/}
-          <div className="col-9">
-            <div className="list-wrapper">
-              <h4>거래처 관리</h4>
-              <table>
-                <colgroup>
-                  <col style={{ width: "10%", textAlign: "center" }} />
-                  <col style={{ width: "10%", textAlign: "center" }} />
-                  <col style={{ width: "20%", textAlign: "center" }} />
-                  <col style={{ width: "20%", textAlign: "center" }} />
-                  <col style={{ width: "40%", textAlign: "center" }} />
-                </colgroup>
+            <thead>
+              <tr>
+                <th style={{ width: "10%", textAlign: "center" }}>번호</th>
+                <th style={{ width: "10%", textAlign: "center" }}>거래 여부</th>
+                <th style={{ width: "30%", textAlign: "center" }}>
+                  거래처 이름
+                </th>
+                <th style={{ width: "20%", textAlign: "center" }}>담당자</th>
+                <th style={{ width: "30%", textAlign: "center" }}>전화번호</th>
+              </tr>
+            </thead>
 
-                <thead>
-                  <tr>
-                    <th>번호</th>
-                    <th>거래 여부</th>
-                    <th>거래처 이름</th>
-                    <th>담당자</th>
-                    <th>전화번호</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {storeList.slice(offset, offset + limit).map((store, i) => (
-                    <StoreRow key={i} store={store} />
-                  ))}
-                </tbody>
-              </table>
-
-              <Pagination
-                total={storeList.length}
-                limit={limit}
-                page={page}
-                setPage={setPage}
-              />
-              <hr />
-
-              <div style={{ textAlign: "center" }}>
-                <Button
-                  variant="outline-secondary"
-                  id="btn_search"
-                  onClick={allList}
-                >
-                  전체조회
-                </Button>
-                &nbsp;&nbsp;&nbsp;
-                <Button
-                  variant="outline-secondary"
-                  id="btn_search"
-                  onClick={handleShow}
-                >
-                  거래처등록
-                </Button>
-              </div>
-            </div>
+            <tbody>
+              {storeList.slice(offset, offset + limit).map((store, i) => (
+                <StoreRow key={i} store={store} />
+              ))}
+            </tbody>
+          </table>
+          <br />
+          <Pagination
+            total={storeList.length}
+            limit={limit}
+            page={page}
+            setPage={setPage}
+          />
+          <br />
+          <div style={{ textAlign: "center" }}>
+            <Button
+              variant="outline-secondary"
+              id="btn_search"
+              onClick={allList}
+            >
+              전체조회
+            </Button>
+            &nbsp;&nbsp;&nbsp;
+            <Button
+              variant="outline-secondary"
+              id="btn_search"
+              onClick={handleShow}
+            >
+              거래처등록
+            </Button>
           </div>
         </CONTENTS2>
       </div>
       {/* end of container */}
 
+      <br />
+      <br />
       {/* ***************** StoreList 끝************************** */}
 
       {/* ============================== [[ 스토어 등록 모달 시작 ]] ============================== */}

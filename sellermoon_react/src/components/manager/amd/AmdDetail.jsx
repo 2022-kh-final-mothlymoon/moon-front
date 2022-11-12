@@ -121,6 +121,12 @@ const AmdDetail = (props) => {
             </tr>
             <tr>
               <Td6>
+                <strong>상세 내용</strong>
+              </Td6>
+              <Td5>{amdVO.MD_CONTENT}</Td5>
+            </tr>
+            <tr>
+              <Td6>
                 <strong>메인 이미지</strong>
               </Td6>
               <Td5 colSpan="3">
