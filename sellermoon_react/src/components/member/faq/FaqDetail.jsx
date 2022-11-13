@@ -1,50 +1,45 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { faqlist } from '../../../service/dbLogic';
-import Header from './../Common/Header';
-import { CONTENTS, BROWN_BTN } from './../../../styles/NoticeStyle';
-import SidebarNotice from './../notice/SidebarNotice';
-import Footer from './../Common/Footer';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { faqlist } from "../../../service/dbLogic";
+import Header from "./../Common/Header";
+import { CONTENTS, BROWN_BTN } from "./../../../styles/NoticeStyle";
+import SidebarNotice from "./../notice/SidebarNotice";
+import Footer from "./../Common/Footer";
 
-
-const FaqDetail = () => {
-
+const FaqDetail = ({ isLogin, logout, no }) => {
   let navigate = useNavigate();
 
-  const {faq_no} = useParams();
+  const { faq_no } = useParams();
 
-  const [ faqVO, setFaqVO ] = useState({
+  const [faqVO, setFaqVO] = useState({
     faq_no: 0,
-    faq_category: "", 
-    faq_title: "", 
-    faq_content: "", 
+    faq_category: "",
+    faq_title: "",
+    faq_content: "",
     faq_write_date: "",
     faq_view_count: 0,
-  })
+  });
 
   useEffect(() => {
     // 오라클 경유
-    const asyncDB = async() => {
-      const res = await faqlist({faq_no : faq_no}) /* faq_no = useParam */
+    const asyncDB = async () => {
+      const res = await faqlist({ faq_no: faq_no }); /* faq_no = useParam */
       //console.log(res);
       //console.log(res.data);
       console.log(res.data[0]);
-      setFaqVO(res.data[0])/////////////////////////// 데이터 초기화
-    }
+      setFaqVO(res.data[0]); /////////////////////////// 데이터 초기화
+    };
     asyncDB();
-  }, [faq_no]) 
-  
-    
+  }, [faq_no]);
+
   return (
     <>
-
-      <Header />
+      <Header isLogin={isLogin} logout={logout} no={no} />
 
       <div className="container">
         <CONTENTS className="row">
-
           <SidebarNotice />
-          
+
           <div className="col-9">
             <div className="list-wrapper">
               <h4>공지사항</h4>
@@ -78,18 +73,14 @@ const FaqDetail = () => {
                       {faqVO.FAQ_CONTENT}
                     </td>
                   </tr>
-                  
                 </tbody>
               </table>
 
               <div className="d-flex justify-content-end">
-                <BROWN_BTN onClick={() => navigate(-1)}>
-                  목록
-                </BROWN_BTN>
+                <BROWN_BTN onClick={() => navigate(-1)}>목록</BROWN_BTN>
               </div>
             </div>
           </div>
-            
         </CONTENTS>
       </div>
 

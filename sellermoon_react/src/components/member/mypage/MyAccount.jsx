@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { memberProfile } from "../../../service/dbLogic";
-import { CONTENTS } from "../../../styles/NoticeStyle";
+import { BROWN_BTN2, CONTENTS } from "../../../styles/NoticeStyle";
 import Footer from "../Common/Footer";
 import Header from "../Common/Header";
 import NavbarMypage from "../Common/NavbarMypage";
 import SidebarMypage from "../Common/SidebarMypage";
+import { P_STRONG } from "./../../../styles/SubStyle";
+import { FORM } from "./../../../styles/PaymentStyle";
 
-const MyAccount = ({ no, isLogin, logout, myPoint }) => {
+const MyAccount = ({ no, isLogin, logout, myPoint, mySubs }) => {
+  let navigate = useNavigate();
+
   const [memInfo, setMemInfo] = useState({
     member_no: 0,
     member_name: "",
@@ -46,30 +50,123 @@ const MyAccount = ({ no, isLogin, logout, myPoint }) => {
           <SidebarMypage />
           <div className="col-9">
             <div className="list-wrapper">
-              <NavbarMypage myPoint={myPoint} />
-              <div>
-                회원번호 : {memInfo.member_no}
+              <NavbarMypage myPoint={myPoint} mySubs={mySubs} />
+              <div className="container" style={{ padding: "30px 0 150px 0" }}>
+                <P_STRONG>회원 정보</P_STRONG>
+
+                <FORM id="f_modifym">
+                  <div className="mb-3 row">
+                    <label className="col-sm-2 col-form-label">회원번호</label>
+                    <div className="col-sm-10">
+                      <input
+                        type="text"
+                        readOnly
+                        className="form-control-plaintext fw-bold"
+                        value={memInfo.member_no}
+                      />
+                    </div>
+                  </div>
+                  <div className="mb-3 row">
+                    <label className="col-sm-2 col-form-label">이름</label>
+                    <div className="col-sm-10">
+                      <input
+                        type="text"
+                        readOnly
+                        className="form-control-plaintext fw-bold"
+                        value={memInfo.member_name}
+                      />
+                    </div>
+                  </div>
+                  <div className="mb-3 row">
+                    <label className="col-sm-2 col-form-label">회원등급</label>
+                    <div className="col-sm-10">
+                      <input
+                        type="text"
+                        readOnly
+                        className="form-control-plaintext fw-bold"
+                        value={memInfo.member_level}
+                      />
+                    </div>
+                  </div>
+                  <div className="mb-3 row">
+                    <label className="col-sm-2 col-form-label">이메일</label>
+                    <div className="col-sm-10">
+                      <input
+                        type="text"
+                        readOnly
+                        className="form-control-plaintext fw-bold"
+                        value={memInfo.member_email}
+                      />
+                    </div>
+                  </div>
+                  <div className="mb-3 row">
+                    <label className="col-sm-2 col-form-label">주소</label>
+                    <div className="col-sm-10">
+                      <input
+                        type="text"
+                        readOnly
+                        className="form-control-plaintext fw-bold"
+                        value={
+                          memInfo.member_address +
+                          " " +
+                          memInfo.member_address_detail
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="mb-3 row">
+                    <label className="col-sm-2 col-form-label">전화번호</label>
+                    <div className="col-sm-10">
+                      <input
+                        type="text"
+                        readOnly
+                        className="form-control-plaintext fw-bold"
+                        value={memInfo.member_phone}
+                      />
+                    </div>
+                  </div>
+                  <div className="mb-3 row">
+                    <label className="col-sm-2 col-form-label">생일</label>
+                    <div className="col-sm-10">
+                      <input
+                        type="text"
+                        readOnly
+                        className="form-control-plaintext fw-bold"
+                        value={memInfo.member_birth}
+                      />
+                    </div>
+                  </div>
+                  <div className="mb-3 row">
+                    <label className="col-sm-2 col-form-label">가입일</label>
+                    <div className="col-sm-10">
+                      <input
+                        type="text"
+                        readOnly
+                        className="form-control-plaintext fw-bold"
+                        value={memInfo.member_date}
+                      />
+                    </div>
+                  </div>
+                </FORM>
+
                 <br />
-                이름 : {memInfo.member_name}
-                <br />
-                회원등급 : {memInfo.member_level}
-                <br />
-                이메일 :{memInfo.member_email}
-                <br />
-                주소 :{" "}
-                {memInfo.member_zipcode +
-                  memInfo.member_address +
-                  memInfo.member_address_detail}
-                <br />
-                전화번호 : {memInfo.member_phone}
-                <br />
-                생일 : {memInfo.member_birth}
-                <br />
-                가입일 : {memInfo.member_date}
-                <br />
-                회원코드 : {memInfo.member_code}
-              </div>
-              <Link to={"/mypage/modifyprofile"}>내정보수정</Link>
+                {/* 이메일 가입은 비밀번호 확인이 가능하니 
+              정보 수정 전 비밀번호 확인 페이지로 가기 */}
+                <div className="d-flex justify-content-end">
+                  {memInfo.member_method === "이메일" ? (
+                    <BROWN_BTN2 onClick={() => navigate("/mypage/chkpass")}>
+                      정보 수정
+                    </BROWN_BTN2>
+                  ) : (
+                    <BROWN_BTN2
+                      onClick={() => navigate("/mypage/modifyprofile")}
+                    >
+                      정보 수정
+                    </BROWN_BTN2>
+                  )}
+                </div>
+              </div>{" "}
+              {/* end of container */}
             </div>{" "}
             {/* end of list-wrapper */}
           </div>{" "}

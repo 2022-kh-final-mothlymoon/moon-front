@@ -8,13 +8,13 @@ export const STARDIV = styled.div`
     cursor: pointer;
   }
   :hover svg {
-    color: #ead3b1;
+    color: #ffca28;
   }
   & svg:hover ~ svg {
     color: #c4c4c4;
   }
   .yellow {
-    color: #ead3b1;
+    color: #ffca28;
   }
 `;
 
@@ -25,6 +25,6 @@ export const PLUSBTN = styled.button`
 `;
 
 export const STARSPAN = styled.span`
-  color: #ead3b1;
-  font-size: 28px;
+  color: #ffca28;
+  font-size: 25px;
 `;

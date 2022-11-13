@@ -1,56 +1,56 @@
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { noticelist } from './../../../service/dbLogic';
-import Header from './../Common/Header';
-import SidebarNotice from './SidebarNotice';
-import Footer from './../Common/Footer';
-import { CONTENTS, FILEDOWN, BROWN_BTN } from './../../../styles/NoticeStyle';
+import React from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { noticelist } from "./../../../service/dbLogic";
+import Header from "./../Common/Header";
+import SidebarNotice from "./SidebarNotice";
+import Footer from "./../Common/Footer";
+import { CONTENTS, FILEDOWN, BROWN_BTN } from "./../../../styles/NoticeStyle";
 
-
-const NoticeDetail = () => {
-
+const NoticeDetail = ({ isLogin, logout, no }) => {
   let navigate = useNavigate();
 
-  const {notice_no} = useParams();
+  const { notice_no } = useParams();
 
   const fileDown = () => {
-    window.location.href = process.env.REACT_APP_SPRING_IP+"board/downLoad.jsp?notice_file="+noticeVO.NOTICE_FILE
-  }
+    window.location.href =
+      process.env.REACT_APP_SPRING_IP +
+      "board/downLoad.jsp?notice_file=" +
+      noticeVO.NOTICE_FILE;
+  };
 
-  const [ noticeVO, setNoticeVO ] = useState({
+  const [noticeVO, setNoticeVO] = useState({
     notice_no: 0,
-    notice_title: "", 
-    notice_content: "", 
+    notice_title: "",
+    notice_content: "",
     notice_hit: 0,
-    notice_category: "", 
+    notice_category: "",
     notice_regdate: "",
-    notcie_file: "", 
-  })
+    notcie_file: "",
+  });
 
   useEffect(() => {
     // 오라클 경유
-    const asyncDB = async() => {
-      const res = await noticelist({notice_no : notice_no}) /* notice_no = useParam */
+    const asyncDB = async () => {
+      const res = await noticelist({
+        notice_no: notice_no,
+      }); /* notice_no = useParam */
       //console.log(res);
       console.log(res.data);
       console.log(res.data[0]);
-      setNoticeVO(res.data[0])/////////////////////////// 데이터 초기화
-    }
+      setNoticeVO(res.data[0]); /////////////////////////// 데이터 초기화
+    };
     asyncDB();
-  }, [notice_no]) 
+  }, [notice_no]);
 
-  
   return (
     <>
-
-      <Header />
+      <Header isLogin={isLogin} logout={logout} no={no} />
 
       <div className="container">
         <CONTENTS className="row">
-
           <SidebarNotice />
-          
+
           <div className="col-9">
             <div className="list-wrapper">
               <h4>공지사항</h4>
@@ -76,9 +76,7 @@ const NoticeDetail = () => {
                   <tr>
                     <th>첨부파일</th>
                     <td colSpan={4} onClick={fileDown}>
-                      <FILEDOWN>
-                        {noticeVO.NOTICE_FILE}
-                      </FILEDOWN>
+                      <FILEDOWN>{noticeVO.NOTICE_FILE}</FILEDOWN>
                     </td>
                   </tr>
                   <tr>
@@ -92,18 +90,14 @@ const NoticeDetail = () => {
                       {noticeVO.NOTICE_CONTENT}
                     </td>
                   </tr>
-                  
                 </tbody>
               </table>
 
               <div className="d-flex justify-content-end">
-                <BROWN_BTN onClick={() => navigate(-1)}>
-                  목록
-                </BROWN_BTN>
+                <BROWN_BTN onClick={() => navigate(-1)}>목록</BROWN_BTN>
               </div>
             </div>
           </div>
-            
         </CONTENTS>
       </div>
 

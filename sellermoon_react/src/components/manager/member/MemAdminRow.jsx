@@ -1,6 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { memberList } from "../../../service/dbLogic";
+import styled from "styled-components";
+
+const MTR = styled.tr`
+  &:hover {
+    background-color: #ead3b1;
+  }
+`;
 
 const MemAdminRow = ({ isLogin, isAdmin, member }) => {
   let navigate = useNavigate();
@@ -12,16 +19,14 @@ const MemAdminRow = ({ isLogin, isAdmin, member }) => {
   };
   return (
     <>
-      <tr onClick={memberDetail}>
-        <td colSpan={10} className="bdr bdt">
-          <span style={{ marginRight: "15%" }}>{member.MEMBER_NO}</span>
-          <span style={{ marginRight: "10%" }}>{member.MEMBER_NAME}</span>
-          <span style={{ marginRight: "10%" }}>{member.MEMBER_EMAIL}</span>
-          <span style={{ marginRight: "12%" }}>{member.MEMBER_DATE}</span>
-          <span style={{ marginRight: "15%" }}>{member.MEMBER_LEVEL}</span>
-          <span>{member.SUB}</span>
-        </td>
-      </tr>
+      <MTR id="list" onClick={memberDetail}>
+        <td>{member.MEMBER_NO}</td>
+        <td>{member.MEMBER_NAME}</td>
+        <td>{member.MEMBER_EMAIL}</td>
+        <td>{member.MEMBER_DATE}</td>
+        <td>{member.MEMBER_LEVEL}</td>
+        <td>{member.SUB}</td>
+      </MTR>
     </>
   );
 };

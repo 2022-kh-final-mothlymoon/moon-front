@@ -16,8 +16,10 @@ import { TABTITLE } from "./../../../styles/MainStyle";
 import FaqRowAdmin from "./FaqRowAdmin";
 import Pagination from "./../../member/Common/Pagination";
 import { BROWN_BTN } from "../../../styles/NoticeStyle";
+import Header from "../Common/Header";
+import Footer from "../Common/Footer";
 
-const FaqAdmin = ({ isLogin, isAdmin }) => {
+const FaqAdmin = ({ isLogin, isAdmin, adminId }) => {
   let navigate = useNavigate();
 
   const [faqList, setFaqList] = useState([]);
@@ -156,6 +158,7 @@ const FaqAdmin = ({ isLogin, isAdmin }) => {
 
   return (
     <>
+      <Header isLogin={isLogin} isAdmin={isAdmin} adminId={adminId} />
       <div className="container">
         <h4>FAQ 관리</h4>
         <hr />
@@ -433,6 +436,9 @@ const FaqAdmin = ({ isLogin, isAdmin }) => {
         </Modal>
         {/* ========[[[ 등록 모달 끝]]]======= */}
       </div>
+      <br />
+      <br />
+      <Footer />
     </>
   );
 };

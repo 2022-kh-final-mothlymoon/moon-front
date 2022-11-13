@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const FORM = styled.form`
-  padding: 30px 10px;
+  padding: 20px 10px;
   border-bottom: 2px solid #b29d82;
 `
 
@@ -11,7 +11,7 @@ export const POINTSUM = styled.span`
 `
 
 export const ORDER_WRAPPER = styled.div`
-  padding: 10px 20px;
+  padding: 20px 20px;
   border-left: 2px solid #b29d82;
 `
 
@@ -114,4 +114,65 @@ border: none;
 margin : 30px 15px 0 15px;
 font-weight : 600;
 font-size : 23px;
+`
+
+/* 마이페이지 주문배송조회 */
+export const ORDER_MLI = styled.li`
+position: relative;
+margin: 20px 0px 0px;
+display: flex;
+list-style: none;
+`
+
+export const ORDER_MSPAN = styled.span`
+position: absolute;
+top: 1px;
+    left: 230px;
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: rgb(0, 0, 0);
+    text-decoration: underline;
+    z-index: 1;
+`
+
+export const ORDER_MTYPE = styled.span`
+position: absolute;
+top: -1px;
+left: 140px;
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fafafa;
+    z-index: 1;
+    background-color: #00b8d4;
+    border-radius: 20px;
+    padding: 3px 10px;
+`
+
+export const ORDER_MIMG = styled.img`
+flex-shrink: 0;
+    margin-right: 20px;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    order: 0;
+    vertical-align: top;
+`
+
+export const ORDER_MP1 = styled.p`
+padding: 36px 0px 7px;
+    font-size: 17.5px;
+    line-height: 26px;
+    font-weight: 700;
+    overflow-wrap: break-word;
+    margin:0;
+    text-align: left;
+`
+
+export const ORDER_MP2 = styled.p`
+color: rgb(255, 72, 0);
+font-weight: 600;
+font-size: 14px;
+text-align: left;
 `

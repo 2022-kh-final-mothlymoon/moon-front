@@ -23,6 +23,7 @@ export const RDIV3 = styled.div`
   width: 100%
   margin: 0 auto;
   padding: 1.5rem 3rem;
+  border-bottom: 3px solid #5e514d;
 `;
 
 export const RTEXTDIV = styled.div`

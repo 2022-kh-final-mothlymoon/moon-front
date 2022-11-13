@@ -57,7 +57,7 @@ const Header = ({ isLogin, logout, no, isAdmin }) => {
                 className="btn position-relative"
                 id="nav-btn"
                 onClick={() => {
-                  navigate("/cart");
+                  navigate("/cart?type=O");
                 }}
               >
                 {" "}
@@ -71,7 +71,7 @@ const Header = ({ isLogin, logout, no, isAdmin }) => {
                 className="btn position-relative"
                 id="nav-btn"
                 onClick={() => {
-                  navigate("/memo");
+                  navigate("/memo/receiveMemoList");
                 }}
               >
                 {" "}
@@ -161,14 +161,14 @@ const Header = ({ isLogin, logout, no, isAdmin }) => {
               >
                 <NavDropdown.Item
                   onClick={() => {
-                    navigate("/member/board/boardList");
+                    navigate("/board/boardList");
                   }}
                 >
                   커뮤니티
                 </NavDropdown.Item>
                 <NavDropdown.Item
                   onClick={() => {
-                    navigate("/");
+                    navigate("/memo/receiveMemoList");
                   }}
                 >
                   쪽지

@@ -5,12 +5,13 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { CONTENTS } from "../../../styles/NoticeStyle";
 import AmdRow from "./AmdRow";
-import Pagination from "../Common/Pagination";
+import Pagination from "./../../member/Common/Pagination";
 import { jsonAmdList, jsonStoreList } from "../../../service/dbLogic";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
+import { CONTENTS2, CONTENTS3 } from "../../member/orderdetail/TOrderD";
 
-const Amd = ({ pictureUpload }) => {
+const Amd = ({ pictureUpload, isLogin, isAdmin, adminId }) => {
   //페이지네이션
   const [limit, setLimit] = useState(8);
   const [page, setPage] = useState(1);
@@ -32,8 +33,7 @@ const Amd = ({ pictureUpload }) => {
     MD_DETAIL_IMAGE_URL: null,
   });
 
-  // html 렌더링 된 후 호출됨
-  // 엠디리스트
+  // html 렌더링 된 후 호출됨 -> amdList 불러오기용(다건용)
   useEffect(() => {
     console.log("useEffect 호출");
     const oracleDB = async () => {
@@ -47,12 +47,11 @@ const Amd = ({ pictureUpload }) => {
     oracleDB();
   }, []);
 
-  // 옵션값용
+  // store 옵션값 불러오기용
   useEffect(() => {
     console.log("useEffect 호출");
     const storeDB = async () => {
       console.log("storeDB 호출");
-      //const result = await jsonDeptList({ DEPTNO: 30 }) -> 스프링콘솔에 com.example.demo.dao.DeptDao  : pMap : {DEPTNO=30}
       const result = await jsonStoreList(); // pMap : {}
       console.log(result);
       console.log(result.data[0]);
@@ -60,16 +59,19 @@ const Amd = ({ pictureUpload }) => {
     };
     storeDB();
   }, []);
+
   const store = [];
+
+  // store 옵션값 push용
   for (let i = 0; i < storeList.length; i++) {
     const element = [];
     element[i] = storeList[i].STORE_NO + storeList[i].FIELD;
-
     if (element.length > 0) {
       store.push(element);
       console.log(store);
     }
   }
+
   //이미지 저장용(이미지,상세이미지)
   const imgChange1 = async (event) => {
     console.log("imgChange1 호출");
@@ -152,12 +154,20 @@ const Amd = ({ pictureUpload }) => {
 
   return (
     <>
-      <Header />
+      <Header isLogin={isLogin} isAdmin={isAdmin} adminId={adminId} />
+
+      {/* ####################[[조건 검색]]############################## */}
       <div className="container">
-        <CONTENTS className="row">
-          {/* ####################[[조건 검색]]############################## */}
-          <div className="row">
-            <div className="col-3">
+        <CONTENTS3>
+          <h4>
+            <strong>상품 관리</strong>
+          </h4>
+          <br />
+          <div
+            className="d-flex mx-auto"
+            style={{ width: "140%", height: "45px" }}
+          >
+            <div className="col-1">
               <select id="gubun" className="form-select" aria-label="분류선택">
                 <option defaultValue>분류선택</option>
                 <option value="MD_NAME">상품명</option>
@@ -165,7 +175,7 @@ const Amd = ({ pictureUpload }) => {
               </select>
             </div>
 
-            <div className="col-6">
+            <div className="col-2">
               <input
                 type="text"
                 id="word"
@@ -174,7 +184,7 @@ const Amd = ({ pictureUpload }) => {
               />
             </div>
 
-            <div className="col-3">
+            <div className="col-1">
               <Button
                 id="btn_search"
                 variant="outline-secondary"
@@ -184,58 +194,68 @@ const Amd = ({ pictureUpload }) => {
               </Button>
             </div>
           </div>
-          {/* ###################[[조건검색 끝]]####################### */}
-
-          {/******************AmdList*******************/}
-          <div className="col-9">
-            <div className="list-wrapper">
-              <h4>상품 관리</h4>
-
-              <table>
-                <colgroup>
-                  <col style={{ width: "10%", textAlign: "center" }} />
-                  <col style={{ width: "20%", textAlign: "center" }} />
-                  <col style={{ width: "30%", textAlign: "center" }} />
-                  <col style={{ width: "20%", textAlign: "center" }} />
-                  <col style={{ width: "20%", textAlign: "center" }} />
-                </colgroup>
-                <thead>
-                  <tr>
-                    <th>번호</th>
-                    <th>브랜드</th>
-                    <th>상품명</th>
-                    <th>거래처번호</th>
-                    <th>재고</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {amdList.slice(offset, offset + limit).map((amd, i) => (
-                    <AmdRow key={i} amd={amd} />
-                  ))}
-                </tbody>
-              </table>
-              <Pagination
-                total={amdList.length}
-                limit={limit}
-                page={page}
-                setPage={setPage}
-              />
-            </div>
-            <div className="deptlist-footer">
-              <Button variant="success" onClick={handleShow}>
-                상품 등록
-              </Button>
-              &nbsp;
-              <Button variant="warning" onClick={allList}>
-                전체조회
-              </Button>
-              &nbsp;
-            </div>
-          </div>
-          {/* end of container */}
-          {/* ***************** AmdList 끝************************** */}
-        </CONTENTS>
+        </CONTENTS3>
       </div>
+      {/* ###################[[조건검색 끝]]####################### */}
+      <div className="container">
+        {/******************AmdList*******************/}
+        <CONTENTS2>
+          <table>
+            <colgroup>
+              <col style={{ width: "10%", textAlign: "center" }} />
+              <col style={{ width: "20%", textAlign: "center" }} />
+              <col style={{ width: "30%", textAlign: "center" }} />
+              <col style={{ width: "20%", textAlign: "center" }} />
+              <col style={{ width: "20%", textAlign: "center" }} />
+            </colgroup>
+            <thead>
+              <tr>
+                <th style={{ textAlign: "center" }}>번호</th>
+                <th style={{ textAlign: "center" }}>브랜드</th>
+                <th style={{ textAlign: "center" }}>상품명</th>
+                <th style={{ textAlign: "center" }}>거래처번호</th>
+                <th style={{ textAlign: "center" }}>재고</th>
+              </tr>
+            </thead>
+            <tbody>
+              {amdList.slice(offset, offset + limit).map((amd, i) => (
+                <AmdRow key={i} amd={amd} />
+              ))}
+            </tbody>
+          </table>
+          <br />
+          <Pagination
+            total={amdList.length}
+            limit={limit}
+            page={page}
+            setPage={setPage}
+          />
+          <br />
+          <div style={{ textAlign: "center" }}>
+            <Button
+              variant="outline-secondary"
+              id="btn_search"
+              onClick={handleShow}
+            >
+              상품 등록
+            </Button>
+            &nbsp;&nbsp;&nbsp;
+            <Button
+              variant="outline-secondary"
+              id="btn_search"
+              onClick={allList}
+            >
+              전체조회
+            </Button>
+            &nbsp;
+          </div>
+        </CONTENTS2>
+      </div>
+      {/* end of container */}
+      <br />
+      <br />
+      {/* ***************** AmdList 끝************************** */}
+
       {/* ============================== [[ 상품 등록 모달 시작 ]] ============================== */}
       <Modal size="lg" show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
@@ -255,46 +275,30 @@ const Amd = ({ pictureUpload }) => {
 
             {/* 상품 입력 폼 */}
             <Form.Group className="mb-3" controlId="formBasicDeptno">
-              <Form.Label>MD_NAME</Form.Label>
-              <Form.Control
-                type="text"
-                name="MD_NAME"
-                placeholder="Enter MD_NAME"
-              />
+              <Form.Label>상품이름</Form.Label>
+              <Form.Control type="text" name="MD_NAME" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicDname">
-              <Form.Label>MD_CONTENT</Form.Label>
-              <Form.Control
-                type="text"
-                name="MD_CONTENT"
-                placeholder="Enter MD_CONTENT"
-              />
+              <Form.Label>상세 내용</Form.Label>
+              <Form.Control type="text" name="MD_CONTENT" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicLoc">
-              <Form.Label>MD_PRICE</Form.Label>
-              <Form.Control
-                type="text"
-                name="MD_PRICE"
-                placeholder="Enter MD_PRICE"
-              />
+              <Form.Label>상품가격</Form.Label>
+              <Form.Control type="text" name="MD_PRICE" />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicLoc">
-              <Form.Label>MD_COST</Form.Label>
-              <Form.Control
-                type="text"
-                name="MD_COST"
-                placeholder="Enter MD_COST"
-              />
+              <Form.Label>상품원가</Form.Label>
+              <Form.Control type="text" name="MD_COST" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicLoc">
-              <Form.Label>MD_CATEGORY</Form.Label>
+              <Form.Label>카테고리</Form.Label>
               <Form.Select
                 type="text"
                 name="MD_CATEGORY"
                 aria-label="Default select example"
               >
-                <option>MD_CATEGORY</option>
+                <option>카테고리</option>
                 <option value="생리대">생리대</option>
                 <option value="탐폰">탐폰</option>
                 <option value="그 외">그 외</option>
@@ -306,13 +310,13 @@ const Amd = ({ pictureUpload }) => {
               /> */}
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicLoc">
-              <Form.Label>STORE_NO</Form.Label>
+              <Form.Label>거래처 번호</Form.Label>
               <Form.Select
                 type="text"
                 name="STORE_NO"
                 aria-label="Default select example"
               >
-                <option>STORE_NO</option>
+                <option>거래처 번호</option>
                 {storeList.map((storeList) => (
                   <option value={storeList.STORE_NO}>
                     {storeList.STORE_NO + "/" + storeList.FIELD}
@@ -321,73 +325,89 @@ const Amd = ({ pictureUpload }) => {
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicLoc">
-              <Form.Label>MD_DISCOUNT</Form.Label>
-              <Form.Control
-                type="text"
-                name="MD_DISCOUNT"
-                placeholder="Enter MD_DISCOUNT"
-              />
+              <Form.Label>할인율</Form.Label>
+              <Form.Control type="text" name="MD_DISCOUNT" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicLoc">
-              <Form.Label>MD_BRAND</Form.Label>
-              <Form.Control
-                type="text"
-                name="MD_BRAND"
-                placeholder="Enter MD_BRAND"
-              />
+              <Form.Label>브랜드</Form.Label>
+              <Form.Control type="text" name="MD_BRAND" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicLoc">
-              <Form.Label>ST_AMOUNT</Form.Label>
-              <Form.Control
-                type="text"
-                name="ST_AMOUNT"
-                placeholder="Enter ST_AMOUNT"
-              />
+              <Form.Label>상품재고</Form.Label>
+              <Form.Control type="text" name="ST_AMOUNT" />
             </Form.Group>
 
             {/* 부서 이미지 등록 첨부파일 */}
-            <Form.Group className="mb-3">
-              <input
-                className="form-control"
-                type="file"
-                id="img1"
-                name="img1"
-                onChange={imgChange1}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <input
-                className="form-control"
-                type="file"
-                id="img2"
-                name="img2"
-                onChange={imgChange2}
-              />
-            </Form.Group>
-
-            {/* 부서 등록 이미지 미리보기 */}
-            <div id="uploadImg1">
-              <img
-                className="thumbNail"
-                src="https://via.placeholder.com/200"
-                alt="미리보기"
-              />
-            </div>
-            <div id="uploadImg2">
-              <img
-                className="thumbNail"
-                src="https://via.placeholder.com/200"
-                alt="미리보기"
-              />
+            <div style={{ width: "100%", textAlign: "center" }}>
+              <tr>
+                <td>
+                  <strong>메인 이미지</strong>
+                </td>
+                <td>
+                  <strong>상세 이미지</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <Form.Group className="mb-3" width="150px">
+                    <input
+                      className="form-control"
+                      type="file"
+                      id="img1"
+                      name="img1"
+                      onChange={imgChange1}
+                    />
+                  </Form.Group>
+                </td>
+                <td>
+                  <Form.Group className="mb-3">
+                    <input
+                      className="form-control"
+                      type="file"
+                      id="img2"
+                      name="img2"
+                      onChange={imgChange2}
+                    />
+                  </Form.Group>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div id="uploadImg1">
+                    <img
+                      className="thumbNail"
+                      src="https://via.placeholder.com/200"
+                      alt="미리보기"
+                    />
+                  </div>
+                </td>
+                <td>
+                  <div id="uploadImg2">
+                    <img
+                      className="thumbNail"
+                      src="https://via.placeholder.com/200"
+                      alt="미리보기"
+                    />
+                  </div>
+                </td>
+              </tr>
             </div>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button
+            variant="outline-secondary"
+            id="btn_search"
+            onClick={handleClose}
+          >
             닫기
           </Button>
-          <Button variant="primary" onClick={amdInsert}>
-            저장
+          <Button
+            variant="outline-secondary"
+            id="btn_search"
+            onClick={amdInsert}
+          >
+            등록
           </Button>
         </Modal.Footer>
       </Modal>

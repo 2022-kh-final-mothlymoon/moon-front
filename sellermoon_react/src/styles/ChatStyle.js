@@ -148,9 +148,9 @@ export const MSG_LI_FRIEND = styled.li`
 
 export const MSG_FRIEND = styled.div`
   background: #eee;
-  padding: 12px 20px;
+  padding: 10px 15px;
   border-radius: 18px;
-  font-size: 1.1rem;
+  font-size: 1.04rem;
 `
 
 /************** 나의 말풍선 오른쪽 *************/
@@ -164,10 +164,10 @@ export const MSG_LI_MINE = styled.li`
 
 export const MSG_MINE = styled.div`
   background: #ead3b1;
-  padding: 12px 20px;
+  padding: 10px 15px;
   margin-right: 20px;
   border-radius: 18px;
-  font-size: 1.1rem;
+  font-size: 1.04rem;
 `
 /* ********************************************** */
 

@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { memberList } from "../../../service/dbLogic";
+import Footer from "../Common/Footer";
+import Header from "../Common/Header";
 
-const MemAdminDetail = ({ isLogin, isAdmin }) => {
+const MemAdminDetail = ({ isLogin, isAdmin, logout }) => {
   const { member_no } = useParams();
   const [mem, setMem] = useState({
     MEMBER_NO: 0,
@@ -32,10 +34,13 @@ const MemAdminDetail = ({ isLogin, isAdmin }) => {
 
   return (
     <>
+      <Header isLogin={isLogin} isAdmin={isAdmin} />
+      <br />
       <div>
-        <h1>회원 상세보기</h1>
-        <hr />
-        <table>
+        <table style={{ width: "60%", margin: "0 auto" }}>
+          <br />
+          <h4>회원 상세 정보</h4>
+          <br />
           <tbody>
             <tr>
               <th>회원번호</th>
@@ -62,9 +67,15 @@ const MemAdminDetail = ({ isLogin, isAdmin }) => {
               <td>{mem.MEMBER_BIRTH}</td>
             </tr>
             <tr>
-              <th>주소</th>
+              <th>우편번호</th>
               <td>{mem.MEMBER_ZIPCODE}</td>
+            </tr>
+            <tr>
+              <th>주소</th>
               <td>{mem.MEMBER_ADDRESS}</td>
+            </tr>
+            <tr>
+              <th>상세주소</th>
               <td>{mem.MEMBER_ADDRESS_DETAIL}</td>
             </tr>
             <tr>
@@ -82,6 +93,10 @@ const MemAdminDetail = ({ isLogin, isAdmin }) => {
           </tbody>
         </table>
       </div>
+      <br />
+      <br />
+      <br />
+      <Footer />
     </>
   );
 };

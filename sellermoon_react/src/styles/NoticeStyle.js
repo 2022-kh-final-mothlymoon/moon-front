@@ -75,3 +75,99 @@ export const BROWN_BTN = styled.button `
   font-weight : 600;
 `
 
+export const BROWN_BTN2 = styled.button `
+  width: 150px;
+  height: 42px;
+  color: #fafafa;
+  background-color: #5e514d;
+  border: none;
+  margin : 0px 15px;
+  font-weight : 600;
+  width: 200px;
+  padding : 10px 30px;
+`
+
+export const BROWN_BTN3 = styled.button `
+  width: 50px;
+  height: 30px;
+  color: #fafafa;
+  background-color: #5e514d;
+  border: none;
+  margin : 0px 15px;
+  font-weight : 600;
+  font-size : 13px;
+`
+
+export const BROWN_BTN4 = styled.button `
+  width: 100px;
+  height: 85px;
+  color: #fafafa;
+  background-color: #5e514d;
+  border: none;
+  margin : 0px 15px;
+  font-weight : 600;
+`
+
+export const RED_BTN = styled.button `
+  width: 150px;
+  height: 42px;
+  color: #fafafa;
+  background-color: #CC0000;
+  border: none;
+  margin : 0px 15px;
+  font-weight : 600;
+`
+
+export const BEIGE_BTN = styled.button `
+  width: 90px;
+  height: 32px;
+  color: #fafafa;
+  background-color: #b29d82;
+  border: none;
+  margin : 0px 15px;
+  font-weight : 600;
+  font-size: 14px;
+`
+
+export const YBEIGE_BTN = styled.button `
+  width: 150px;
+  height: 42px;
+  color: #fafafa;
+  background-color: #ead3b1;
+  border: none;
+  margin : 0px 15px;
+  font-weight : 600;
+`
+
+export const YBEIGE_BTN2 = styled.button `
+  width: 50px;
+  height: 30px;
+  color: #fafafa;
+  background-color: #ead3b1;
+  border: none;
+  margin : 0px 15px;
+  font-weight : 600;
+  font-size : 13px;
+`
+
+export const RED_BTN2 = styled.button `
+  width: 50px;
+  height: 30px;
+  color: #fafafa;
+  background-color: #CC0000;
+  border: none;
+  margin : 0px 15px;
+  font-weight : 600;
+  font-size : 13px;
+`
+
+export const RED_BTN3 = styled.button `
+  width: 90px;
+  height: 32px;
+  color: #fafafa;
+  background-color: #CC0000;
+  border: none;
+  margin : 0px 15px;
+  font-weight : 600;
+  font-size: 14px;
+`

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 
-const FaqRowAdmin = ({ props, isLogin, isAdmin }) => {
+const FaqRowAdmin = (props) => {
   let navigate = useNavigate();
 
   let result = props.faq;

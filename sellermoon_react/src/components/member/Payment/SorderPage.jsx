@@ -50,6 +50,18 @@ const Payment = (effect, deps) => {
 };
 
 const SorderPage = ({ no, props, myPoint }) => {
+  useEffect(() => {
+    const jquery = document.createElement("script");
+    jquery.src = "https://code.jquery.com/jquery-1.12.4.min.js";
+    const iamport = document.createElement("script");
+    iamport.src = "https://cdn.iamport.kr/js/iamport.payment-1.1.7.js";
+    document.head.appendChild(jquery);
+    document.head.appendChild(iamport);
+    return () => {
+      document.head.removeChild(jquery);
+      document.head.removeChild(iamport);
+    };
+  }, []);
   let navigate = useNavigate();
   const [show, setShow] = useState(false);
 
@@ -196,7 +208,10 @@ const SorderPage = ({ no, props, myPoint }) => {
       pg: "kakaopay.TCSUBSCRIP", // PG사 (필수항목)
       pay_method: "card", // 결제수단 (필수항목)
       merchant_uid: `T_${new Date().getTime()}`,
-      name: payList[0].MD_NAME + " 외 " + payList.length + "건", // 주문명 (필수항목)
+      name:
+        payList.length > 1
+          ? payList[0].MD_NAME + " 외 " + (payList.length - 1) + "건"
+          : payList[0].MD_NAME, // 주문명 (필수항목)
       amount:
         parseInt(orderInfo.order_amount) - parseInt(orderInfo.order_used_point), // 금액 (필수항목)
       //amount: 100,
@@ -205,7 +220,7 @@ const SorderPage = ({ no, props, myPoint }) => {
       buyer_tel: memInfo.member_phone, // 구매자 전화번호 (필수항목)
       buyer_email: memInfo.member_email, // 구매자 이메일
       buyer_addr: memInfo.member_address,
-      order_type: "T",
+      order_type: "T", // 정기구독
       //buyer_postalcode: "우편번호", // ....
     };
     console.log("requestPay => " + JSON.stringify(data));
@@ -222,21 +237,21 @@ const SorderPage = ({ no, props, myPoint }) => {
       alert("결제 성공");
       console.log(res);
       console.log(res.merchant_uid);
-      //navigate("/payment/result", { state: { ORDER_NO: res.merchant_uid } });
+      navigate("/torderdetail/" + res.merchant_uid);
       let list = {
         // json 형태로 spring에 값을 넘김
         ORDER_NO: res.merchant_uid,
         MEMBER_NO: no,
-        CART_NO: "1", /////////////////// 일단 상수로 넣음 -> insert 안해도 될거가틈..
-        //CART_NO: "",
+        //CART_NO: "1", /////////////////// 일단 상수로 넣음 -> insert 안해도 될거가틈..
+        CART_NO: payList[0].CART_NO,
         ORDER_PAYMENT: res.paid_amount,
         ORDER_AMOUNT:
           parseInt(orderInfo.order_amount) -
           parseInt(orderInfo.order_used_point),
-        ORDER_DATE: `${new Date().getTime()}`,
+        ORDER_DATE: `${new Date().getTime().toLocaleString}`,
         ORDER_USED_POINT: parseInt(orderInfo.order_used_point),
         PURCHASE_NO: "p" + res.merchant_uid,
-        PURCHASE_METHOD: res.pay_method + res.card_name + res.card_number,
+        PURCHASE_METHOD: res.pay_method,
         ORDER_DE_NO: "d" + res.merchant_uid,
         ORDER_DE_QUANTITY: payList.length,
         ORDER_DE_PRICE: res.paid_amount,
@@ -244,27 +259,39 @@ const SorderPage = ({ no, props, myPoint }) => {
         DELIVERY_STATUS: "상품준비중",
         DELIVERY_ADDRESS: res.buyer_addr,
         DELIVERY_PHONE: res.buyer_tel,
+        SUB_NO: new Date().getTime(),
+        MD_NO: payList[0].MD_NO,
       };
 
       axios
-        .post(process.env.REACT_APP_SPRING_IP + "paymentInsert", list)
+        .post(process.env.REACT_APP_SPRING_IP + "spaymentInsert", list)
         .then((response) => {
           console.log(response);
           console.log(response.data);
+          //pointUpdate();
         })
         .catch((error) => {
           console.log(error);
         });
+      // const pointUpdate = () => {
+      //   axios
+      //     .post(process.env.REACT_APP_SPRING_IP + "payPointUpdate", list)
+      //     .then((response) => {
+      //       console.log(response);
+      //       console.log(response.data);
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //     });
+      // };
     }
   };
-
-  /* ***************************************************** */
 
   return (
     <>
       <Header />
-      <div className="container" style={{ padding: "100px 0 200px 0" }}>
-        <P_STRONG>주문하기 (개별구매)</P_STRONG>
+      <div className="container" style={{ padding: "80px 0 200px 0" }}>
+        <P_STRONG>주문하기 (정기구독)</P_STRONG>
 
         <Row className="mb-5">
           <Col xs={12} md={7}>
@@ -278,7 +305,7 @@ const SorderPage = ({ no, props, myPoint }) => {
                     type="text"
                     name="member_name"
                     id="member_name"
-                    value={memInfo.member_name || ""}
+                    value={(memInfo && memInfo.member_name) || ""}
                     onChange={onChange}
                     className="form-control"
                   />
@@ -292,7 +319,7 @@ const SorderPage = ({ no, props, myPoint }) => {
                     type="text"
                     name="member_zipcode"
                     id="member_zipcode"
-                    value={memInfo.member_zipcode || ""}
+                    value={(memInfo && memInfo.member_zipcode) || ""}
                     onChange={onChange}
                     className="form-control"
                   />
@@ -309,7 +336,7 @@ const SorderPage = ({ no, props, myPoint }) => {
                     type="text"
                     name="member_address"
                     id="member_address"
-                    value={memInfo.member_address || ""}
+                    value={(memInfo && memInfo.member_address) || ""}
                     onChange={onChange}
                     className="form-control"
                   />
@@ -323,7 +350,7 @@ const SorderPage = ({ no, props, myPoint }) => {
                     type="text"
                     name="member_address_detail"
                     id="member_address_detail"
-                    value={memInfo.member_address_detail || ""}
+                    value={(memInfo && memInfo.member_address_detail) || ""}
                     onChange={onChange}
                     className="form-control"
                   />
@@ -337,7 +364,7 @@ const SorderPage = ({ no, props, myPoint }) => {
                     type="text"
                     name="member_phone"
                     id="member_phone"
-                    value={memInfo.member_phone || ""}
+                    value={(memInfo && memInfo.member_phone) || ""}
                     onChange={onChange}
                     className="form-control"
                   />
@@ -347,7 +374,7 @@ const SorderPage = ({ no, props, myPoint }) => {
                 type="hidden"
                 name="member_email"
                 id="member_email"
-                value={memInfo.member_email || ""}
+                value={(memInfo && memInfo.member_email) || ""}
                 onChange={onChange}
                 className="form-control"
               />

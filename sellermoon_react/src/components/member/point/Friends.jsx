@@ -16,7 +16,7 @@ import FriendsAlert from "./FriendsAlert";
 import { memberProfile } from "../../../service/dbLogic";
 import { useEffect } from "react";
 
-const Friends = ({ myPoint, no, isLogin, logout }) => {
+const Friends = ({ myPoint, no, isLogin, logout, mySubs }) => {
   let [alert, setAlert] = useState(false);
 
   const copyCode = () => {
@@ -56,7 +56,7 @@ const Friends = ({ myPoint, no, isLogin, logout }) => {
           <SidebarMypage />
           <div className="col-9 mb-5">
             <div className="list-wrapper">
-              <NavbarMypage myPoint={myPoint} />
+              <NavbarMypage myPoint={myPoint} mySubs={mySubs} />
 
               <div style={{ textAlign: "center", marginBottom: "150px" }}>
                 <FRIEND_IMG

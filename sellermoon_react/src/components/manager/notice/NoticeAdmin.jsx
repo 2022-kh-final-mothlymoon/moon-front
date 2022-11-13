@@ -10,7 +10,7 @@ import { BROWN_BTN } from "../../../styles/NoticeStyle";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
 
-const NoticeAdmin = () => {
+const NoticeAdmin = ({ isLogin, isAdmin, adminId }) => {
   let navigate = useNavigate();
   let admin_id = sessionStorage.getItem("admin");
   const [noticeList, setNoticeList] = useState([]);
@@ -152,7 +152,8 @@ const NoticeAdmin = () => {
 
   return (
     <>
-      <Header />
+      <Header isLogin={isLogin} isAdmin={isAdmin} adminId={adminId} />
+      <br />
       <div className="container">
         <h4>공지사항 관리</h4>
         <hr />
@@ -357,6 +358,8 @@ const NoticeAdmin = () => {
         </Modal>
         {/* ========[[[ 등록 모달 끝]]]======= */}
       </div>
+      <br />
+      <br />
       <Footer />
     </>
   );

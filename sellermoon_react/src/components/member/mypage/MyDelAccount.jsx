@@ -3,8 +3,14 @@ import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { delMember } from "../../../service/dbLogic";
+import Footer from "./../Common/Footer";
+import Header from "./../Common/Header";
+import { CONTENTS, BROWN_BTN2 } from "./../../../styles/NoticeStyle";
+import SidebarMypage from "./../Common/SidebarMypage";
+import NavbarMypage from "./../Common/NavbarMypage";
+import { ORDER_CHECKS, ORDER_CHECK } from "./../../../styles/PaymentStyle";
 
-const MyDelAccount = ({ no }) => {
+const MyDelAccount = ({ no, isLogin, logout, myPoint, mySubs }) => {
   let navigate = useNavigate();
   const [isCheck, setIsCheck] = useState(false);
   const isChecked = (e) => {
@@ -15,7 +21,8 @@ const MyDelAccount = ({ no }) => {
       console.log("setIsCheck =====> ", isCheck);
     }
   };
-  const delMem = () => {
+  const delMem = (e) => {
+    e.preventDefault();
     if (isCheck === true) {
       delMember({ member_no: no }).then((res) => {
         console.log(res.data);
@@ -34,22 +41,80 @@ const MyDelAccount = ({ no }) => {
       alert("동의해주세요");
     }
   };
+
+  const userName = sessionStorage.getItem("user_name");
+
   return (
     <>
-      <h1>탈퇴하기</h1>
-      이용약관 블라블라 적립금 다 없어짐 ㄱㅊ?
-      <br />
-      <div className="form-check">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          value={isCheck}
-          onChange={isChecked}
-          id="flexCheckDefault"
-        />
-        <label className="form-check-label">동의합니다</label>
-      </div>
-      <Button onClick={delMem}>탈퇴</Button>
+      <Header isLogin={isLogin} logout={logout} />
+      <div className="container">
+        <CONTENTS className="row">
+          <SidebarMypage />
+          <div className="col-9">
+            <div className="list-wrapper">
+              <NavbarMypage myPoint={myPoint} mySubs={mySubs} />
+
+              <div
+                className="d-flex justify-content-center"
+                style={{ color: "rgb(51, 51, 51)" }}
+              >
+                <div
+                  style={{
+                    border: "2px solid #b29d82",
+                    width: "700px",
+                    padding: "60px 70px",
+                    float: "center",
+                  }}
+                >
+                  <h4 style={{ lineHeight: "40px", fontWeight: "600" }}>
+                    {userName} 회원님,
+                    <br />
+                    바로 사용할 수 있는 혜택을 포기하실 건가요?
+                  </h4>
+
+                  <br />
+
+                  <ul
+                    style={{
+                      fontWeight: "500",
+                      fontSize: "20px",
+                      lineHeight: "38px",
+                    }}
+                  >
+                    <li>
+                      보유 적립금&nbsp;
+                      <strong style={{ color: "rgb(255, 72, 0)" }}>
+                        {myPoint.POINT_SUM.toLocaleString()} Point
+                      </strong>
+                    </li>
+                    <li>정기구독 무료배송 서비스</li>
+                    <li>회원등급별 구매적립, 후기적립 혜택</li>
+                  </ul>
+
+                  <div className="d-flex mt-4">
+                    <ORDER_CHECK
+                      value={isCheck}
+                      type="checkbox"
+                      id="flexCheckDefault"
+                      onChange={isChecked}
+                    />
+                    <ORDER_CHECKS>
+                      (필수) 내용을 확인했으며, 회원 탈퇴에 동의합니다.
+                    </ORDER_CHECKS>
+                  </div>
+
+                  <div className="d-flex justify-content-center mt-5">
+                    <BROWN_BTN2 onClick={delMem}>회원 탈퇴</BROWN_BTN2>
+                  </div>
+                </div>
+              </div>
+            </div>{" "}
+            {/* end of list-wrapper */}
+          </div>{" "}
+          {/* end of col */}
+        </CONTENTS>
+      </div>{" "}
+      <Footer />
     </>
   );
 };

@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { BROWN_BTN2 } from "../../../styles/NoticeStyle";
+import { FORM } from "../../../styles/PaymentStyle";
+import { P_SMALL } from "../../../styles/SubStyle";
 
 const FindPass = (props) => {
   let navigate = useNavigate();
@@ -22,7 +25,8 @@ const FindPass = (props) => {
     console.log(e.target.value);
     setPhone(e.target.value);
   };
-  const findPass = () => {
+  const findPass = (e) => {
+    e.preventDefault();
     axios
       .post(process.env.REACT_APP_SPRING_IP + "sendmail", null, {
         params: { member_email: email, member_name: name, member_phone: phone },
@@ -40,44 +44,58 @@ const FindPass = (props) => {
       .catch();
   };
   return (
-    <div>
-      <hr />
-      <Form>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            name="member_email"
-            value={email}
-            onChange={handleInputId}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicName">
-          <Form.Label>이름</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter name"
-            name="member_name"
-            value={name}
-            onChange={handleInputName}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicName">
-          <Form.Label>전화번호</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter phonenumber"
-            name="member_phone"
-            value={phone}
-            onChange={handleInputPhone}
-          />
-        </Form.Group>
-      </Form>
-      <Button variant="warning" onClick={findPass}>
-        임시비밀번호 발급받기
-      </Button>
-    </div>
+    <>
+      <FORM>
+        <br />
+        <P_SMALL>비밀번호 찾기</P_SMALL>
+        <div className="mb-3 mt-3 row">
+          <label className="col-sm-2 col-form-label">이메일</label>
+          <div className="col-sm-5">
+            <input
+              type="email"
+              placeholder="이메일"
+              name="member_email"
+              value={email}
+              onChange={handleInputId}
+              className="form-control"
+            />
+          </div>
+        </div>
+
+        <div className="mb-3 mt-3 row">
+          <label className="col-sm-2 col-form-label">이름</label>
+          <div className="col-sm-5">
+            <input
+              type="text"
+              placeholder="이름"
+              name="member_name"
+              value={name}
+              onChange={handleInputName}
+              className="form-control"
+            />
+          </div>
+        </div>
+
+        <div className="mb-3 mt-3 row">
+          <label className="col-sm-2 col-form-label">전화번호</label>
+          <div className="col-sm-5">
+            <input
+              type="text"
+              placeholder="전화번호"
+              name="member_phone"
+              value={phone}
+              onChange={handleInputPhone}
+              className="form-control"
+            />
+          </div>
+        </div>
+
+        <div className="d-flex justify-content-end">
+          <BROWN_BTN2 onClick={findPass}>임시비밀번호 발급</BROWN_BTN2>
+        </div>
+        <br />
+      </FORM>
+    </>
   );
 };
 

@@ -7,13 +7,14 @@ import Footer from "../Common/Footer";
 import Header from "../Common/Header";
 import MemAdminRow from "./MemAdminRow";
 
-const MemAdmin = ({ isLogin, isAdmin }) => {
+const MemAdmin = ({ isLogin, isAdmin, adminId }) => {
   let navigate = useNavigate();
   const [members, setMembers] = useState([]);
   /**************** 페이지네이션 선언 ********************/
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
+
   /* memberlist 데이터 가져오기 */
   useEffect(() => {
     const oracleDB = async () => {
@@ -23,6 +24,16 @@ const MemAdmin = ({ isLogin, isAdmin }) => {
     };
     oracleDB();
   }, []);
+
+  // 레벨 select box
+  const memLevel = (e) => {
+    console.log(e.target.value);
+    memberList({ member_level: e.target.value }).then((res) => {
+      console.log(res.data);
+      setMembers(res.data);
+    });
+  };
+
   /////////// 조건검색
   const dataSearch = (e) => {
     e.preventDefault();
@@ -38,58 +49,89 @@ const MemAdmin = ({ isLogin, isAdmin }) => {
     };
     asyncDB();
   };
+
   return (
     <>
-      <Header />
-      <div className="body_container">
-        <h1>회원관리</h1>
+      <Header isLogin={isLogin} isAdmin={isAdmin} adminId={adminId} />
+      <div className="container">
+        <br />
+        <h4>회원관리</h4>
         <hr />
-        <Col xs={12} md={6}>
-          {/* ####################[[조건 검색]]############################## */}
-          <div
-            className="d-flex justify-content-baseline"
-            style={{ width: "90%", height: "45px" }}
-          >
-            <select
-              id="gubun"
-              name="gubun"
-              className="form-select"
-              aria-label="분류"
-              style={{ width: "40%", marginRight: "10px" }}
+        <Row>
+          <Col xs={12} md={6}>
+            {/* ####################[[조건 검색]]############################## */}
+            <div
+              className="d-flex justify-content-baseline"
+              style={{ width: "90%", height: "45px" }}
             >
-              <option defaultValue>분류선택</option>
-              <option value="member_no">번호</option>
-              <option value="member_email">이메일</option>
-            </select>
-            <input
-              type="text"
-              id="keyword"
-              name="keyword"
-              className="form-control"
-              placeholder="검색어를 입력하세요"
-            />
-            <Button
-              variant="outline-secondary"
-              id="btn_search"
-              style={{ marginLeft: "10px", width: "100px" }}
-              onClick={dataSearch}
-            >
-              검색
-            </Button>
-          </div>
-          {/* ###################[[조건검색 끝]]####################### */}
-        </Col>
-        <div className="tb_list">
-          <table style={{ width: "100%", marginBottom: 10 }}>
-            <tbody>
-              <tr>
-                <th className="bdr">회원번호</th>
-                <th className="bdr">이름</th>
-                <th className="bdr">이메일</th>
-                <th className="bdr">가입일</th>
-                <th className="bdr">회원등급</th>
-                <th className="bdr">구독여부</th>
+              <select
+                id="gubun"
+                name="gubun"
+                className="form-select"
+                aria-label="분류"
+                style={{ width: "40%", marginRight: "10px" }}
+              >
+                <option defaultValue>분류선택</option>
+                <option value="member_no">번호</option>
+                <option value="member_email">이메일</option>
+              </select>
+              <input
+                type="text"
+                id="keyword"
+                name="keyword"
+                className="form-control"
+                placeholder="검색어를 입력하세요"
+              />
+              <Button
+                variant="outline-secondary"
+                id="btn_search"
+                style={{ marginLeft: "10px", width: "20%" }}
+                onClick={dataSearch}
+              >
+                검색
+              </Button>
+              <select
+                className="form-select"
+                style={{
+                  width: "40%",
+                  marginLeft: "1rem",
+                }}
+                name="member_level"
+                id="member_level"
+                onChange={memLevel}
+              >
+                <option defaultValue>등급선택</option>
+                <option value="0">초승달</option>
+                <option value="1">반달</option>
+                <option value="2">보름달</option>
+              </select>
+              <br />
+            </div>
+            {/* ###################[[조건검색 끝]]####################### */}
+          </Col>
+          <br />
+          <br />
+          <br />
+          <table>
+            <colgroup>
+              <col style={{ width: "7%" }} />
+              <col style={{ width: "10%" }} />
+              <col style={{ width: "30%" }} />
+              <col style={{ width: "10%" }} />
+              <col style={{ width: "15%" }} />
+              <col style={{ width: "10%" }} />
+            </colgroup>
+            <thead>
+              <tr style={{ width: "100%" }}>
+                <th>회원번호</th>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>가입일</th>
+                <th>회원등급</th>
+                <th>구독여부</th>
               </tr>
+            </thead>
+            <tbody>
               {members.slice(offset, offset + limit).map((member, i) => (
                 <MemAdminRow key={i} member={member} />
               ))}
@@ -101,8 +143,10 @@ const MemAdmin = ({ isLogin, isAdmin }) => {
             page={page}
             setPage={setPage}
           />
-        </div>
+        </Row>
       </div>
+      <br />
+      <br />
       <Footer />
     </>
   );

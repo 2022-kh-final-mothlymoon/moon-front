@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Navbar, Container, Button, Nav, Form } from "react-bootstrap";
+import {
+  Navbar,
+  Container,
+  Button,
+  Nav,
+  Form,
+  NavDropdown,
+} from "react-bootstrap";
 import TabCards from "../main/TabCards";
 import { Link, useNavigate } from "react-router-dom";
 import data from "../../../data.js";
 
-const Header = () => {
+const Header = ({ isLogin, isAdmin, adminId }) => {
   let [tab, setTab] = useState(0); // 0이면 0번째 내용 보이게, 1이면 1번째 내용 ...
   let [fade, setFade] = useState("");
   let [padset, setPadset] = useState(data);
@@ -24,6 +31,14 @@ const Header = () => {
       console.log("return");
     };
   }, [tab]);
+  const [show, setShow] = useState(false); // 로그아웃 버튼 로그인 시 보이게 하기
+  // 로그아웃 버튼 상태관리를 위한 useEffect
+  useEffect(() => {
+    if (isAdmin === true) {
+      setShow(true);
+    } else setShow(false);
+  }, [isAdmin]);
+  // 아이디 담기
 
   /* 
     useNavigate 라는 훅 -> 페이지 이동을 도와주는 함수를 담고 잇음.
@@ -34,37 +49,97 @@ const Header = () => {
     navigate("/");
   };
   const logout = () => {
-    console.log("에휴");
+    sessionStorage.clear();
+    alert("로그아웃되었습니다.");
+    navigate("/admin/login");
+    window.location.reload();
   };
   return (
     <>
       <Navbar bg="light" expand="lg">
         <Container>
-          <Navbar.Brand href="/statics">월간;문</Navbar.Brand>&nbsp;&nbsp;&nbsp;
+          <Navbar.Brand href="/admin/login">월간;문</Navbar.Brand>
+          &nbsp;&nbsp;&nbsp;
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Link to="/astatics" className="nav-link">
-                통계 관리
+              <Link to="/admin/statics" className="nav-link">
+                통계
               </Link>
               <Link to="/admin/member" className="nav-link">
-                회원 관리
+                회원관리
               </Link>
-              <Link to="/admin/md" className="nav-link">
-                상품 관리
+              <Link to="/admin/order" className="nav-link">
+                주문관리
               </Link>
-              <Link to="/aorder" className="nav-link">
-                주문 관리
+              <Link to="/admin/point" className="nav-link">
+                포인트관리
               </Link>
-              <Link to="/admin/board/boardList" className="nav-link">
-                게시판 관리
+              <Link to="/admin/store" className="nav-link">
+                거래처
               </Link>
-              <Link to="/astore" className="nav-link">
-                거래처 관리
-              </Link>
-              <Link to="/admin/notice" className="nav-link">
-                공지사항 관리
-              </Link>
+              <NavDropdown
+                title="상품 관리"
+                id="basic-nav-dropdown"
+                className="nav-menu2"
+              >
+                <NavDropdown.Item
+                  onClick={() => {
+                    navigate("/admin/md");
+                  }}
+                >
+                  상품
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  onClick={() => {
+                    navigate("/admin/review");
+                  }}
+                >
+                  리뷰
+                </NavDropdown.Item>
+              </NavDropdown>
+
+              <NavDropdown
+                title="게시판 관리"
+                id="basic-nav-dropdown"
+                className="nav-menu2"
+              >
+                <NavDropdown.Item
+                  onClick={() => {
+                    navigate("/admin/board/boardList");
+                  }}
+                >
+                  게시판
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  onClick={() => {
+                    navigate("/admin/report/reportList");
+                  }}
+                >
+                  신고
+                </NavDropdown.Item>
+              </NavDropdown>
+
+              <NavDropdown
+                title="고객센터 관리"
+                id="basic-nav-dropdown"
+                className="nav-menu"
+              >
+                <NavDropdown.Item
+                  onClick={() => {
+                    navigate("/admin/notice");
+                  }}
+                >
+                  공지사항
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  onClick={() => {
+                    navigate("/admin/faq");
+                  }}
+                >
+                  FAQ
+                </NavDropdown.Item>
+              </NavDropdown>
             </Nav>
             <Button
               className="btn btn-light btn-outline-secondary px-3"
@@ -73,12 +148,22 @@ const Header = () => {
               회원용 사이트로 이동하기
             </Button>
             &nbsp;
-            <Button
-              className="btn btn-light btn-outline-secondary px-3"
-              onClick={logout}
-            >
-              로그아웃
-            </Button>
+            {!isAdmin ? (
+              <Button
+                className="btn btn-light btn-outline-secondary px-3"
+                onClick={() => navigate("/admin/login")}
+              >
+                로그인
+              </Button>
+            ) : null}
+            {show && (
+              <Button
+                className="btn btn-light btn-outline-secondary px-3"
+                onClick={logout}
+              >
+                로그아웃
+              </Button>
+            )}
             {/* {onLogout && (<Button variant="primary" onClick={()=>{logout2(auth); window.location.reload();}}>Logout</Button>)} */}
           </Navbar.Collapse>
         </Container>
