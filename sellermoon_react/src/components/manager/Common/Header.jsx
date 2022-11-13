@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Navbar, Container, Button, Nav, Form } from "react-bootstrap";
+import {
+  Navbar,
+  Container,
+  Button,
+  Nav,
+  Form,
+  NavDropdown,
+} from "react-bootstrap";
 import TabCards from "../main/TabCards";
 import { Link, useNavigate } from "react-router-dom";
 import data from "../../../data.js";
@@ -44,6 +51,7 @@ const Header = ({ isLogin, isAdmin, adminId }) => {
   const logout = () => {
     sessionStorage.clear();
     alert("로그아웃되었습니다.");
+    navigate("/admin/login");
     window.location.reload();
   };
   return (
@@ -61,27 +69,77 @@ const Header = ({ isLogin, isAdmin, adminId }) => {
               <Link to="/admin/member" className="nav-link">
                 회원관리
               </Link>
-              <Link to="/admin/md" className="nav-link">
-                상품관리
-              </Link>
-              <Link to="/admin/review" className="nav-link">
-                상품리뷰 관리
-              </Link>
               <Link to="/admin/order" className="nav-link">
                 주문관리
               </Link>
               <Link to="/admin/point" className="nav-link">
                 포인트관리
               </Link>
-              <Link to="/admin/board/boardList" className="nav-link">
-                게시판관리
-              </Link>
               <Link to="/admin/store" className="nav-link">
                 거래처
               </Link>
-              <Link to="/admin/notice" className="nav-link">
-                공지사항관리
-              </Link>
+              <NavDropdown
+                title="상품 관리"
+                id="basic-nav-dropdown"
+                className="nav-menu2"
+              >
+                <NavDropdown.Item
+                  onClick={() => {
+                    navigate("/admin/md");
+                  }}
+                >
+                  상품
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  onClick={() => {
+                    navigate("/admin/review");
+                  }}
+                >
+                  리뷰
+                </NavDropdown.Item>
+              </NavDropdown>
+
+              <NavDropdown
+                title="게시판 관리"
+                id="basic-nav-dropdown"
+                className="nav-menu2"
+              >
+                <NavDropdown.Item
+                  onClick={() => {
+                    navigate("/admin/board/boardList");
+                  }}
+                >
+                  게시판
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  onClick={() => {
+                    navigate("/admin/report/reportList");
+                  }}
+                >
+                  신고
+                </NavDropdown.Item>
+              </NavDropdown>
+
+              <NavDropdown
+                title="고객센터 관리"
+                id="basic-nav-dropdown"
+                className="nav-menu"
+              >
+                <NavDropdown.Item
+                  onClick={() => {
+                    navigate("/admin/notice");
+                  }}
+                >
+                  공지사항
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  onClick={() => {
+                    navigate("/admin/faq");
+                  }}
+                >
+                  FAQ
+                </NavDropdown.Item>
+              </NavDropdown>
             </Nav>
             <Button
               className="btn btn-light btn-outline-secondary px-3"
@@ -90,6 +148,14 @@ const Header = ({ isLogin, isAdmin, adminId }) => {
               회원용 사이트로 이동하기
             </Button>
             &nbsp;
+            {!isAdmin ? (
+              <Button
+                className="btn btn-light btn-outline-secondary px-3"
+                onClick={() => navigate("/admin/login")}
+              >
+                로그인
+              </Button>
+            ) : null}
             {show && (
               <Button
                 className="btn btn-light btn-outline-secondary px-3"

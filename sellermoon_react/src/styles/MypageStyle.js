@@ -7,7 +7,7 @@ export const MYUL = styled.ul `
   overflow: hidden;
   list-style: none;
   height: 150px;
-  padding-top: 30px;
+  padding: 28px 15px;
   margin-bottom: 60px;
 `
 

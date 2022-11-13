@@ -5,6 +5,29 @@ import Chart from "chart.js/auto";
 import { Line, Doughnut, Bar } from "react-chartjs-2";
 
 const Statics = ({ isLogin, isAdmin, adminId }) => {
+  let data = {
+    labels: ["1월", "2월", "3월", "4월", "5월", "6월"],
+    datasets: [
+      {
+        type: "bar",
+        label: "일반",
+        backgroundColor: "#ead3b1",
+        data: [
+          35000000, 20000000, 54000000, 38000000, 50000000, 60000000, 70000000,
+          80000000,
+        ],
+      },
+      {
+        type: "bar",
+        label: "구독",
+        backgroundColor: "#b29d82",
+        data: [
+          13000000, 28000000, 42000000, 61200000, 50000000, 60000000, 70000000,
+          80000000,
+        ],
+      },
+    ],
+  };
   const md_data = {
     labels: ["January", "February", "March", "April", "May", "June"],
     datasets: [
@@ -53,30 +76,7 @@ const Statics = ({ isLogin, isAdmin, adminId }) => {
       },
     ],
   };
-  let data = {
-    labels: ["January", "February", "March", "April", "May", "June"],
-    datasets: [
-      {
-        type: "line",
-        label: "Dataset 1",
-        borderColor: "#5e514d",
-        borderWidth: 2,
-        data: [1, 2, 3, 4, 5, 6],
-      },
-      {
-        type: "bar",
-        label: "Dataset 2",
-        backgroundColor: "#ead3b1",
-        data: [1, 2, 3, 4, 5, 6],
-      },
-      {
-        type: "bar",
-        label: "Dataset 3",
-        backgroundColor: "#b29d82",
-        data: [1, 2, 3, 4, 5, 6],
-      },
-    ],
-  };
+
   let data2 = {
     labels: ["January", "February", "March", "April", "May", "June"],
     datasets: [
@@ -99,7 +99,8 @@ const Statics = ({ isLogin, isAdmin, adminId }) => {
   return (
     <>
       <Header isLogin={isLogin} isAdmin={isAdmin} adminId={adminId} />
-      <div className="body_container">
+      <div className="container">
+        <br />
         <div style={{ display: "flex" }}>
           <div style={{ width: "50%" }}>
             월간 매출(구독/일반)

@@ -50,29 +50,26 @@ const Payment = (effect, deps) => {
 };
 
 const OrderPage = ({ no, props, myPoint }) => {
+  useEffect(() => {
+    const jquery = document.createElement("script");
+    jquery.src = "https://code.jquery.com/jquery-1.12.4.min.js";
+    const iamport = document.createElement("script");
+    iamport.src = "https://cdn.iamport.kr/js/iamport.payment-1.1.7.js";
+    document.head.appendChild(jquery);
+    document.head.appendChild(iamport);
+    return () => {
+      document.head.removeChild(jquery);
+      document.head.removeChild(iamport);
+    };
+  }, []);
   let navigate = useNavigate();
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  // const [payInfo, setPayInfo] = useState({
-  //   member_no: no,
-  //   member_name: "",
-  //   member_zipcode: "",
-  //   member_address: "",
-  //   member_phone: 0,
-  //   member_email: "",
-  //   cart_no: 0,
-  //   cart_quantity: 0,
-  //   order_type: "",
-  //   md_name : "",
-  //   md_brand : "",
-  //   md_price : 0,
-  //   order_amount: 0, /* 주문총금액 (상품금액*개수)  */
-  //   order_payment: 0, /* 총결제금액 (상품금액*개수 - 포인트사용) */
-  //   order_used_point: 0,
-  // });
+  const [shipFee, setShipFee] = useState(0); /* 배송비 */
 
   const [orderInfo, setOrderInfo] = useState({
     cart_no: 0,
@@ -186,6 +183,11 @@ const OrderPage = ({ no, props, myPoint }) => {
         } else {
           console.log(res.data);
           setOrderInfo({ order_amount: res.data.ORDER_AMOUNT });
+
+          /* 구매금액 3만원 이상이면 배송비 0원 */
+          if (res.data.ORDER_AMOUNT < 30000) {
+            setShipFee(3000);
+          } else setShipFee(0);
         }
       });
     };
@@ -199,23 +201,13 @@ const OrderPage = ({ no, props, myPoint }) => {
       order_used_point: parseInt(myPoint.POINT_SUM),
       order_amount: parseInt(orderInfo.order_amount),
       order_payment:
-        parseInt(orderInfo.order_amount) - parseInt(orderInfo.order_used_point),
+        parseInt(orderInfo.order_amount) -
+        parseInt(orderInfo.order_used_point) +
+        shipFee,
     });
   };
 
   /* **************************************************** */
-  useEffect(() => {
-    const jquery = document.createElement("script");
-    jquery.src = "https://code.jquery.com/jquery-1.12.4.min.js";
-    const iamport = document.createElement("script");
-    iamport.src = "https://cdn.iamport.kr/js/iamport.payment-1.1.7.js";
-    document.head.appendChild(jquery);
-    document.head.appendChild(iamport);
-    return () => {
-      document.head.removeChild(jquery);
-      document.head.removeChild(iamport);
-    };
-  }, []);
 
   const onClickPayment = (e) => {
     e.preventDefault();
@@ -226,15 +218,20 @@ const OrderPage = ({ no, props, myPoint }) => {
       pg: "html5_inicis", // PG사 (필수항목)
       pay_method: "card", // 결제수단 (필수항목)
       merchant_uid: `O_${new Date().getTime()}`,
-      name: payList[0].MD_NAME + " 외 " + payList.length + "건", // 주문명 (필수항목)
+      name:
+        payList.length > 1
+          ? payList[0].MD_NAME + " 외 " + (payList.length - 1) + "건"
+          : payList[0].MD_NAME, // 주문명 (필수항목)
       amount:
-        parseInt(orderInfo.order_amount) - parseInt(orderInfo.order_used_point), // 금액 (필수항목)
+        parseInt(orderInfo.order_amount) -
+        parseInt(orderInfo.order_used_point) +
+        shipFee, // 금액 (필수항목)
       //amount: 100,
       buyer_name: memInfo.member_name, // 구매자 이름
       buyer_tel: memInfo.member_phone, // 구매자 전화번호 (필수항목)
       buyer_email: memInfo.member_email, // 구매자 이메일
       buyer_addr: memInfo.member_address,
-      order_type: "O",
+      order_type: "O", // 개별구매
       //buyer_postalcode: "우편번호", // ....
     };
     console.log("requestPay => " + JSON.stringify(data));
@@ -251,18 +248,19 @@ const OrderPage = ({ no, props, myPoint }) => {
       alert("결제 성공");
       console.log(res);
       console.log(res.merchant_uid);
-      navigate("/payment/result", { state: { ORDER_NO: res.merchant_uid } });
+      navigate("/orderdetail/" + res.merchant_uid);
       let list = {
         // json 형태로 spring에 값을 넘김
         ORDER_NO: res.merchant_uid,
         MEMBER_NO: no,
-        CART_NO: "1", /////////////////// 일단 상수로 넣음 -> insert 안해도 될거가틈..
-        //CART_NO: "",
+        //CART_NO: "1", /////////////////// 일단 상수로 넣음 -> insert 안해도 될거가틈..
+        CART_NO: payList[0].CART_NO,
         ORDER_PAYMENT: res.paid_amount,
         ORDER_AMOUNT:
           parseInt(orderInfo.order_amount) -
-          parseInt(orderInfo.order_used_point),
-        ORDER_DATE: `${new Date().getTime()}`,
+          parseInt(orderInfo.order_used_point) +
+          shipFee,
+        ORDER_DATE: `${new Date().getTime().toLocaleString}`,
         ORDER_USED_POINT: parseInt(orderInfo.order_used_point),
         PURCHASE_NO: "p" + res.merchant_uid,
         PURCHASE_METHOD: res.pay_method + res.card_name + res.card_number,
@@ -273,6 +271,7 @@ const OrderPage = ({ no, props, myPoint }) => {
         DELIVERY_STATUS: "상품준비중",
         DELIVERY_ADDRESS: res.buyer_addr,
         DELIVERY_PHONE: res.buyer_tel,
+        DELIVERY_FEE: shipFee,
       };
 
       axios
@@ -280,26 +279,31 @@ const OrderPage = ({ no, props, myPoint }) => {
         .then((response) => {
           console.log(response);
           console.log(response.data);
+          pointUpdate();
         })
         .catch((error) => {
           console.log(error);
         });
+      const pointUpdate = () => {
+        axios
+          .post(process.env.REACT_APP_SPRING_IP + "payPointUpdate", list)
+          .then((response) => {
+            console.log(response);
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
     }
   };
 
   /* ***************************************************** */
 
-  // const payInsert = (e) => {
-  //   e.preventDefault();
-  //   console.log(memInfo.member_name);
-  //   console.log(memInfo.member_address);
-  //   console.log(memInfo.member_email);
-  // }
-
   return (
     <>
       <Header />
-      <div className="container" style={{ padding: "100px 0 200px 0" }}>
+      <div className="container" style={{ padding: "80px 0 200px 0" }}>
         <P_STRONG>주문하기 (개별구매)</P_STRONG>
 
         <Row className="mb-5">
@@ -314,7 +318,7 @@ const OrderPage = ({ no, props, myPoint }) => {
                     type="text"
                     name="member_name"
                     id="member_name"
-                    value={memInfo && memInfo.member_name}
+                    value={(memInfo && memInfo.member_name) || ""}
                     onChange={onChange}
                     className="form-control"
                   />
@@ -328,7 +332,7 @@ const OrderPage = ({ no, props, myPoint }) => {
                     type="text"
                     name="member_zipcode"
                     id="member_zipcode"
-                    value={memInfo && memInfo.member_zipcode}
+                    value={(memInfo && memInfo.member_zipcode) || ""}
                     onChange={onChange}
                     className="form-control"
                   />
@@ -345,7 +349,7 @@ const OrderPage = ({ no, props, myPoint }) => {
                     type="text"
                     name="member_address"
                     id="member_address"
-                    value={memInfo && memInfo.member_address}
+                    value={(memInfo && memInfo.member_address) || ""}
                     onChange={onChange}
                     className="form-control"
                   />
@@ -359,7 +363,7 @@ const OrderPage = ({ no, props, myPoint }) => {
                     type="text"
                     name="member_address_detail"
                     id="member_address_detail"
-                    value={memInfo && memInfo.member_address_detail}
+                    value={(memInfo && memInfo.member_address_detail) || ""}
                     onChange={onChange}
                     className="form-control"
                   />
@@ -373,7 +377,7 @@ const OrderPage = ({ no, props, myPoint }) => {
                     type="text"
                     name="member_phone"
                     id="member_phone"
-                    value={memInfo && memInfo.member_phone}
+                    value={(memInfo && memInfo.member_phone) || ""}
                     onChange={onChange}
                     className="form-control"
                   />
@@ -383,7 +387,7 @@ const OrderPage = ({ no, props, myPoint }) => {
                 type="hidden"
                 name="member_email"
                 id="member_email"
-                value={memInfo && memInfo.member_email}
+                value={(memInfo && memInfo.member_email) || ""}
                 onChange={onChange}
                 className="form-control"
               />
@@ -397,7 +401,7 @@ const OrderPage = ({ no, props, myPoint }) => {
                 <label className="col-sm-2 col-form-label">적립금</label>
                 <div className="col-sm-5 d-flex">
                   <input
-                    type="text"
+                    type="number"
                     name="order_used_point"
                     id="order_used_point"
                     onChange={pointChange}
@@ -444,22 +448,17 @@ const OrderPage = ({ no, props, myPoint }) => {
               <div className="d-flex justify-content-left">
                 <ORDER_NUM1>적립금 사용</ORDER_NUM1>
                 <ORDER_NUM2>
+                  -&nbsp;
                   {parseInt(orderInfo.order_used_point) > 0
                     ? parseInt(orderInfo.order_used_point).toLocaleString()
                     : 0}
                   원
                 </ORDER_NUM2>
-                {/* <input type="text" 
-                value={
-                  parseInt(payInfo.order_used_point) > 0 
-                  ? parseInt(payInfo.order_used_point).toLocaleString() : 0
-                } name="order_used_point" onChange={EditChange}
-                /> */}
               </div>
 
               <div className="d-flex justify-content-left">
                 <ORDER_NUM1>배송비&nbsp; &nbsp; &nbsp; &nbsp;</ORDER_NUM1>
-                <ORDER_NUM2>무료배송</ORDER_NUM2>
+                <ORDER_NUM2>+&nbsp;{shipFee}원</ORDER_NUM2>
               </div>
 
               <div className="d-flex justify-content-left">
@@ -470,19 +469,12 @@ const OrderPage = ({ no, props, myPoint }) => {
                   {parseInt(orderInfo.order_used_point) > 0
                     ? (
                         parseInt(orderInfo.order_amount) -
-                        parseInt(orderInfo.order_used_point)
+                        parseInt(orderInfo.order_used_point) +
+                        shipFee
                       ).toLocaleString()
                     : parseInt(orderInfo.order_amount).toLocaleString()}{" "}
                   원
                 </ORDER_P2>
-                {/* <input type="text"
-                value={ 
-                  parseInt(payInfo.order_used_point) > 0
-                  ? (parseInt(payInfo.order_amount) - parseInt(payInfo.order_used_point)).toLocaleString()
-                  : parseInt(payInfo.order_amount).toLocaleString()
-                }
-                name="order_payment" onChange={EditChange}
-                /> */}
               </div>
 
               <hr />

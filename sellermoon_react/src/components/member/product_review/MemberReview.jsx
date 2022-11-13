@@ -8,11 +8,12 @@ import {
 } from "../../../service/dbLogic";
 import MemberReviewRow from "./MemberReviewRow";
 import { ImStarFull } from "react-icons/im";
-import { STARDIV } from "../../../styles/ReviewStyle";
+import { HDIV, REDIV, STARDIV } from "../../../styles/ReviewStyle";
 import { Button, Form, Modal } from "react-bootstrap";
 import Pagination from "../Common/Pagination";
 import Header from "../Common/Header";
 import Footer from "../Common/Footer";
+import { BROWN_BTN } from "../../../styles/NoticeStyle";
 
 const MemberReview = ({ no, isLogin, logout, md_no }) => {
   const [reviews, setReviews] = useState([]); // 리뷰 리스트 담기
@@ -84,21 +85,30 @@ const MemberReview = ({ no, isLogin, logout, md_no }) => {
   };
   return (
     <>
-      <hr />
-      <div>
-        <h1>리뷰페이지</h1>
-        <button onClick={handleShow}>리뷰 쓰기</button>
+      <div className="container" style={{ margin: "10rem auto 3rem" }}>
+        <hr />
+        <div className="container" style={{ display: "flex" }}>
+          <h3>상품후기</h3>
+          {isLogin &&
+            (isLogin ? (
+              <BROWN_BTN onClick={handleShow}>리뷰 쓰기</BROWN_BTN>
+            ) : null)}
+        </div>
+        <hr />
         <br />
-        {reviews.slice(offset, offset + limit).map((review, i) => (
-          <MemberReviewRow key={i} review={review} no={no} />
-        ))}
+        <table style={{ width: "100%" }}>
+          {reviews.slice(offset, offset + limit).map((review, i) => (
+            <MemberReviewRow key={i} review={review} no={no} />
+          ))}
+        </table>
+        <Pagination
+          total={reviews.length}
+          limit={limit}
+          page={page}
+          setPage={setPage}
+        />
       </div>
-      <Pagination
-        total={reviews.length}
-        limit={limit}
-        page={page}
-        setPage={setPage}
-      />
+
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>리뷰 등록</Modal.Title>

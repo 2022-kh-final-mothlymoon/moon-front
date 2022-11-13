@@ -31,38 +31,99 @@ const MyReviewRow = ({ review, no }) => {
   };
   return (
     <>
-      <br />
-      상품명: {review.MD_NAME}
-      <div>
-        별점 :
-        {review.MD_STAR === 1 ? (
-          <STARSPAN>★</STARSPAN>
-        ) : review.MD_STAR === 2 ? (
-          <STARSPAN>★★</STARSPAN>
-        ) : review.MD_STAR === 3 ? (
-          <STARSPAN>★★★</STARSPAN>
-        ) : review.MD_STAR === 4 ? (
-          <STARSPAN>★★★★</STARSPAN>
-        ) : (
-          <STARSPAN>★★★★★</STARSPAN>
-        )}
-      </div>
-      내용 : {toggleEllipsis(review.MD_REVIEW_CONTENT, limit).string}
-      {toggleEllipsis(review.MD_REVIEW_CONTENT, limit).isShowMore && (
-        <PLUSBTN onClick={onClickMore(review.MD_REVIEW_CONTENT)}>
-          ...더보기
-        </PLUSBTN>
-      )}
-      <div>작성일 : {review.MD_REVIEW_WRITTEN_DATE}</div>
-      <div> 좋아요 : {review.MD_REVIEW_LIKE}</div>
-      {no == review.MEMBER_NO ? (
-        <button onClick={delReview}>삭제</button>
-      ) : null}
-      &nbsp;
-      {no == review.MEMBER_NO ? (
-        <button onClick={handleShow}>수정</button>
-      ) : null}
-      <br />
+      <colgroup>
+        <col style={{ width: "60%" }} />
+        <col style={{ width: "10%" }} />
+        <col style={{ width: "10%" }} />
+        <col style={{ width: "20%" }} />
+      </colgroup>
+
+      <thead>
+        <tr>
+          <th colSpan={3} style={{padding:"20px"}}>
+            <span style={{fontSize:"18px", margin:"20px"}}>
+              <i className="fa-solid fa-gift"></i>
+              &nbsp;&nbsp;{review.MD_NAME}
+            </span>
+          </th>
+          <th>
+          {review.MD_STAR === 1 ? (
+            <STARSPAN>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-regular fa-star"></i>
+              <i className="fa-regular fa-star"></i>
+              <i className="fa-regular fa-star"></i>
+              <i className="fa-regular fa-star"></i>
+            </STARSPAN>
+          ) : review.MD_STAR === 2 ? (
+            <STARSPAN>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-regular fa-star"></i>
+              <i className="fa-regular fa-star"></i>
+              <i className="fa-regular fa-star"></i>
+            </STARSPAN>
+          ) : review.MD_STAR === 3 ? (
+            <STARSPAN>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-regular fa-star"></i>
+              <i className="fa-regular fa-star"></i>
+            </STARSPAN>
+          ) : review.MD_STAR === 4 ? (
+            <STARSPAN>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-regular fa-star"></i>
+            </STARSPAN>
+          ) : (
+            <STARSPAN>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i>
+            </STARSPAN>
+          )}
+          </th>
+        </tr>
+      </thead>
+
+      <tbody style={{borderBottom:"2px solid #b29d82"}}>
+        <td style={{lineHeight:"28px", fontSize:"17px"}}>
+          <br />
+          {toggleEllipsis(review.MD_REVIEW_CONTENT, limit).string}
+          {toggleEllipsis(review.MD_REVIEW_CONTENT, limit).isShowMore && (
+            <PLUSBTN onClick={onClickMore(review.MD_REVIEW_CONTENT)}>
+              ...더보기
+            </PLUSBTN>
+          )}
+          <br />
+          <br />
+        </td>
+
+        <td style={{fontSize:"18px"}}>
+            <i className="fa-regular fa-thumbs-up"></i>
+            &nbsp;{review.MD_REVIEW_LIKE}
+        </td>
+
+        <td>{review.MD_REVIEW_WRITTEN_DATE}</td>
+
+        <td>
+          {no == review.MEMBER_NO ? (
+            <button className="foot-btnbox" onClick={delReview}>삭제</button>
+          ) : null}
+          &nbsp;
+          {no == review.MEMBER_NO ? (
+            <button className="foot-btnbox" onClick={handleShow}>수정</button>
+          ) : null}
+        </td>
+      </tbody>
+
+
       <Modal show={show} onHide={handleClose}>
         <MemberReviewM review={review} no={no} />
       </Modal>

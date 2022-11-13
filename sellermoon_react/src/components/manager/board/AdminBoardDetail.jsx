@@ -2,16 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import { jsonBoardList } from '../../../service/dbLogic';
+import { BEIGE_BTN, BROWN_BTN, CONTENTS, RED_BTN } from '../../../styles/NoticeStyle';
+import Footer from '../Common/Footer';
+import Header from '../Common/Header';
 import AdminReplyList from '../reply/AdminReplyList';
 
 /* 
   <<<<< 관리자 게시판 상세 조회 >>>>>
     - 수정할 것 : 폼 디자인
 */
-const AdminBoardDetail = (props) => {
+const AdminBoardDetail = ({ isLogin, isAdmin, adminId }) => {
   const navigate = useNavigate(); 
   
-  // 데이터 초기화
   const { board_no } = useParams();
   const [ boardVO, setBoardVO] = useState({
     BOARD_NO: 0,
@@ -33,11 +35,10 @@ const AdminBoardDetail = (props) => {
   useEffect(() => {
     const boardDetailDB = async() => {
       console.log("[관리자] : boardDetailDB 호출 성공")
-      // spring - jsonBoardList 데이터 읽기
       const result = await jsonBoardList({ board_no: board_no });
       // console.log(result);
       // console.log(result.data);
-      setBoardVO(result.data[0]); // 한 건을 받아올 때는 [] 배열 사용
+      setBoardVO(result.data[0]);
     };
     boardDetailDB();
   }, [board_no]);
@@ -82,107 +83,98 @@ const AdminBoardDetail = (props) => {
   // ******************** RENDER ********************
   return (
     <>
-
-      <div className='container'>
-
-
-
-        <div>
-          <h2>게시판 관리 (Moon Story)</h2>
-          <hr />
-        </div>
-
-
-
-        <div>
-          <Button variant="primary" onClick={listBtn}>목록으로</Button>
-          <Button variant="danger" onClick={delBtn}>삭제</Button>
-        </div>
-
-
-    
-        <div>
-          <div className="form-group">
-            <label>글번호</label>
-            <p>{ boardVO.BOARD_NO }</p>
-          </div>
-          <div className="form-group">
-            <label>카테고리</label>
-            <p>{ boardVO.BOARD_CATEGORY }</p>
-          </div>
-          <div className="form-group">
-            <label>제목</label>
-            <p>{ boardVO.BOARD_TITLE }</p>
-          </div>
-          <div className="form-group">
-            <label>내용</label>
-            <p>{ boardVO.BOARD_CONTENT }</p>
-            <Card.Img 
-              variant="top" 
-              style={{ width: '250px' }} 
-              src={`${ boardVO.FILEURL }`} 
-            />
-          </div>
-          <div className="form-group">
-            <label>작성자</label>
-            <p>{ boardVO.MEMBER_NAME }</p>
-          </div>
-          <div className="form-group">
-            <label>작성일</label>
-            <p>{ boardVO.BOARD_WRITTEN_DATE }</p>
-          </div>
-          <div className="form-group">
-            <label>조회수</label>
-            <p>{ boardVO.BOARD_HIT }</p>
-          </div>
-          <div className="form-group">
-            <label>좋아요</label>
-            <p>{ boardVO.BOARD_LIKE }</p>
-          </div>
-          <div className="form-group">
-            <label>싫어요</label>
-            <p>{ boardVO.BOARD_DISLIKE }</p>
-          </div>
-          <div className="form-group">
-            <label>신고수</label>
-            <p>{ boardVO.BOARD_REPORT_COUNT }</p>
-          </div>
-
-
-
-          {/* 블라인드 처리 폼 */}
-          <div>
-            <Form id="f_blind" method="get">
-              <div className="form-group">
-                <input type="hidden" name="board_no" id="board_no" />
-                <label>블라인드</label>
-                <Form.Select id="board_blind" name="board_blind" onChange={blindYn} size="sm">
-                  <option value="">현재 블라인드 상태 : { boardVO.BOARD_BLIND }</option>
-                  <option value="Y">Y</option>
-                  <option value="N">N</option>
-                </Form.Select>
-              </div>
-            </Form>
-
-            <Button type="submit" variant="primary" onClick={blindSubmitBtn}>
-              변경
-            </Button>
-          </div>
-
-
-
-        </div>
-
-
-
+      <Header isLogin={isLogin} isAdmin={isAdmin} adminId={adminId} />
+        
         <div className='container'>
-          <AdminReplyList />
+          <CONTENTS className="row">
+            
+          <div className='col-9'>
+            <div className='list-wrapper'>
+
+              <h4>게시판 관리 (Moon Story)</h4>
+              <hr />
+
+              {/* 버튼 */}
+              <div className="d-flex justify-content-end">
+                <RED_BTN onClick={delBtn}>
+                  삭제
+                </RED_BTN>
+                <BROWN_BTN onClick={() => navigate(-1)}>
+                  목록
+                </BROWN_BTN>
+              </div>
+
+              <table style={{ width: "1020px" }}>
+                <colgroup>
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "40%" }} />
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "20%" }} />
+                </colgroup>    
+
+                <tbody>
+                  <tr>
+                  <th>제목</th>
+                    <td colSpan={4} id="td-title">
+                      [{ boardVO.BOARD_CATEGORY }]&nbsp;{ boardVO.BOARD_TITLE }
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>작성자</th>
+                    <td colSpan={4}>{ boardVO.MEMBER_NAME }</td>
+                  </tr>
+                  <tr>
+                    <th>작성일</th>
+                    <td>{ boardVO.BOARD_WRITTEN_DATE }</td>
+                    <th>조회수</th>
+                    <td colSpan={2}>{ boardVO.BOARD_HIT }</td>
+                  </tr>
+                  <tr>
+                    <th>블라인드</th>
+                    <td style={{display: "flex"}}>
+                      <Form id="f_blind" method="get">
+                        <div className="form-group">
+                          <input type="hidden" name="board_no" id="board_no" />
+                          <Form.Select id="board_blind" name="board_blind" onChange={blindYn} size="sm">
+                            <option value="">블라인드 상태 : { boardVO.BOARD_BLIND }</option>
+                            <option value="Y">Y</option>
+                            <option value="N">N</option>
+                          </Form.Select>
+                        </div>
+                      </Form>
+                      <BEIGE_BTN type="submit" onClick={blindSubmitBtn}>
+                        변경
+                      </BEIGE_BTN>
+                    </td>
+                    <td>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan={5} id="td-content">
+                      { boardVO.BOARD_CONTENT }
+                    </td>
+                  </tr>
+                </tbody>      
+              </table>
+
+            </div>
+          </div>
+      
+          <hr />
+          
+          {/* 댓글 리스트 */}
+          <div className='container'>
+            <AdminReplyList />
+          </div>
+
+        </CONTENTS>
+
         </div>
 
+      <br />
+      <br />
 
-
-      </div>
-
+      <Footer />
     </>
   );
 }

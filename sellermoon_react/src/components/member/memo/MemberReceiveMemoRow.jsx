@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button, Form, InputGroup, Modal, Table } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
 import { jsonMemoList } from '../../../service/dbLogic';
+import { BEIGE_BTN, BROWN_BTN, BROWN_BTN2, BROWN_BTN3, RED_BTN, RED_BTN2, RED_BTN3, YBEIGE_BTN } from '../../../styles/NoticeStyle';
 
 const MemberReceiveMemoRow = (props) => {
   console.log("[회원] MemberReceiveMemoRow 호출 성공");
@@ -68,20 +69,22 @@ const MemberReceiveMemoRow = (props) => {
             <td>
               {/* 클릭하면 모달 띄우기 */}
               <Button
-                defaultValue={ props.memo.MSG_NO}
-                onClick={() => {
-                  handleShow()
-                  // readYN()
-                }}
+                variant="outline-secondary"
+                id="btn_search"
+                style={{ marginRight: "20px", width: "100%" }}
+                onClick={handleShow}
               >
                 { props.memo.MSG_CONTENT }
               </Button>
             </td>
             <td>{ props.memo.MSG_SEND_DATE }</td>
             <td>{ props.memo.READ_YN }</td>
-            <td><Button variant="success" onClick={handleShow2}>답장</Button></td>
-
-            <td><Button variant="danger" onClick={msgDelBtn}>삭제</Button></td>
+            <td>
+              <BEIGE_BTN onClick={handleShow2}>답장</BEIGE_BTN>
+            </td>
+            <td>
+              <RED_BTN3 onClick={msgDelBtn}>삭제</RED_BTN3>
+            </td>
           </tr>
         </>
         :
@@ -98,7 +101,7 @@ const MemberReceiveMemoRow = (props) => {
         animation={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>받은 메세지 (상세)</Modal.Title>
+          <Modal.Title>받은 쪽지</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           
@@ -108,9 +111,15 @@ const MemberReceiveMemoRow = (props) => {
 
             <Form.Group className="mb-3" controlId="formBasicFromMsg">
               <Form.Label>보낸 사람 : { props.memo.FROM_ID }</Form.Label>
+              
+              <br />
+              <br />
+
               <Form.Control 
                 readOnly
                 type="text"
+                as="textarea"
+                rows={10}
                 name="msg_content"
                 defaultValue={ props.memo.MSG_CONTENT }
               />
@@ -120,10 +129,10 @@ const MemberReceiveMemoRow = (props) => {
 
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={msgDelBtn}>
+          <RED_BTN variant="danger" onClick={msgDelBtn}>
             삭제
-          </Button>
-          <Button
+          </RED_BTN>
+          <BROWN_BTN
             variant="primary"
             onClick={() => {
               handleClose()
@@ -131,7 +140,7 @@ const MemberReceiveMemoRow = (props) => {
               }}
           >
             닫기
-          </Button>
+          </BROWN_BTN>
         </Modal.Footer>
       </Modal>
 

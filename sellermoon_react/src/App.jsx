@@ -17,14 +17,10 @@ import FaqDetail from "./components/member/faq/FaqDetail";
 import FaqAdmin from "./components/manager/faq/FaqAdmin";
 import FaqUpAdmin from "./components/manager/faq/FaqUpAdmin";
 import AdminLogin from "./components/manager/login/AdminLogin";
-import AMain from "./components/manager/pages/AMain";
 import Statics from "./components/manager/statics/Statics";
-import Customer from "./components/manager/member/Member";
 import Amd from "./components/manager/amd/Amd";
-import Order from "./components/manager/order/Order";
-import Board from "./components/manager/board/Board";
 import Store from "./components/manager/store/Store";
-import Cart from "./components/member/cart/Cart";
+import Carts from "./components/member/cart/Carts";
 import Products from "./components/member/product/Products";
 import ProductDetail from "./components/member/product/ProductDetail";
 import { useState } from "react";
@@ -39,15 +35,13 @@ import ChatLogin from "./components/member/chat/ChatLogin";
 import ChatMessage from "./components/member/chat/ChatMessage";
 import PointAdmin from "./components/manager/point/PointAdmin";
 import Subscription from "./components/member/subscription/Subscription";
-import { mypoint } from "./service/dbLogic";
+import { mypoint, mysubs } from "./service/dbLogic";
 import AdminBoardDetail from "./components/manager/board/AdminBoardDetail";
 import AdminBoardList from "./components/manager/board/AdminBoardList";
 import MemberBoardList from "./components/member/board/MemberBoardList";
 import MemberBoardDetail from "./components/member/board/MemberBoardDetail";
 import MemberBoardForm from "./components/member/board/MemberBoardForm";
 import MemberBoardEditForm from "./components/member/board/MemberBoardEditForm";
-import pictureUpload from "./service/pictureUpload";
-import SPayment from "./components/member/Payment/SPayment";
 import StoreModify from "./components/manager/store/StoreModify";
 import StoreDetail from "./components/manager/store/StoreDetail";
 import AmdDetail from "./components/manager/amd/AmdDetail";
@@ -63,6 +57,12 @@ import MyAccountConfirm from "./components/member/mypage/MyAccountConfirm";
 import AdminReview from "./components/manager/admin_review/AdminReview";
 import MemberReceiveMemoList from "./components/member/memo/MemberReceiveMemoList";
 import MemberSendMemoList from "./components/member/memo/MemberSendMemoList";
+import AdminReportList from "./components/manager/report/AdminReportList";
+import MyOrder from "./components/member/mypage/MyOrder";
+import MyBoard from "./components/member/mypage/MyBoard";
+import TOrderD from "./components/member/orderdetail/TOrderD";
+import AdminOrder from "./components/manager/order/AdminOrder";
+import AdminOrderDetail from "./components/manager/order/AdminOrderDetail";
 
 function App({ authLogic, pictureUpload }) {
   let navigate = useNavigate();
@@ -132,6 +132,21 @@ function App({ authLogic, pictureUpload }) {
     myPoint();
   }, [no]);
   /* **************************************************** */
+  const [mySubs, setMySubs] = useState({ md_name: "" });
+
+  useEffect(() => {
+    const mySubs = async () => {
+      await mysubs({ member_no: no }).then((res) => {
+        if (res.data === null) {
+          return 0;
+        } else {
+          //console.log(res.data);
+          setMySubs(res.data);
+        }
+      });
+    };
+    mySubs();
+  }, [no]);
   return (
     <>
       <Routes>
@@ -168,7 +183,7 @@ function App({ authLogic, pictureUpload }) {
           exact={true}
           element={
             !isLogin ? (
-              <FindIdPass isLogin={isLogin} logout={logout} />
+              <FindIdPass no={no} isLogin={isLogin} logout={logout} />
             ) : (
               <Navigate to="/" />
             )
@@ -183,6 +198,7 @@ function App({ authLogic, pictureUpload }) {
               <MyAccount
                 isLogin={isLogin}
                 no={no}
+                mySubs={mySubs}
                 logout={logout}
                 myPoint={myPoint}
               />
@@ -200,6 +216,7 @@ function App({ authLogic, pictureUpload }) {
               <MyAccountConfirm
                 isLogin={isLogin}
                 no={no}
+                mySubs={mySubs}
                 logout={logout}
                 myPoint={myPoint}
               />
@@ -212,43 +229,53 @@ function App({ authLogic, pictureUpload }) {
           path="/mypage/modifyprofile"
           exact={true}
           element={
-            isLogin ? (
+            isLogin &&
+            (isLogin ? (
               <MyAccountM
                 isLogin={isLogin}
                 no={no}
+                mySubs={mySubs}
                 logout={logout}
                 myPoint={myPoint}
               />
             ) : (
               <Navigate to="/login" />
-            )
+            ))
           }
         />
         <Route
           path="/mypage/delmember"
           exact={true}
           element={
-            isLogin ? (
+            isLogin &&
+            (isLogin ? (
               <MyDelAccount
                 isLogin={isLogin}
                 no={no}
+                mySubs={mySubs}
                 myPoint={myPoint}
                 logout={logout}
               />
             ) : (
               <Navigate to="/login" />
-            )
+            ))
           }
         />
         <Route
           path="/mypage/point"
           element={
-            <Point
-              myPoint={myPoint}
-              isLogin={isLogin}
-              no={no}
-              logout={logout}
-            />
+            isLogin &&
+            (isLogin ? (
+              <Point
+                myPoint={myPoint}
+                isLogin={isLogin}
+                no={no}
+                mySubs={mySubs}
+                logout={logout}
+              />
+            ) : (
+              <Navigate to="/login" />
+            ))
           }
           exact={true}
         />
@@ -256,20 +283,80 @@ function App({ authLogic, pictureUpload }) {
         <Route
           path="/mypage/friends"
           element={
-            <Friends
-              myPoint={myPoint}
-              isLogin={isLogin}
-              no={no}
-              logout={logout}
-            />
+            isLogin &&
+            (isLogin ? (
+              <Friends
+                myPoint={myPoint}
+                isLogin={isLogin}
+                no={no}
+                mySubs={mySubs}
+                logout={logout}
+              />
+            ) : (
+              <Navigate to="/login" />
+            ))
           }
           exact={true}
+        />
+        <Route
+          exact={true}
+          path="/mypage/review"
+          element={
+            isLogin &&
+            (isLogin ? (
+              <MyReview
+                isLogin={isLogin}
+                no={no}
+                myPoint={myPoint}
+                mySubs={mySubs}
+                logout={logout}
+              />
+            ) : (
+              <Navigate to="/login" />
+            ))
+          }
+        />
+        <Route
+          exact={true}
+          path="/mypage/orderlist"
+          element={
+            isLogin &&
+            (isLogin ? (
+              <MyOrder
+                isLogin={isLogin}
+                no={no}
+                myPoint={myPoint}
+                mySubs={mySubs}
+                logout={logout}
+              />
+            ) : (
+              <Navigate to="/login" />
+            ))
+          }
+        />
+        <Route
+          exact={true}
+          path="/mypage/board"
+          element={
+            isLogin &&
+            (isLogin ? (
+              <MyBoard
+                isLogin={isLogin}
+                no={no}
+                myPoint={myPoint}
+                mySubs={mySubs}
+                logout={logout}
+              />
+            ) : (
+              <Navigate to="/login" />
+            ))
+          }
         />
 
         <Route
           path="/chat/login"
-          element={<ChatLogin authLogic={authLogic} />}
           exact={true}
+          element={<ChatLogin authLogic={authLogic} />}
         />
         <Route
           path="/chat/chatroom/:userId"
@@ -280,12 +367,18 @@ function App({ authLogic, pictureUpload }) {
         <Route
           path="/mypage/subscription"
           element={
-            <Subscription
-              myPoint={myPoint}
-              isLogin={isLogin}
-              no={no}
-              logout={logout}
-            />
+            isLogin &&
+            (isLogin ? (
+              <Subscription
+                myPoint={myPoint}
+                isLogin={isLogin}
+                mySubs={mySubs}
+                no={no}
+                logout={logout}
+              />
+            ) : (
+              <Navigate to="/login" />
+            ))
           }
           exact={true}
         />
@@ -303,7 +396,7 @@ function App({ authLogic, pictureUpload }) {
         />
         <Route
           path="/notice/detail/:notice_no"
-          element={<NoticeDetail logout={logout} />}
+          element={<NoticeDetail isLogin={isLogin} logout={logout} no={no} />}
           exact={true}
         />
         <Route
@@ -316,111 +409,204 @@ function App({ authLogic, pictureUpload }) {
           element={<FaqDetail isLogin={isLogin} logout={logout} />}
           exact={true}
         />
-        {/* 회원 주소 */}
         <Route
-          path="/member/board/boardList"
+          path="/board/boardList"
           exact={true}
-          element={<MemberBoardList no={no} logout={logout} />}
+          element={
+            isLogin &&
+            (isLogin ? (
+              <MemberBoardList isLogin={isLogin} no={no} logout={logout} />
+            ) : (
+              <Navigate to="/login" />
+            ))
+          }
         />
         <Route
-          path="/member/board/boardDetail/:board_no"
+          path="/board/boardDetail/:board_no"
           exact={true}
-          element={<MemberBoardDetail no={no} logout={logout} />}
+          element={
+            isLogin &&
+            (isLogin ? (
+              <MemberBoardDetail isLogin={isLogin} no={no} logout={logout} />
+            ) : (
+              <Navigate to="/login" />
+            ))
+          }
         />
         <Route
-          path="/member/board/boardForm"
+          path="/board/boardForm"
           exact={true}
-          element={<MemberBoardForm pictureUpload={pictureUpload} no={no} />}
+          element={
+            isLogin &&
+            (isLogin ? (
+              <MemberBoardForm
+                isLogin={isLogin}
+                logout={logout}
+                pictureUpload={pictureUpload}
+                no={no}
+              />
+            ) : (
+              <Navigate to="/login" />
+            ))
+          }
         />
         <Route
-          path="/member/board/boardEditForm/:board_no"
+          path="/board/boardEditForm/:board_no"
           exact={true}
-          element={<MemberBoardEditForm no={no} logout={logout} />}
+          element={
+            isLogin &&
+            (isLogin ? (
+              <MemberBoardEditForm isLogin={isLogin} no={no} logout={logout} />
+            ) : (
+              <Navigate to="/login" />
+            ))
+          }
         />
         <Route
-          path="/member/memo/receiveMemoList"
+          path="/memo/receiveMemoList"
           exact={true}
-          element={<MemberReceiveMemoList no={no} logout={logout} />}
+          element={
+            isLogin &&
+            (isLogin ? (
+              <MemberReceiveMemoList
+                isLogin={isLogin}
+                no={no}
+                logout={logout}
+              />
+            ) : (
+              <Navigate to="/login" />
+            ))
+          }
         />
         <Route
-          path="/member/memo/sendMemoList"
+          path="/memo/sendMemoList"
           exact={true}
-          element={<MemberSendMemoList no={no} logout={logout} />}
+          element={
+            isLogin &&
+            (isLogin ? (
+              <MemberSendMemoList isLogin={isLogin} no={no} logout={logout} />
+            ) : (
+              <Navigate to="/login" />
+            ))
+          }
         />
         <Route
-          exact
+          exact={true}
           path="/payment/result"
-          element={<PaymentResult isLogin={isLogin} logout={logout} />}
+          element={
+            isLogin &&
+            (isLogin ? (
+              <PaymentResult isLogin={isLogin} logout={logout} />
+            ) : (
+              <Navigate to="/login" />
+            ))
+          }
         />
         <Route
-          exact
+          exact={true}
           path="/payment"
           element={
-            <OrderPage
-              isLogin={isLogin}
-              no={no}
-              myPoint={myPoint}
-              logout={logout}
-            />
+            isLogin &&
+            (isLogin ? (
+              <OrderPage
+                isLogin={isLogin}
+                no={no}
+                myPoint={myPoint}
+                logout={logout}
+              />
+            ) : (
+              <Navigate to="/login" />
+            ))
           }
         />
 
         <Route
-          exact
+          exact={true}
           path="/payments"
           element={
-            <Payment
-              isLogin={isLogin}
-              no={no}
-              myPoint={myPoint}
-              logout={logout}
-            />
+            isLogin &&
+            (isLogin ? (
+              <Payment
+                isLogin={isLogin}
+                no={no}
+                myPoint={myPoint}
+                logout={logout}
+              />
+            ) : (
+              <Navigate to="/login" />
+            ))
           }
         />
 
         <Route
-          exact
+          exact={true}
           path="/spayment"
           element={
-            <SorderPage
-              isLogin={isLogin}
-              no={no}
-              myPoint={myPoint}
-              logout={logout}
-            />
+            isLogin &&
+            (isLogin ? (
+              <SorderPage
+                isLogin={isLogin}
+                no={no}
+                myPoint={myPoint}
+                logout={logout}
+              />
+            ) : (
+              <Navigate to="/login" />
+            ))
           }
         />
         <Route
-          exact
+          exact={true}
           path="/orderdetail/:ORDER_NO"
-          element={<OrderD isLogin={isLogin} logout={logout} />}
+          element={
+            isLogin &&
+            (isLogin ? (
+              <OrderD isLogin={isLogin} logout={logout} no={no} />
+            ) : (
+              <Navigate to="/login" />
+            ))
+          }
         />
         <Route
+          exact={true}
+          path="/torderdetail/:ORDER_NO"
+          element={
+            isLogin &&
+            (isLogin ? (
+              <TOrderD isLogin={isLogin} no={no} logout={logout} />
+            ) : (
+              <Navigate to="/login" />
+            ))
+          }
+        />
+        <Route
+          exact={true}
           path="/products"
           element={<Products isLogin={isLogin} no={no} logout={logout} />}
         />
         <Route
+          exact={true}
           path="/product/:id"
           element={<ProductDetail isLogin={isLogin} no={no} logout={logout} />}
         />
-        <Route path="/cart" element={<Cart logout={logout} />} />
+        <Route
+          exact={true}
+          path="/cart"
+          element={
+            isLogin &&
+            (isLogin ? (
+              <Carts isLogin={isLogin} logout={logout} />
+            ) : (
+              <Navigate to="/login" />
+            ))
+          }
+        />
         <Route
           exact={true}
           path="/review"
           element={<MemberReview isLogin={isLogin} no={no} logout={logout} />}
         />
-        <Route
-          exact={true}
-          path="/mypage/review"
-          element={
-            <MyReview
-              isLogin={isLogin}
-              no={no}
-              myPoint={myPoint}
-              logout={logout}
-            />
-          }
-        />
+
         {/********************** 관리자 페이지 영역 *************************/}
         <Route
           path="/admin/login"
@@ -432,7 +618,7 @@ function App({ authLogic, pictureUpload }) {
                 isAdmin={isAdmin}
               />
             ) : (
-              <Navigate to="/" />
+              <Navigate to="/admin/statics" />
             )
           }
           exact={true}
@@ -440,36 +626,60 @@ function App({ authLogic, pictureUpload }) {
         <Route
           path="/admin/notice"
           element={
-            <NoticeAdmin
-              adminId={adminId}
-              isLogin={isLogin}
-              isAdmin={isAdmin}
-            />
+            isAdmin &&
+            (isAdmin ? (
+              <NoticeAdmin
+                adminId={adminId}
+                isLogin={isLogin}
+                isAdmin={isAdmin}
+              />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
           }
           exact={true}
         />
         <Route
           path="/admin/notice/update/:notice_no"
           element={
-            <NoticeUpAdmin
-              adminId={adminId}
-              isLogin={isLogin}
-              isAdmin={isAdmin}
-            />
+            isAdmin &&
+            (isAdmin ? (
+              <NoticeUpAdmin
+                adminId={adminId}
+                isLogin={isLogin}
+                isAdmin={isAdmin}
+              />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
           }
           exact={true}
         />
         <Route
           path="/admin/faq"
           element={
-            <FaqAdmin adminId={adminId} isLogin={isLogin} isAdmin={isAdmin} />
+            isAdmin &&
+            (isAdmin ? (
+              <FaqAdmin adminId={adminId} isLogin={isLogin} isAdmin={isAdmin} />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
           }
           exact={true}
         />
         <Route
           path="/admin/faq/update/:faq_no"
           element={
-            <FaqUpAdmin adminId={adminId} isLogin={isLogin} isAdmin={isAdmin} />
+            isAdmin &&
+            (isAdmin ? (
+              <FaqUpAdmin
+                adminId={adminId}
+                isLogin={isLogin}
+                isAdmin={isAdmin}
+              />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
           }
           exact={true}
         />
@@ -488,106 +698,224 @@ function App({ authLogic, pictureUpload }) {
         <Route
           path="/admin/member/:member_no"
           element={
-            <MemAdminDetail
-              adminId={adminId}
-              isLogin={isLogin}
-              isAdmin={isAdmin}
-            />
+            isAdmin &&
+            (isAdmin ? (
+              <MemAdminDetail
+                adminId={adminId}
+                isLogin={isLogin}
+                isAdmin={isAdmin}
+              />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
           }
           exact={true}
         />
         <Route
           path="/admin/review"
           element={
-            <AdminReview
-              adminId={adminId}
-              isLogin={isLogin}
-              isAdmin={isAdmin}
-            />
+            isAdmin &&
+            (isAdmin ? (
+              <AdminReview
+                adminId={adminId}
+                isLogin={isLogin}
+                isAdmin={isAdmin}
+              />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
           }
           exact={true}
         />
-        {/* 관리자 주소 */}
         <Route
           path="/admin/board/boardList"
           exact={true}
           element={
-            <AdminBoardList
-              adminId={adminId}
-              isLogin={isLogin}
-              isAdmin={isAdmin}
-            />
+            isAdmin &&
+            (isAdmin ? (
+              <AdminBoardList
+                adminId={adminId}
+                isLogin={isLogin}
+                isAdmin={isAdmin}
+              />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
+          }
+        />
+        <Route
+          path="/admin/report/reportList"
+          exact={true}
+          element={
+            isAdmin &&
+            (isAdmin ? (
+              <AdminReportList
+                adminId={adminId}
+                isLogin={isLogin}
+                isAdmin={isAdmin}
+              />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
           }
         />
         <Route
           path="/admin/board/boardDetail/:board_no"
           exact={true}
           element={
-            <AdminBoardDetail
-              adminId={adminId}
-              isLogin={isLogin}
-              isAdmin={isAdmin}
-            />
+            isAdmin &&
+            (isAdmin ? (
+              <AdminBoardDetail
+                adminId={adminId}
+                isLogin={isLogin}
+                isAdmin={isAdmin}
+              />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
           }
         />
 
         <Route
           path="/admin/statics"
           element={
-            <Statics adminId={adminId} isLogin={isLogin} isAdmin={isAdmin} />
+            isAdmin &&
+            (isAdmin ? (
+              <Statics adminId={adminId} isLogin={isLogin} isAdmin={isAdmin} />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
           }
+          exact={true}
         />
 
         <Route
           path="/admin/order"
           element={
-            <Order adminId={adminId} isLogin={isLogin} isAdmin={isAdmin} />
+            isAdmin &&
+            (isAdmin ? (
+              <AdminOrder
+                adminId={adminId}
+                isLogin={isLogin}
+                isAdmin={isAdmin}
+              />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
           }
+          exact={true}
+        />
+        <Route
+          path="/admin/order/:order_no"
+          element={
+            isAdmin &&
+            (isAdmin ? (
+              <AdminOrderDetail
+                adminId={adminId}
+                isLogin={isLogin}
+                isAdmin={isAdmin}
+              />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
+          }
+          exact={true}
         />
         <Route
           path="/admin/point"
           element={
-            <PointAdmin adminId={adminId} isLogin={isLogin} isAdmin={isAdmin} />
+            isAdmin &&
+            (isAdmin ? (
+              <PointAdmin
+                adminId={adminId}
+                isLogin={isLogin}
+                isAdmin={isAdmin}
+              />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
           }
           exact={true}
         />
         <Route
           path="/admin/store"
           element={
-            <Store adminId={adminId} isLogin={isLogin} isAdmin={isAdmin} />
+            isAdmin &&
+            (isAdmin ? (
+              <Store adminId={adminId} isLogin={isLogin} isAdmin={isAdmin} />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
           }
+          exact={true}
         />
         <Route
           path="/admin/store/modify/:STORE_NO"
-          element={<StoreModify isLogin={isLogin} isAdmin={isAdmin} />}
+          element={
+            isAdmin &&
+            (isAdmin ? (
+              <StoreModify isLogin={isLogin} isAdmin={isAdmin} />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
+          }
+          exact={true}
         />
         <Route
           path="/admin/store/detail/:STORE_NO"
-          element={<StoreDetail isLogin={isLogin} isAdmin={isAdmin} />}
+          element={
+            isAdmin &&
+            (isAdmin ? (
+              <StoreDetail isLogin={isLogin} isAdmin={isAdmin} />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
+          }
+          exact={true}
         />
         <Route
           path="/admin/md"
           element={
-            <Amd
-              pictureUpload={pictureUpload}
-              isLogin={isLogin}
-              isAdmin={isAdmin}
-            />
+            isAdmin &&
+            (isAdmin ? (
+              <Amd
+                pictureUpload={pictureUpload}
+                isLogin={isLogin}
+                isAdmin={isAdmin}
+              />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
           }
+          exact={true}
         />
         <Route
           path="/admin/md/modify/:MD_NO"
           element={
-            <AmdModify
-              pictureUpload={pictureUpload}
-              isLogin={isLogin}
-              isAdmin={isAdmin}
-            />
+            isAdmin &&
+            (isAdmin ? (
+              <AmdModify
+                pictureUpload={pictureUpload}
+                isLogin={isLogin}
+                isAdmin={isAdmin}
+              />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
           }
+          exact={true}
         />
         <Route
           path="/admin/md/detail/:MD_NO"
-          element={<AmdDetail isLogin={isLogin} isAdmin={isAdmin} />}
+          element={
+            isAdmin &&
+            (isAdmin ? (
+              <AmdDetail isLogin={isLogin} isAdmin={isAdmin} />
+            ) : (
+              <Navigate to="/admin/login" />
+            ))
+          }
+          exact={true}
         />
       </Routes>
     </>

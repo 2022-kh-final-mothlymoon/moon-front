@@ -6,19 +6,18 @@ import MemberReplyForm from "./MemberReplyForm";
 import MemberReplyRow from "./MemberReplyRow";
 
 /*
-  <<<<< 관리자 해당 글 번호 댓글 전체 조회 >>>>>
-    - 추가할 것 : 댓글 pagination
-    - 수정할 것 : 댓글 갯수 추가하기
+  <<<<<  회원 글 번호 댓글 전체 조회 >>>>>
 */
 const MemberReplyList = ({ no }) => {
+  console.log("MemberReplyList 호출 성공");
+
   const { board_no } = useParams();
 
-  // [ R ] 데이터 가져오기 ---------------------------------------
+  // [ R ] 데이터 가져오기
   const [replyList, setReplyList] = useState([]);
   useEffect(() => {
     const replyListDB = async () => {
-      console.log("[관리자] replyListDB 호출 성공");
-      // spring - jsonReplyList 데이터 읽기
+      console.log("[회원] replyListDB 호출 성공");
       const result = await jsonReplyList({ board_no: board_no });
       console.log(result);
       // console.log(result.data);
@@ -27,19 +26,16 @@ const MemberReplyList = ({ no }) => {
       setReplyList(result.data); // 여러 건을 받아올 때는 배열 사용 X
     };
     replyListDB();
-  }, []);
+  }, [board_no]);
 
   // ******************** RENDER ********************
   return (
     <>
-      <hr />
-
-      <div className="container">
-        <small>댓글 (n)</small>
+      <table style={{ width: "1020px" }}>
         {replyList.map((reply, i) => (
           <MemberReplyRow no={no} key={i} reply={reply} />
         ))}
-      </div>
+      </table>
     </>
   );
 };

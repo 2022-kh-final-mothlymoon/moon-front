@@ -3,8 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { BROWN_BTN } from "../../../styles/NoticeStyle";
 import { faqlist } from "../../../service/dbLogic";
+import Header from "../Common/Header";
 
-const FaqUpAdmin = ({ isLogin, isAdmin }) => {
+const FaqUpAdmin = ({ isLogin, isAdmin, adminId }) => {
   let navigate = useNavigate();
 
   const { faq_no } = useParams();
@@ -80,6 +81,7 @@ const FaqUpAdmin = ({ isLogin, isAdmin }) => {
 
   return (
     <>
+      <Header isLogin={isLogin} isAdmin={isAdmin} adminId={adminId} />
       <div className="container">
         <h4>FAQ 수정</h4>
 

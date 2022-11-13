@@ -92,6 +92,10 @@ body {
   margin-right: 3rem;
 }
 
+.nav-menu2 {
+  margin-right: 0.5rem;
+}
+
 /* 이벤트alert */
 #event-alert {
   text-align: center;
@@ -249,3 +253,193 @@ td {
 }
 
 /* ############################################################################# */
+
+/* ##############################[[Products]]################################## */
+.product_container {
+  border: 3px solid #cc946c85;
+  border-radius: 0.5rem;
+  display: block;
+  margin: 1rem;
+  padding: 1rem;
+  width: 300px;
+}
+
+.clickEvent {
+  cursor: pointer;
+}
+
+.product_list_wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.product_list {
+  flex: auto;
+}
+
+.proudct_list_sorting {
+  float: right;
+}
+
+.product_btn {
+  background: transparent;
+  color: #c5875d;
+  border: 2px solid #c5875dab;
+  display: inline-block;
+  text-align: center;
+  border-radius: 3px;
+  padding: 0 16px;
+  height: 38px;
+  line-height: 38px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 50px;
+  font-weight: bold;
+}
+
+.product_detail_title {
+  font-size: 35px;
+  color: #966747b4;
+  padding: 1rem;
+}
+
+.product_detail_image {
+  width: 70%;
+}
+
+.product_detail {
+  display: flex;
+}
+
+.product_detail_discount {
+  font-size: 22px;
+}
+
+.product_detail_price {
+  font-size: 18px;
+  text-decoration: line-through;
+  color: gray;
+}
+
+.product_price {
+  font-size: 16px;
+  text-decoration: line-through;
+  color: gray;
+}
+
+.cartBtn {
+  background: #ebd3c265;
+  color: #c5875d;
+  border: 2px solid #c5875dab;
+  display: inline-block;
+  text-align: center;
+  border-radius: 3px;
+  padding: 0 16px;
+  height: 50px;
+  line-height: 38px;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.cart_detail_btn {
+  border-radius: 50%;
+  width: 50px;
+  font-size: 30px;
+  border: 1px solid #c5875dab;
+}
+
+.product_detail_qtt {
+  display: flex;
+  justify-content: center;
+}
+
+.product_detail_sum {
+  font-size: 25px;
+}
+
+/* #################################[[ Cart ]]############################## */
+
+.cart_container {
+  border: 2px solid #a3968ec2;
+  border-radius: 0.5rem;
+  display: block;
+  margin: 1rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cart_list_footer {
+  padding-top: 2rem;
+  margin: 1rem;
+  display: flex;
+  justify-content: space-between;
+  height: 270px;
+}
+
+.cart_list_sum_price_container {
+  padding: 1rem;
+  width: 500px;
+}
+
+.cart_list_sum {
+  font-size: 150%;
+  text-align: end;
+  background-color: #f9f9f6;
+}
+
+.cart_list_ship_fee,
+.cart_list_price {
+  font-size: 130%;
+  text-align: end;
+}
+
+.cart_table_body {
+  font-size: 120%;
+}
+
+.cart_md_price {
+  font-size: 1.1rem;
+  text-decoration: line-through;
+  color: gray;
+}
+
+.td_center {
+  text-align: center;
+}
+
+.td_btn {
+  background-color: transparent;
+  border: 0px;
+}
+
+.tbody_check {
+  margin-top: 8rem;
+  margin-left: 2rem;
+}
+
+.cart_selectBtn {
+  background: transparent;
+  color: #b29d82;
+  border: 2px solid #b29d82;
+  border-radius: 3px;
+  padding: 0 16px;
+  line-height: 38px;
+  font-size: 15px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.cart_subscribe {
+  padding: 0.5rem 2rem;
+  width: 450px;
+}
+
+.group_form_label {
+  font-weight: bold;
+  font-size: larger;
+}

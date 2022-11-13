@@ -19,10 +19,12 @@ import {
   LINPUT,
   LOGINBTN,
   LOGINDIV,
+  LSPAN,
   REGISTERLINK,
   SOCIALBTN,
   SOCIALDIV,
   VALIDDIV,
+  LJOIN
 } from "../../../styles/LoginStyle";
 
 const LoginPage = ({ no, isLogin }) => {
@@ -110,9 +112,9 @@ const LoginPage = ({ no, isLogin }) => {
   return (
     <>
       <Header />
+      <br/>
       <LDIV>
-        <h1>로그인</h1>
-        <hr />
+        <LSPAN>로그인</LSPAN>
         <LDIV3>
           <LDIV4>
             <LDIV2>
@@ -141,6 +143,7 @@ const LoginPage = ({ no, isLogin }) => {
               />
             </LDIV2>
           </LDIV4>
+          
           <CHKDIV>
             <CHKINPUT
               type="checkbox"
@@ -150,12 +153,13 @@ const LoginPage = ({ no, isLogin }) => {
               name="autologin"
             />
             <label htmlFor="autologin">자동로그인</label>
+            <REGISTERLINK to="/findidpass">아이디 | 비밀번호 찾기</REGISTERLINK>
           </CHKDIV>
+          
           <LOGINDIV>
             <LOGINBTN onClick={memLogin} disabled={!(isEmail && isPassword)}>
               로그인
             </LOGINBTN>
-            <REGISTERLINK to="/findidpass">아이디 | 비밀번호 찾기</REGISTERLINK>
           </LOGINDIV>
           <BORDERDIV>SNS 계정으로 간편 로그인</BORDERDIV>
           <SOCIALDIV>
@@ -164,10 +168,18 @@ const LoginPage = ({ no, isLogin }) => {
             </a>
             <NaverLogin />
           </SOCIALDIV>
-          <br />
-          <REGISTERLINK to="/register">이메일로 회원가입</REGISTERLINK>
+          
+          <LJOIN onClick={() => {navigate("/register");}}>
+            이메일로 회원가입
+          </LJOIN>
+        
         </LDIV3>
       </LDIV>
+
+      <br />
+      <br />
+      <br />
+
       <Footer />
     </>
   );

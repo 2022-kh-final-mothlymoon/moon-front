@@ -153,6 +153,7 @@ const NoticeAdmin = ({ isLogin, isAdmin, adminId }) => {
   return (
     <>
       <Header isLogin={isLogin} isAdmin={isAdmin} adminId={adminId} />
+      <br />
       <div className="container">
         <h4>공지사항 관리</h4>
         <hr />
@@ -357,6 +358,8 @@ const NoticeAdmin = ({ isLogin, isAdmin, adminId }) => {
         </Modal>
         {/* ========[[[ 등록 모달 끝]]]======= */}
       </div>
+      <br />
+      <br />
       <Footer />
     </>
   );

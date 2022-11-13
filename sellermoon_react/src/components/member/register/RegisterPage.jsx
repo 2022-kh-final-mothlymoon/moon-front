@@ -16,7 +16,7 @@ import {
   RVALIDDIV,
   RZINPUT,
 } from "../../../styles/RegisterStyle";
-import { LOGINBTN, VALIDDIV } from "../../../styles/LoginStyle";
+import { LOGINBTN, LSPAN, VALIDDIV } from "../../../styles/LoginStyle";
 
 const RegisterPage = (props) => {
   const registerM = (e) => {
@@ -139,9 +139,11 @@ const RegisterPage = (props) => {
   return (
     <>
       <Header />
+      <br/>
       <RDIV>
-        <h1>회원가입</h1>
-        <hr />
+        <h2 style={{fontWeight:"700", borderBottom:"3px solid #5e514d", padding:"20px", color:"#5e514d"}}>
+          회원가입
+        </h2>
         <RDIV3>
           <form id="f_register" method="post">
             <RDIV2>
@@ -249,8 +251,13 @@ const RegisterPage = (props) => {
             </RBUTTON>
           </form>
         </RDIV3>
+        <br/>
       </RDIV>
+      <br/>
+      <br/>
+      <br/>
       <Footer />
+
       {/* 우편번호 모달 시작 */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>

@@ -14,6 +14,7 @@ const MemAdmin = ({ isLogin, isAdmin, adminId }) => {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
+
   /* memberlist 데이터 가져오기 */
   useEffect(() => {
     const oracleDB = async () => {
@@ -23,6 +24,7 @@ const MemAdmin = ({ isLogin, isAdmin, adminId }) => {
     };
     oracleDB();
   }, []);
+
   // 레벨 select box
   const memLevel = (e) => {
     console.log(e.target.value);
@@ -51,8 +53,9 @@ const MemAdmin = ({ isLogin, isAdmin, adminId }) => {
   return (
     <>
       <Header isLogin={isLogin} isAdmin={isAdmin} adminId={adminId} />
-      <div className="body_container">
-        <h1>회원관리</h1>
+      <div className="container">
+        <br />
+        <h4>회원관리</h4>
         <hr />
         <Row>
           <Col xs={12} md={6}>

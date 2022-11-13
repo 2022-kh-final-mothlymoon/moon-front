@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { checkMem } from "../../../service/dbLogic";
+import { BROWN_BTN2, CONTENTS } from "../../../styles/NoticeStyle";
+import Footer from "../Common/Footer";
+import Header from "../Common/Header";
+import NavbarMypage from "../Common/NavbarMypage";
+import SidebarMypage from "../Common/SidebarMypage";
 
-const MyAccountConfirm = ({ no, isLogin, logout }) => {
+const MyAccountConfirm = ({ no, isLogin, logout, myPoint, mySubs }) => {
   let navigate = useNavigate();
   const [password, setPassword] = useState("");
   const handleInputPw = (e) => {
@@ -25,20 +30,38 @@ const MyAccountConfirm = ({ no, isLogin, logout }) => {
   };
   return (
     <>
-      <h1>비밀번호 확인</h1>
-      <Form.Group className="mb-3" controlId="formBasicPassword1">
-        <Form.Label>비밀번호</Form.Label>
-        <Form.Control
-          type="password"
-          placeholder="정보보호를 위해 비밀번호를 확인합니다."
-          name="member_password"
-          value={password}
-          onChange={handleInputPw}
-        />
-      </Form.Group>
-      <Button variant="warning" onClick={chkPass}>
-        비밀번호 확인하기
-      </Button>
+      <Header isLogin={isLogin} logout={logout} />
+      <div className="container">
+        <CONTENTS className="row">
+          <SidebarMypage />
+          <div className="col-9">
+            <div className="list-wrapper">
+              <NavbarMypage myPoint={myPoint} mySubs={mySubs} />
+              <p style={{ fontSize: "1.4rem", fontWeight: "600" }}>
+                비밀번호 확인
+              </p>
+              <div className="mb-4 mt-3 row">
+                <label className="col-sm-2 col-form-label mt-2">비밀번호</label>
+                <div className="col-sm-5">
+                  <input
+                    type="password"
+                    className="form-control mt-2"
+                    placeholder="정보보호를 위해 비밀번호를 확인합니다."
+                    name="member_password"
+                    value={password}
+                    onChange={handleInputPw}
+                  />
+                </div>
+                <BROWN_BTN2 variant="warning" onClick={chkPass}>
+                  비밀번호 확인
+                </BROWN_BTN2>
+              </div>
+            </div>
+          </div>
+        </CONTENTS>
+      </div>
+
+      <Footer />
     </>
   );
 };

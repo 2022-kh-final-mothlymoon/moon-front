@@ -37,6 +37,7 @@ const Faq = ({ isLogin, logout, no }) => {
   return (
     <>
       <Header isLogin={isLogin} logout={logout} no={no} />
+      <br />
       <div className="container">
         <CONTENTS className="row">
           <SidebarNotice />

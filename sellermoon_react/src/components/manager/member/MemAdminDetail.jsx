@@ -38,7 +38,8 @@ const MemAdminDetail = ({ isLogin, isAdmin, logout }) => {
       <br />
       <div>
         <table style={{ width: "60%", margin: "0 auto" }}>
-          <h1>회원조회</h1>
+          <br />
+          <h4>회원 상세 정보</h4>
           <br />
           <tbody>
             <tr>

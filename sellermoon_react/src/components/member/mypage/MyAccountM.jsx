@@ -4,13 +4,15 @@ import { memberProfile, modifyProfile } from "../../../service/dbLogic";
 import DaumPostcodeEmbed from "react-daum-postcode";
 import { Link, useNavigate } from "react-router-dom";
 import MyPassword from "./MyPassword";
-import Header from "../Common/Header";
-import { CONTENTS } from "../../../styles/NoticeStyle";
-import SidebarMypage from "../Common/SidebarMypage";
-import NavbarMypage from "../Common/NavbarMypage";
-import Footer from "../Common/Footer";
+import Footer from "./../Common/Footer";
+import Header from "./../Common/Header";
+import { CONTENTS, BROWN_BTN, BROWN_BTN2 } from "./../../../styles/NoticeStyle";
+import SidebarMypage from "./../Common/SidebarMypage";
+import { P_STRONG, P_SMALL } from "./../../../styles/SubStyle";
+import NavbarMypage from "./../Common/NavbarMypage";
+import { FORM } from "./../../../styles/PaymentStyle";
 
-const MyAccountM = ({ no, isLogin, logout, myPoint, props }) => {
+const MyAccountM = ({ no, isLogin, logout, myPoint, mySubs, props }) => {
   let navigate = useNavigate();
   const [show, setShow] = useState(false);
 
@@ -79,6 +81,7 @@ const MyAccountM = ({ no, isLogin, logout, myPoint, props }) => {
     setShow(false);
   };
   const memModify = (e) => {
+    e.preventDefault();
     modifyProfile({
       member_no: no,
       member_name: memInfo.member_name,
@@ -110,74 +113,157 @@ const MyAccountM = ({ no, isLogin, logout, myPoint, props }) => {
           <SidebarMypage />
           <div className="col-9">
             <div className="list-wrapper">
-              <NavbarMypage myPoint={myPoint} />
-              <div>
-                <h1>회원정보</h1>&nbsp;&nbsp;
+              <NavbarMypage myPoint={myPoint} mySubs={mySubs} />
+              <div className="container" style={{ padding: "30px 0 150px 0" }}>
+                <P_STRONG>회원 정보</P_STRONG>
+
                 <MyPassword no={no} />
-                <hr />
-              </div>
-              <Form id="f_modifym" method="post">
-                회원번호 : {memInfo.member_no}
+
                 <br />
-                이름 :
-                <input
-                  type="text"
-                  value={memInfo.member_name}
-                  name="member_name"
-                  onChange={EditChange}
-                />
-                <br />
-                회원등급 : {memInfo.member_level}
-                <br />
-                이메일 :
-                <input
-                  type="text"
-                  value={memInfo.member_email}
-                  name="member_email"
-                  onChange={EditChange}
-                />
-                <br />
-                주소 :
-                <input
-                  type="text"
-                  value={memInfo.member_zipcode}
-                  name="member_zipcode"
-                  onChange={EditChange}
-                />
-                <input
-                  type="text"
-                  value={memInfo.member_address}
-                  name="member_address"
-                  onChange={EditChange}
-                />
-                <input
-                  type="text"
-                  name="member_address_detail"
-                  value={memInfo.member_address_detail}
-                  onChange={EditChange}
-                />
-                <br />
-                <Button variant="warning" type="button" onClick={handleShow}>
-                  Open
-                </Button>
-                <br />
-                전화번호 :{" "}
-                <input
-                  type="text"
-                  value={memInfo.member_phone}
-                  name="member_phone"
-                  onChange={EditChange}
-                />
-                <br />
-                생일 : {memInfo.member_birth}
-                <br />
-                가입일 : {memInfo.member_date}
-              </Form>
-              <Button variant="warning" onClick={memModify}>
-                수정하기
-              </Button>
-              <br />
-              <Link to={"/mypage/delmember"}>탈퇴하기</Link>
+
+                {/* ************회원정보시작 ************ */}
+                <FORM id="f_modifym" method="post" onSubmit={memModify}>
+                  <P_SMALL>회원정보 수정</P_SMALL>
+
+                  <div className="mb-3 mt-4 row">
+                    <label className="col-sm-2 col-form-label">회원번호</label>
+                    <div className="col-sm-10">
+                      <input
+                        type="text"
+                        readOnly
+                        className="form-control-plaintext"
+                        value={memInfo.member_no}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-3 row">
+                    <label className="col-sm-2 col-form-label">회원등급</label>
+                    <div className="col-sm-10">
+                      <input
+                        type="text"
+                        readOnly
+                        className="form-control-plaintext"
+                        value={memInfo.member_level}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-3 mt-3 row">
+                    <label className="col-sm-2 col-form-label">이름</label>
+                    <div className="col-sm-5">
+                      <input
+                        type="text"
+                        name="member_name"
+                        value={memInfo.member_name}
+                        className="form-control"
+                        onChange={EditChange}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-3 mt-3 row">
+                    <label className="col-sm-2 col-form-label">이메일</label>
+                    <div className="col-sm-5">
+                      <input
+                        type="text"
+                        name="member_email"
+                        value={memInfo.member_email}
+                        className="form-control"
+                        onChange={EditChange}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-3 row">
+                    <label className="col-sm-2 col-form-label">주소</label>
+                    <div className="col-sm-5 d-flex">
+                      <input
+                        type="text"
+                        name="member_zipcode"
+                        value={memInfo.member_zipcode}
+                        className="form-control"
+                        onChange={EditChange}
+                      />
+                      <BROWN_BTN onClick={handleShow} type="button">
+                        우편번호
+                      </BROWN_BTN>
+                    </div>
+                  </div>
+
+                  <div className="mb-3 row">
+                    <label className="col-sm-2 col-form-label"></label>
+                    <div className="col-sm-7 d-flex">
+                      <input
+                        type="text"
+                        name="member_address"
+                        value={memInfo.member_address}
+                        className="form-control"
+                        onChange={EditChange}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-3 row">
+                    <label className="col-sm-2 col-form-label"></label>
+                    <div className="col-sm-7 d-flex">
+                      <input
+                        type="text"
+                        name="member_address_detail"
+                        value={memInfo.member_address_detail}
+                        className="form-control"
+                        onChange={EditChange}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-4 row">
+                    <label className="col-sm-2 col-form-label">전화번호 </label>
+                    <div className="col-sm-5">
+                      <input
+                        type="text"
+                        name="member_phone"
+                        value={memInfo.member_phone}
+                        className="form-control"
+                        onChange={EditChange}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="mb-3 row">
+                    <label className="col-sm-2 col-form-label">생일</label>
+                    <div className="col-sm-10">
+                      <input
+                        type="text"
+                        readOnly
+                        className="form-control-plaintext"
+                        value={memInfo.member_birth}
+                      />
+                    </div>
+                  </div>
+                  <div className="mb-3 row">
+                    <label className="col-sm-2 col-form-label">가입일</label>
+                    <div className="col-sm-10">
+                      <input
+                        type="text"
+                        readOnly
+                        className="form-control-plaintext"
+                        value={memInfo.member_date}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="d-flex justify-content-end">
+                    <BROWN_BTN2 type="submit">수정하기</BROWN_BTN2>
+                    <BROWN_BTN2 onClick={() => navigate("/mypage/delmember")}>
+                      탈퇴하기
+                    </BROWN_BTN2>
+                  </div>
+
+                  <br />
+                </FORM>
+              </div>{" "}
+              {/* end of container */}
             </div>{" "}
             {/* end of list-wrapper */}
           </div>{" "}

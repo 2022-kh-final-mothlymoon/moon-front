@@ -7,9 +7,10 @@ const AmdRow = (props) => {
   return (
     <>
       <tr>
-        <td>{props.amd.MD_NO}</td>
-        <td>[{props.amd.MD_BRAND}] </td>
+        <td style={{ textAlign: "center" }}>{props.amd.MD_NO}</td>
+        <td style={{ textAlign: "center" }}>[{props.amd.MD_BRAND}] </td>
         <td
+          style={{ textAlign: "center" }}
           onClick={() => {
             navigate("/admin/md/detail/" + props.amd.MD_NO);
           }}
@@ -17,8 +18,8 @@ const AmdRow = (props) => {
         >
           {props.amd.MD_NAME}
         </td>
-        <td>{props.amd.STORE_NO}</td>
-        <td>{props.amd.ST_AMOUNT}</td>
+        <td style={{ textAlign: "center" }}>{props.amd.STORE_NO}</td>
+        <td style={{ textAlign: "center" }}>{props.amd.ST_AMOUNT}</td>
       </tr>
     </>
   );

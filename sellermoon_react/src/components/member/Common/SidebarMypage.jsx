@@ -17,11 +17,7 @@ const SidebarMypage = () => {
     <>
       <div className="col-3">
         <CONT_SIDE>
-          <P_SIDE
-            onClick={() => {
-              navigate("/mypage");
-            }}
-          >
+          <P_SIDE>
             My Page
           </P_SIDE>
 
@@ -36,7 +32,7 @@ const SidebarMypage = () => {
 
             <LI_SIDE
               onClick={() => {
-                navigate("/");
+                navigate("/mypage/board");
               }}
             >
               MyMoonStory
@@ -52,18 +48,10 @@ const SidebarMypage = () => {
 
             <LI_SIDE
               onClick={() => {
-                navigate("/");
+                navigate("/mypage/orderlist");
               }}
             >
               주문배송조회
-            </LI_SIDE>
-
-            <LI_SIDE
-              onClick={() => {
-                navigate("/");
-              }}
-            >
-              결제수단
             </LI_SIDE>
 
             <LI_SIDE

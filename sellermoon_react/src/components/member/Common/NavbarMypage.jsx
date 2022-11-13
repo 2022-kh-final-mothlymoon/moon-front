@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { MYUL, MYLI1, MYLI2, MYSPAN, MYP } from './../../../styles/MypageStyle';
 
-const NavbarMypage = (props) => {
+const NavbarMypage = ({myPoint, mySubs}) => {
 
-  let result = props.myPoint;
+  const userLevel = sessionStorage.getItem("user_level");
 
   return (
     <>
@@ -13,7 +13,11 @@ const NavbarMypage = (props) => {
             정기구독 
             <i className="fa-solid fa-angle-right"></i>
           </MYSPAN>
-          <MYP>이지 탐폰 세트</MYP>
+          <MYP>
+            {
+              mySubs.MD_NAME !== undefined ? mySubs.MD_NAME : "구독내역 없음"
+            }
+          </MYP>
         </MYLI1>
 
         <MYLI2>
@@ -21,7 +25,12 @@ const NavbarMypage = (props) => {
             회원등급 
             <i className="fa-solid fa-angle-right"></i>
           </MYSPAN>
-          <MYP>초승달</MYP>
+          <MYP>
+            {
+              userLevel === "0" ? "초승달"
+                : userLevel === "1" ? "반달" : "보름달"
+            }
+          </MYP>
         </MYLI2>
 
         <MYLI2>
@@ -31,7 +40,7 @@ const NavbarMypage = (props) => {
           </MYSPAN>
           <MYP>
             {
-              result.POINT_SUM > 0 ? result.POINT_SUM : 0
+              myPoint.POINT_SUM > 0 ? parseInt(myPoint.POINT_SUM).toLocaleString() : 0
             }
             &nbsp;P
           </MYP>

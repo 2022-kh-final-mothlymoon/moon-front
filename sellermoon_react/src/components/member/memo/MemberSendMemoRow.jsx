@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
+import { BROWN_BTN, BROWN_BTN3, RED_BTN, RED_BTN2, RED_BTN3 } from '../../../styles/NoticeStyle';
 
 const MemberSendMemoRow = (props) => {
   console.log("[회원] MemberSendeMemoRow 호출 성공");
@@ -41,13 +42,18 @@ const MemberSendMemoRow = (props) => {
             <td>
               {/* 클릭하면 모달 띄우기 */}
               <Button
+                variant="outline-secondary"
+                id="btn_search"
+                style={{ marginRight: "20px", width: "100%" }}
                 onClick={handleShow}
               >
                 { props.memo.MSG_CONTENT }
               </Button>
             </td>
             <td>{ props.memo.MSG_SEND_DATE }</td>
-            <td><Button variant="danger" onClick={msgDelBtn}>삭제</Button></td>
+            <td>
+              <RED_BTN3 onClick={msgDelBtn}>삭제</RED_BTN3>
+            </td>
           </tr>
         </>
         :
@@ -57,15 +63,21 @@ const MemberSendMemoRow = (props) => {
       {/* 받은 상세보기 모달 */}
       <Modal show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
-          <Modal.Title>보낸 메세지 (상세)</Modal.Title>
+          <Modal.Title>보낸 쪽지</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form id="f_sendmemo" method="get">
             <Form.Group className="mb-3" controlId="formBasicFromMsg">
               <Form.Label>받는 사람 : { props.memo.TO_ID }</Form.Label>
+              
+              <br />
+              <br />
+              
               <Form.Control 
                 readOnly
                 type="text"
+                as="textarea"
+                rows={10}
                 name="msg_content"
                 value={ props.memo.MSG_CONTENT }
               />
@@ -73,12 +85,12 @@ const MemberSendMemoRow = (props) => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="danger" onClick={msgDelBtn}>
+          <RED_BTN variant="danger" onClick={msgDelBtn}>
             삭제
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
+          </RED_BTN>
+          <BROWN_BTN variant="primary" onClick={handleClose}>
             닫기
-          </Button>
+          </BROWN_BTN>
         </Modal.Footer>
       </Modal>
 

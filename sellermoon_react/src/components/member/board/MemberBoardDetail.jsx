@@ -2,19 +2,29 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, Form, Modal } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { jsonBoardList } from "../../../service/dbLogic";
+import {
+  BROWN_BTN,
+  CONTENTS,
+  RED_BTN,
+  YBEIGE_BTN,
+} from "../../../styles/NoticeStyle";
+import Header from "../Common/Header";
+import SidebarBoard from "./SidebarBoard";
 import MemberReplyForm from "../reply/MemberReplyForm";
 import MemberReplyList from "../reply/MemberReplyList";
 
 /* 
   <<<<< 회원 게시판 상세 조회 >>>>>
-    - 추가할 것 : (해당 글 번호 상세 페이지 진입 시) 조회수 증가, 좋아요/싫어요
 */
-const MemberBoardDetail = ({ props, no, isLogin }) => {
-  // 페이지 이동 시 필요한 객체 선언
+const MemberBoardDetail = ({ no, isLogin, logout }) => {
+  console.log("MemberBoardDetail 호출 성공");
+
   const navigate = useNavigate();
+
   // 세션에 담긴 정보 (로그인 한 사용자)
   const user_id = window.sessionStorage.getItem("user_id");
   console.log("로그인한 아이디 ===> " + user_id);
+
   // 신고 모달 관련
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
@@ -36,7 +46,7 @@ const MemberBoardDetail = ({ props, no, isLogin }) => {
     FILENAME: "",
   });
 
-  // [R] 데이터 가져오기 -----------------------------------------------
+  // [R] 데이터 가져오기
   useEffect(() => {
     const boardDetailDB = async () => {
       console.log("[회원] : boardDetailDB 호출 성공");
@@ -50,7 +60,7 @@ const MemberBoardDetail = ({ props, no, isLogin }) => {
     boardDetailDB();
   }, [board_no]);
 
-  // [D] 삭제 버튼 -----------------------------------------------------
+  // [D] 삭제 버튼
   const delBtn = async () => {
     console.log("삭제할 글 번호 ===> " + boardVO.BOARD_NO);
     if (window.confirm("삭제하시겠습니까?")) {
@@ -78,122 +88,127 @@ const MemberBoardDetail = ({ props, no, isLogin }) => {
   // 목록으로 버튼
   const listBtn = () => {
     console.log("목록으로 버튼 클릭");
-    navigate("/member/board/boardList");
+    navigate("/board/boardList");
   };
 
   // 수정 폼 이동 버튼
   const editBtn = () => {
     console.log("수정할 글 번호 ===> " + boardVO.BOARD_NO);
     // 수정 버튼 누르면 해당 게시글의 모든 정보를 가지고 와야함..
-    navigate("/member/board/boardEditForm/" + boardVO.BOARD_NO);
+    navigate("/board/boardEditForm/" + boardVO.BOARD_NO);
   };
 
   // ******************** RENDER ********************
   return (
     <>
+      <Header isLogin={isLogin} no={no} logout={logout} />
+
       <div className="container">
-        <div>
-          <h2>Moon Story (커뮤니티)</h2>
-          <hr />
-        </div>
+        <CONTENTS className="row">
+          <SidebarBoard />
 
-        <div>
-          <Button variant="primary" onClick={listBtn}>
-            목록으로
-          </Button>
-          {/* 로그인한 회원과 작성자 번호가 일치하면 삭제 / 업데이트 가능 */}
-          {no == boardVO.MEMBER_NO ? (
-            <Button variant="danger" onClick={delBtn}>
-              삭제
-            </Button>
-          ) : null}
-          {no == boardVO.MEMBER_NO ? (
-            <Button variant="success" onClick={editBtn}>
-              수정
-            </Button>
-          ) : null}
-        </div>
+          <div className="col-9">
+            <div className="list-wrapper">
+              <h4>MOON STRORY</h4>
 
-        {/******************** 선택한 글 상세 보기 시작 ********************/}
-        <div className="container">
-          <div className="form-group">
-            <label>글번호</label>
-            <p>{boardVO.BOARD_NO}</p>
-          </div>
-          <div className="form-group">
-            <label>카테고리</label>
-            <p>{boardVO.BOARD_CATEGORY}</p>
-          </div>
-          <div className="form-group">
-            <label>제목</label>
-            <p>{boardVO.BOARD_TITLE}</p>
-          </div>
-          <div className="form-group">
-            <label>내용</label>
-            <p>{boardVO.BOARD_CONTENT}</p>
-            <Card.Img
-              variant="top"
-              style={{ width: "250px" }}
-              src={`${boardVO.FILEURL}`}
-            />
-          </div>
-          <div className="form-group">
-            <label>작성자</label>
-            <p>{boardVO.MEMBER_NAME}</p>
-          </div>
-          <div className="form-group">
-            <label>작성일</label>
-            <p>{boardVO.BOARD_WRITTEN_DATE}</p>
-          </div>
-          <div className="form-group">
-            <label>조회수</label>
-            <p>{boardVO.BOARD_HIT}</p>
-          </div>
-        </div>
-        {/******************** 선택한 글 상세 보기 종료 ********************/}
-        <div>
-          <MemberReplyList no={no} />
-        </div>
+              <br />
+              <br />
 
-        <div>
-          <MemberReplyForm no={no} />
-        </div>
+              {/* 버튼 */}
+              <div className="d-flex justify-content-end">
+                {no == boardVO.MEMBER_NO ? null : (
+                  <YBEIGE_BTN variant="warning" onClick={setShow}>
+                    신고
+                  </YBEIGE_BTN>
+                )}
+                {no == boardVO.MEMBER_NO ? (
+                  <YBEIGE_BTN onClick={editBtn}>수정</YBEIGE_BTN>
+                ) : null}
+                {no == boardVO.MEMBER_NO ? (
+                  <RED_BTN onClick={delBtn}>삭제</RED_BTN>
+                ) : null}
+                <BROWN_BTN onClick={() => navigate(-1)}>목록</BROWN_BTN>
+              </div>
+
+              <table style={{ width: "1020px" }}>
+                <colgroup>
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "40%" }} />
+                  <col style={{ width: "20%" }} />
+                  <col style={{ width: "20%" }} />
+                </colgroup>
+
+                <br />
+
+                <tbody>
+                  <tr>
+                    <th>제목</th>
+                    <td colSpan={4} id="td-title">
+                      [{boardVO.BOARD_CATEGORY}]&nbsp;{boardVO.BOARD_TITLE}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>작성자</th>
+                    <td colSpan={4}>{boardVO.MEMBER_NAME}</td>
+                  </tr>
+                  <tr>
+                    <th>작성일</th>
+                    <td>{boardVO.BOARD_WRITTEN_DATE}</td>
+                    <th>조회수</th>
+                    <td colSpan={2}>{boardVO.BOARD_HIT}</td>
+                  </tr>
+                  <tr>
+                    <td colSpan={5} id="td-content">
+                      {boardVO.BOARD_CONTENT}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              {/* 댓글 목록 */}
+              <MemberReplyList no={no} />
+
+              {/* 댓글 작성 폼 */}
+              <MemberReplyForm no={no} />
+            </div>
+          </div>
+        </CONTENTS>
 
         {/* 신고 모달 */}
         <Modal show={show} onHide={handleClose} animation={false}>
           <Modal.Header closeButton>
-            <Modal.Title>신고하기</Modal.Title>
+            <Modal.Title>신고</Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
             <Form id="f_bReport" method="get">
-              {/* <input type="hidden" name="report_no" id="report_no" /> */}
-
               <Form.Group className="mb-3" controlId="formBasicFromMsg">
-                <Form.Label>신고할 회원</Form.Label>
+                {/* <Form.Label>신고할 회원</Form.Label> */}
                 <Form.Control
                   type="text"
                   name="member_no2"
                   plaintext
                   readOnly
                   defaultValue={boardVO.MEMBER_NO}
+                  hidden={true}
                 />
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicFromMsg">
-                <Form.Label>신고할 글 번호</Form.Label>
+                {/* <Form.Label>신고할 글 번호</Form.Label> */}
                 <Form.Control
                   type="text"
                   name="board_no"
                   plaintext
                   readOnly
                   defaultValue={boardVO.BOARD_NO}
+                  hidden={true}
                 />
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicFromMsg">
-                <Form.Label>신고 내용</Form.Label>
-                <p>신고할 글 내용을 확인해주세요.</p>
+                {/* <Form.Label>신고 내용</Form.Label> */}
+                {/* <p>신고할 글 내용을 확인해주세요.</p> */}
                 <Form.Control
                   type="text"
                   as="textarea"
@@ -201,11 +216,12 @@ const MemberBoardDetail = ({ props, no, isLogin }) => {
                   plaintext
                   readOnly
                   defaultValue={boardVO.BOARD_CONTENT}
+                  hidden={true}
                 />
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicFromMsg">
-                <Form.Label>신고 사유 선택</Form.Label>
+                {/* <Form.Label>신고 사유 선택</Form.Label> */}
                 <Form.Select id="report_sort" name="report_sort">
                   <option defaultValue>신고 사유를 선택헤주세요.</option>
                   <option value="욕설, 비방, 차별, 혐오">
@@ -223,11 +239,18 @@ const MemberBoardDetail = ({ props, no, isLogin }) => {
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicMember_no">
-                <Form.Label>신고 이유</Form.Label>
-                <p>신고 이유를 작성해주세요.</p>
-                <Form.Control type="text" as="textarea" name="report_reason" />
+                {/* <Form.Label>신고 이유</Form.Label> */}
+                {/* <p>신고 이유를 작성해주세요.</p> */}
+                <Form.Control
+                  type="text"
+                  as="textarea"
+                  rows={10}
+                  name="report_reason"
+                  placeHolder="신고 이유를 작성해주세요."
+                />
               </Form.Group>
 
+              {/* 신고 모달 작성한 회원 정보 hidden */}
               <Form.Group className="mb-3" controlId="formBasicMember_no">
                 <Form.Control
                   type="text"
@@ -239,12 +262,12 @@ const MemberBoardDetail = ({ props, no, isLogin }) => {
             </Form>
 
             <Modal.Footer>
-              <Button variant="primary" onClick={handleClose}>
+              <BROWN_BTN variant="primary" onClick={handleClose}>
                 취소
-              </Button>
-              <Button variant="danger" onClick={sendReport}>
+              </BROWN_BTN>
+              <RED_BTN variant="danger" onClick={sendReport}>
                 신고
-              </Button>
+              </RED_BTN>
             </Modal.Footer>
           </Modal.Body>
         </Modal>

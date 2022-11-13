@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Card, Modal, Nav } from "react-bootstrap";
 import { deleteCartAPI, updateCartAPI } from "../../../service/dbLogic";
 
-const Cart = ({ c, pReload, pSum }) => {
+const Cart = ({ c, pReload, pSum, isCk }) => {
   const [cart, setCart] = useState({});
   const [md, setMd] = useState({});
   // 갯수
@@ -17,6 +16,8 @@ const Cart = ({ c, pReload, pSum }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const userno = window.sessionStorage.getItem("user_no");
+
   useEffect(() => {
     // 카트 객체
     setCart(c);
@@ -27,13 +28,21 @@ const Cart = ({ c, pReload, pSum }) => {
     // 총액
     const s = c.mdVO.mdDcPrice * c.cartQuantity;
     setSum(s);
-    pSum(s);
   }, [c]);
+
+  useEffect(() => {
+    if (!isCk.includes(c.cartNo)) {
+      pSum({ no: c.cartNo, sum: 0 });
+    } else {
+      pSum({ no: c.cartNo, sum: sum });
+    }
+  }, [isCk]);
 
   // API 호출 함수
   const deleteCart = async (e) => {
     const data = {
       cartNo: e,
+      memberNo: userno,
     };
 
     await deleteCartAPI(data).then((res) => {
@@ -48,6 +57,7 @@ const Cart = ({ c, pReload, pSum }) => {
     const data = {
       cartNo: cart.cartNo,
       quantity: e,
+      memberNo: userno,
     };
 
     await updateCartAPI(data).then((res) => {
@@ -58,7 +68,7 @@ const Cart = ({ c, pReload, pSum }) => {
     });
   };
 
-  // 옵션값 변경시 호출되는 함수
+  // 옵션값 변경 시 호출
   const handleOption = (q) => {
     updateCart(q);
     setQuantity(q);
@@ -79,65 +89,41 @@ const Cart = ({ c, pReload, pSum }) => {
 
   return (
     <>
-      <div className="body_container">
-        <div className="cart_md_name">{md.mdName}</div>
-        <div className="cart_qtt">
-          {quantity}
-          <button onClick={handleIncre}>+</button>
-          <button onClick={handleDecre}>-</button>
-          {/*  <select value={cart.cartQuantity} onChange={handleOption} className="cart_qtt_select" name="quantity" > 
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6+</option>
-        </select> */}
-        </div>
-        <div className="cart_md_price">정가: {md.mdPrice}</div>
-        <div className="cart_md_discount">할인(%): {md.mdDiscount}</div>
-        <div className="cart_md_dcprice">할인가: {md.mdDcPrice}</div>
-        <div className="cart_md_image">
-          <img src={md.mdImageUrl} alt="img" />
-        </div>
-        <div className="cart_sum">총액: {sum}</div>
-        <div className="cart_btn_container">
-          <button onClick={handleShow}>삭제</button>
-        </div>
-      </div>
-      {/* =========================== [[ 장바구니 삭제 완료 모달 시작 ]] =========================== */}
-      <Modal size="md" show={show} onHide={handleClose} animation={false}>
-        <Modal.Header closeButton>
-          <Modal.Title id="example-modal-sizes-title-md">
-            장바구니로 이동
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="modal-body-container">
-            <span>해당 장바구니를 삭제하시겠습니까?</span>
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            취소
-          </Button>
-          <Button
-            variant="primary"
-            onClick={() => {
-              deleteCart(cart.cartNo);
-            }}
-          >
-            삭제
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      {/* =========================== [[ 장바구니 삭제 완료 모달 종료 ]] =========================== */}
+      <td style={{ fontWeight: "bold" }}>
+        <img src={md.mdImageUrl} alt="img" style={{ width: 250 }} />
+        &nbsp;&nbsp;{md.mdName}
+      </td>
+      <td className="td_center">
+        <div className="cart_md_price">{md.mdPrice}원</div>
+        <div className="cart_md_dcprice">{md.mdDcPrice}원</div>
+      </td>
+      <td className="td_center">
+        <button onClick={handleDecre} className="td_btn">
+          -
+        </button>
+        &nbsp;{quantity}&nbsp;
+        <button onClick={handleIncre} className="td_btn">
+          +
+        </button>
+      </td>
+      <td className="td_center" style={{ fontSize: 20, fontWeight: "bold" }}>
+        {sum}원
+      </td>
+      <td className="td_center">
+        <button
+          onClick={handleShow}
+          className="td_btn"
+          style={{ fontSize: 16 }}
+        >
+          삭제
+        </button>
+      </td>
 
       {/* =========================== [[ 장바구니 삭제 완료 모달 시작 ]] =========================== */}
       <Modal size="md" show={show} onHide={handleClose} animation={false}>
         <Modal.Header closeButton>
           <Modal.Title id="example-modal-sizes-title-md">
-            장바구니로 이동
+            장바구니 삭제
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -146,16 +132,16 @@ const Cart = ({ c, pReload, pSum }) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            취소
-          </Button>
           <Button
             variant="primary"
             onClick={() => {
               deleteCart(cart.cartNo);
             }}
           >
-            삭제
+            네
+          </Button>
+          <Button variant="secondary" onClick={handleClose}>
+            아니요
           </Button>
         </Modal.Footer>
       </Modal>

@@ -45,7 +45,7 @@ const AdminLogin = ({ isLogin, isAdmin, adminId }) => {
     <>
       <Header isLogin={isLogin} isAdmin={isAdmin} adminId={adminId} />
       <div style={{ width: 300, margin: "12.3rem auto" }}>
-        <h4 style={{ textAlign: "center" }}>로그인 후 이용해주세요</h4>
+        <h4 style={{ textAlign: "center" }}>관리자 로그인</h4>
         <div>
           <input
             type="text"

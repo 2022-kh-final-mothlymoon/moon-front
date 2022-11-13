@@ -10,7 +10,7 @@ import { CONTENTS } from "../../../styles/NoticeStyle";
 import { POINT_P, POINT_LI } from "../../../styles/MypageStyle";
 import { pointlist } from "../../../service/dbLogic";
 
-const Point = ({ myPoint, no, isLogin, logout }) => {
+const Point = ({ myPoint, no, isLogin, logout, mySubs }) => {
   /**************** 페이지네이션 선언 ********************/
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
@@ -46,7 +46,7 @@ const Point = ({ myPoint, no, isLogin, logout }) => {
           <SidebarMypage />
           <div className="col-9">
             <div className="list-wrapper">
-              <NavbarMypage myPoint={myPoint} />
+              <NavbarMypage myPoint={myPoint} mySubs={mySubs} />
 
               <p style={{ fontSize: "1.4rem", fontWeight: "600" }}>
                 적립금 현황
