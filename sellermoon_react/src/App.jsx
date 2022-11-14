@@ -618,7 +618,7 @@ function App({ authLogic, pictureUpload }) {
                 isAdmin={isAdmin}
               />
             ) : (
-              <Navigate to="/admin/statics" />
+              <Navigate to="/admin/member" />
             )
           }
           exact={true}

@@ -63,9 +63,9 @@ const Header = ({ isLogin, isAdmin, adminId }) => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Link to="/admin/statics" className="nav-link">
+              {/* <Link to="/admin/statics" className="nav-link">
                 통계
-              </Link>
+              </Link> */}
               <Link to="/admin/member" className="nav-link">
                 회원관리
               </Link>

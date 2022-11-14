@@ -33,7 +33,7 @@ const AdminLogin = ({ isLogin, isAdmin, adminId }) => {
         console.log("로그인 성공");
         sessionStorage.setItem("admin", id);
         sessionStorage.setItem("level", 5);
-        navigate("/admin/statics");
+        navigate("/admin/member");
         window.location.reload();
       } else if (res.data.member_no === 0) {
         alert("아이디 또는 비밀번호를 확인하세요");
